@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lanna Hu</title>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* grid */
+    --gutter:       24px;
+    --nav-col:      160px;
+    --gap:          24px;
+    --gutter-right: 40px;
+
+    /* spacing scale (8px base) */
+    --sp-1:  8px;
+    --sp-2:  16px;
+    --sp-3:  24px;
+    --sp-4:  32px;
+    --sp-5:  40px;
+    --sp-6:  48px;
+    --sp-8:  64px;
+    --sp-10: 80px;
+
+    /* nav offset — how far down Pages sits */
+    --nav-offset: 224px;
+
+    /* colors */
+    --bg:             #F3F3F1;
+    --ink:            #1e1e1c;
+    --ink-muted:      #7a7a74;
+    --ink-faint:      #b0afa9;
+    --rule:           #d6d5ce;
+    --sticky-yellow:  #F5F0D0;
+    --sticky-y-border:#e0d8a0;
+    --sticky-blue:    #D8E8F0;
+    --sticky-b-border:#a8c8dc;
+
+    /* type */
+    --serif: 'Libre Baskerville', serif;
+    --sans:  'IBM Plex Sans', sans-serif;
+    --mono:  'DM Mono', monospace;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ── PAGE LAYOUT ── */
+  .page {
+    display: grid;
+    grid-template-columns: var(--gutter) var(--nav-col) var(--gap) 1fr var(--gutter-right);
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    grid-column: 2;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--sp-3) 0;
+  }
+
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+
+  .nav-links {
+    margin-top: var(--nav-offset);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-section-label,
+  .nav-bottom-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 2;
+    margin-bottom: var(--sp-1);
+  }
+
+  .nav-links a,
+  .nav-bottom a {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    line-height: 2;
+    padding-left: var(--sp-2);
+    display: block;
+    position: relative;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover,
+  .nav-bottom a:hover { color: var(--ink); }
+
+  .nav-links a.active { color: var(--ink); }
+  .nav-links a.active::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    font-size: 10px;
+    color: var(--ink-faint);
+  }
+
+  .nav-bottom {
+    margin-top: auto;
+  }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    grid-column: 4;
+    padding: var(--sp-3) 0 var(--sp-10) 0;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.15s forwards;
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* ── HERO ── */
+  .hero {
+    padding-top: var(--nav-offset);
+    padding-bottom: var(--sp-8);
+    border-bottom: 0.5px solid var(--rule);
+    margin-bottom: var(--sp-8);
+    position: relative;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: var(--sp-3);
+    letter-spacing: -0.01em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--ink-muted);
+    display: block;
+  }
+
+  .hero-bio {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--ink-muted);
+    max-width: 640px;
+  }
+
+  /* ── STICKY NOTES ── */
+  .sticky {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 300;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    box-shadow: 1px 2px 6px rgba(0,0,0,0.06);
+    cursor: default;
+    transition: transform 0.2s;
+    padding: var(--sp-1) var(--sp-2);
+  }
+
+  .sticky.yellow {
+    background: var(--sticky-yellow);
+    border: 0.5px solid var(--sticky-y-border);
+    color: #5a5a3a;
+    position: absolute;
+    top: var(--nav-offset);
+    right: 0;
+    max-width: 152px;
+    transform: rotate(1.2deg);
+  }
+  .sticky.yellow:hover { transform: rotate(0deg) scale(1.02); }
+
+  .sticky.blue {
+    background: var(--sticky-blue);
+    border: 0.5px solid var(--sticky-b-border);
+    color: #3a4a5a;
+    transform: rotate(-0.8deg);
+  }
+  .sticky.blue:hover { transform: rotate(0deg) scale(1.02); }
+
+  .note-mark {
+    display: block;
+    font-size: 13px;
+    margin-bottom: var(--sp-1);
+    opacity: 0.45;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-3);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--rule);
+  }
+
+  /* ── PROJECT LIST ── */
+  .project-list { margin-bottom: var(--sp-8); }
+
+  .project-row {
+    display: grid;
+    grid-template-columns: var(--sp-4) 1fr auto;
+    gap: var(--sp-3);
+    padding: var(--sp-3) 0;
+    border-bottom: 0.5px solid var(--rule);
+    cursor: pointer;
+    position: relative;
+  }
+  .project-row:first-of-type { border-top: 0.5px solid var(--rule); }
+
+  .project-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    padding-top: 3px;
+  }
+
+  .project-title {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: var(--sp-1);
+    transition: opacity 0.15s;
+  }
+  .project-row:hover .project-title { opacity: 0.5; }
+
+  .project-thumb {
+    width: 100%;
+    max-width: 400px;
+    height: 192px;
+    background: var(--rule);
+    border-radius: 2px;
+    margin-bottom: var(--sp-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: var(--sp-1);
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--rule);
+    padding: 2px var(--sp-1);
+    border-radius: 2px;
+  }
+
+  .project-year {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+
+  .project-sticky {
+    display: none;
+    position: absolute;
+    right: var(--sp-6);
+    top: var(--sp-3);
+    background: var(--sticky-yellow);
+    border: 0.5px solid var(--sticky-y-border);
+    padding: var(--sp-1) var(--sp-2);
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 300;
+    color: #5a5a3a;
+    line-height: 1.6;
+    max-width: 130px;
+    box-shadow: 1px 2px 5px rgba(0,0,0,0.07);
+    transform: rotate(-1deg);
+    pointer-events: none;
+    z-index: 10;
+  }
+  .project-row:hover .project-sticky { display: block; }
+
+  /* ── ANNOTATION STRIP ── */
+  .annotation-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  .annotation-item {
+    padding-right: var(--sp-5);
+    border-right: 0.5px solid var(--rule);
+    position: relative;
+  }
+  .annotation-item:last-child {
+    border-right: none;
+    padding-right: 0;
+    padding-left: var(--sp-5);
+  }
+  .annotation-item:nth-child(2) {
+    padding-left: var(--sp-5);
+  }
+
+  .annotation-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+  }
+
+  .annotation-text {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.7;
+  }
+  .annotation-text em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* ── TYPEWRITER ── */
+  .typewriter-line {
+    font-style: italic;
+    color: var(--ink-muted);
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 0.8em;
+    background: var(--ink-muted);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 0.9s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* ── PAGE TABS ── */
+  .page-marker {
+    grid-column: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    gap: var(--sp-1);
+  }
+
+  .page-dot {
+    width: 3px;
+    height: 20px;
+    background: var(--rule);
+    border-radius: 2px 0 0 2px;
+    transition: background 0.2s, height 0.2s;
+    cursor: pointer;
+  }
+  .page-dot.active {
+    background: var(--ink-muted);
+    height: 32px;
+  }
+
+  /* ── FOOTER ── */
+  .footer-line {
+    margin-top: var(--sp-8);
+    padding-top: var(--sp-3);
+    border-top: 0.5px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-line span {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- col 1: left gutter (empty) -->
+  <div></div>
+
+  <!-- col 2: nav -->
+  <nav>
+    <div class="nav-name">Lanna Hu</div>
+    <div class="nav-links">
+      <div class="nav-section-label">Pages</div>
+      <a href="#" class="active">Index</a>
+      <a href="#">Work</a>
+      <a href="#">Play</a>
+      <a href="#">About</a>
+    </div>
+    <div class="nav-bottom">
+      <div class="nav-bottom-label">Contact</div>
+      <a href="#">LinkedIn</a>
+      <a href="#">Resume ↗</a>
+    </div>
+  </nav>
+
+  <!-- col 3: gap (empty) -->
+  <div></div>
+
+  <!-- col 4: content -->
+  <main>
+
+    <section class="hero">
+      <h1>
+        Hi, I am Lanna Hu.<br>
+        <em class="typewriter-line"><span id="typed-text"></span><span class="cursor" id="cursor"></span></em>
+      </h1>
+      <p class="hero-bio">
+        I am an interaction designer who values empathy, structure, and care,
+        making complex research actionable through clear interaction thinking
+        and user focused decisions.
+      </p>
+      <div class="sticky yellow">
+        <span class="note-mark">✱</span>
+        currently open<br>to internship<br>opportunities
+      </div>
+    </section>
+
+    <div class="project-list">
+      <div class="section-label">Selected work</div>
+
+      <div class="project-row">
+        <span class="project-num">01</span>
+        <div>
+          <div class="project-thumb">project image</div>
+          <div class="project-title">Project name here</div>
+          <div class="project-tags">
+            <span class="tag">UX Research</span>
+            <span class="tag">Interaction Design</span>
+          </div>
+        </div>
+        <span class="project-year">2025</span>
+        <div class="project-sticky">research → insight → form</div>
+      </div>
+
+      <div class="project-row">
+        <span class="project-num">02</span>
+        <div>
+          <div class="project-thumb">project image</div>
+          <div class="project-title">Second project name</div>
+          <div class="project-tags">
+            <span class="tag">Product Design</span>
+            <span class="tag">Prototyping</span>
+          </div>
+        </div>
+        <span class="project-year">2024</span>
+        <div class="project-sticky">how do people decide?</div>
+      </div>
+
+      <div class="project-row">
+        <span class="project-num">03</span>
+        <div>
+          <div class="project-thumb">project image</div>
+          <div class="project-title">Third project — in progress</div>
+          <div class="project-tags">
+            <span class="tag">Systems Thinking</span>
+          </div>
+        </div>
+        <span class="project-year">2025 ↻</span>
+        <div class="project-sticky">still figuring it out</div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Now</div>
+    <div class="annotation-strip">
+      <div class="annotation-item">
+        <div class="annotation-label">Currently reading</div>
+        <div class="annotation-text"><em>"The Design of Everyday Things"</em></div>
+      </div>
+      <div class="annotation-item">
+        <div class="annotation-label">Thinking about</div>
+        <div class="annotation-text">how structure creates freedom</div>
+      </div>
+      <div class="annotation-item">
+        <div class="annotation-label">Based in</div>
+        <div class="annotation-text">Shanghai</div>
+        <div class="sticky blue" style="position:absolute; bottom:-8px; right:-8px; max-width:110px;">
+          <span class="note-mark" style="font-size:11px;">→</span>
+          open to remote
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-line">
+      <span>Lanna Hu — Interaction Design</span>
+      <span id="clock"></span>
+    </div>
+
+  </main>
+
+  <!-- col 5: page tabs -->
+  <div class="page-marker">
+    <div class="page-dot active"></div>
+    <div class="page-dot"></div>
+    <div class="page-dot"></div>
+    <div class="page-dot"></div>
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) + ' CST';
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  const text = 'I design interactions.';
+  const el = document.getElementById('typed-text');
+  const cur = document.getElementById('cursor');
+  let i = 0;
+  setTimeout(() => {
+    const iv = setInterval(() => {
+      el.textContent = text.slice(0, ++i);
+      if (i === text.length) {
+        clearInterval(iv);
+        setTimeout(() => cur.style.display = 'none', 2000);
+      }
+    }, 55);
+  }, 800);
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.page-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      document.querySelectorAll('.page-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
