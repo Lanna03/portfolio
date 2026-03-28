@@ -12,7 +12,7 @@
 
   :root {
     /* grid */
-    --gutter:       24px;
+    --gutter:       40px;
     --nav-col:      160px;
     --gap:          24px;
     --gutter-right: 40px;
@@ -27,14 +27,15 @@
     --sp-8:  64px;
     --sp-10: 80px;
 
-    /* nav offset — how far down Pages sits */
-    --nav-offset: 224px;
+    /* nav offset — accounts for .nav-name height so PAGES aligns with h1 */
+    --nav-offset:  160px;   /* nav-links: 40(pad) + 20(nav-name) + 160 = 220px from top */
+    --hero-offset: 180px;   /* hero h1:  40(pad) + 180 = 220px from top */
 
     /* colors */
     --bg:             #F3F3F1;
     --ink:            #1e1e1c;
     --ink-muted:      #7a7a74;
-    --ink-faint:      #b0afa9;
+    --ink-faint:      #7a7a74;
     --rule:           #d6d5ce;
     --sticky-yellow:  #F5F0D0;
     --sticky-y-border:#e0d8a0;
@@ -60,7 +61,7 @@
   /* ── PAGE LAYOUT ── */
   .page {
     display: grid;
-    grid-template-columns: var(--gutter) var(--nav-col) var(--gap) 1fr var(--gutter-right);
+    grid-template-columns: var(--gutter) var(--nav-col) var(--gap) var(--nav-col) 1fr var(--gutter-right);
     min-height: 100vh;
   }
 
@@ -72,7 +73,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: var(--sp-3) 0;
+    padding: 40px 0 40px;
   }
 
   .nav-name {
@@ -92,7 +93,7 @@
   .nav-section-label,
   .nav-bottom-label {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.1em;
@@ -104,7 +105,7 @@
   .nav-links a,
   .nav-bottom a {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-muted);
     text-decoration: none;
@@ -128,14 +129,52 @@
     color: var(--ink-faint);
   }
 
+  /* Sub-nav: project list under Work, slides in when in work zone */
+  .nav-sub {
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: max-height 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-sub.visible { max-height: 120px; }
+
+  .nav-sub .nav-sub-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    line-height: 2;
+    padding-left: calc(var(--sp-2) + 10px); /* second indent level */
+    display: block;
+    position: relative;
+    transition: color 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-sub .nav-sub-item:hover { color: var(--ink-muted); }
+  .nav-sub .nav-sub-item.active {
+    color: var(--ink);
+  }
+  .nav-sub .nav-sub-item.active::before {
+    content: '—';
+    position: absolute;
+    left: var(--sp-2);   /* indented to the main-nav text level, not the dash column */
+    font-size: 10px;
+    color: var(--ink-faint);
+  }
+
   .nav-bottom {
     margin-top: auto;
   }
 
   /* ── MAIN CONTENT ── */
   main {
-    grid-column: 4;
-    padding: var(--sp-3) 0 var(--sp-10) 0;
+    grid-column: 5;
+    padding: 40px 0 40px 0;
     opacity: 0;
     animation: fadeIn 0.7s ease 0.15s forwards;
   }
@@ -144,10 +183,9 @@
 
   /* ── HERO ── */
   .hero {
-    padding-top: var(--nav-offset);
-    padding-bottom: var(--sp-8);
-    border-bottom: 0.5px solid var(--rule);
-    margin-bottom: var(--sp-8);
+    padding-top: var(--hero-offset);
+    padding-bottom: 40px;
+    margin-bottom: 40px;
     position: relative;
   }
 
@@ -169,9 +207,9 @@
 
   .hero-bio {
     font-family: var(--sans);
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 300;
-    line-height: 1.9;
+    line-height: 1.8;
     color: var(--ink-muted);
     max-width: 640px;
   }
@@ -194,10 +232,11 @@
     border: 0.5px solid var(--sticky-y-border);
     color: #5a5a3a;
     position: absolute;
-    top: var(--nav-offset);
+    top: var(--hero-offset);
     right: 0;
     max-width: 152px;
     transform: rotate(1.2deg);
+    pointer-events: none;
   }
   .sticky.yellow:hover { transform: rotate(0deg) scale(1.02); }
 
@@ -219,7 +258,7 @@
   /* ── SECTION LABEL ── */
   .section-label {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.1em;
@@ -236,26 +275,75 @@
     background: var(--rule);
   }
 
-  /* ── PROJECT LIST ── */
-  .project-list { margin-bottom: var(--sp-8); }
+  /* ── VERTICAL STICKY CAROUSEL ── */
+  .projects-outer { position: relative; margin-bottom: 120px; }
 
-  .project-row {
-    display: grid;
-    grid-template-columns: var(--sp-4) 1fr auto;
-    gap: var(--sp-3);
-    padding: var(--sp-3) 0;
-    border-bottom: 0.5px solid var(--rule);
-    cursor: pointer;
-    position: relative;
+  .projects-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0 40px;
   }
-  .project-row:first-of-type { border-top: 0.5px solid var(--rule); }
+
+  /* Divider: hidden until zone entry, then fades in L→R aligned with nav-name */
+  .projects-sticky .section-label {
+    margin-top: 0;              /* aligns with "Lanna Hu" at 40px from top */
+    margin-bottom: var(--sp-5); /* 40px gap to slide content below */
+    opacity: 0;
+    transition: opacity 0.5s ease 0.1s;
+  }
+  .projects-sticky .section-label::after {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  }
+  .projects-sticky.label-visible .section-label { opacity: 1; }
+  .projects-sticky.label-visible .section-label::after { transform: scaleX(1); }
+
+  .projects-track-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .projects-track {
+    position: relative;
+    height: 100%;
+  }
+
+  /* Each slide is absolutely stacked; default = waiting below */
+  .project-slide {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: var(--gap);
+    transform: translateY(100%);
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  .project-slide.slide-active  { transform: translateY(0); }
+  .project-slide.slide-exited  { transform: translateY(-100%); }
+
+  .project-info {
+    display: flex;
+    flex-direction: column;
+  }
 
   .project-num {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 24px;
     font-weight: 300;
     color: var(--ink-faint);
-    padding-top: 3px;
+    letter-spacing: -0.02em;
+  }
+
+  .project-bottom {
+    margin-top: auto;
+    margin-bottom: 16px;
   }
 
   .project-title {
@@ -265,17 +353,41 @@
     color: var(--ink);
     line-height: 1.4;
     margin-bottom: var(--sp-1);
-    transition: opacity 0.15s;
   }
-  .project-row:hover .project-title { opacity: 0.5; }
 
-  .project-thumb {
-    width: 100%;
-    max-width: 400px;
-    height: 192px;
+  .project-tags {
+    display: flex;
+    gap: var(--sp-1);
+    flex-wrap: nowrap;
+    margin-bottom: var(--sp-1);
+    overflow: hidden;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--rule);
+    padding: 2px var(--sp-1);
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .project-year {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--ink-faint);
+  }
+
+  .project-img-panel {
     background: var(--rule);
     border-radius: 2px;
-    margin-bottom: var(--sp-2);
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -284,55 +396,25 @@
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.06em;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    align-self: end;
   }
 
-  .project-tags {
-    display: flex;
-    gap: var(--sp-1);
-    flex-wrap: wrap;
-  }
+  .project-progress { display: none; }
 
-  .tag {
-    font-family: var(--mono);
-    font-size: 9px;
-    font-weight: 300;
-    color: var(--ink-faint);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border: 0.5px solid var(--rule);
-    padding: 2px var(--sp-1);
-    border-radius: 2px;
+  .progress-dot {
+    height: 2px;
+    width: 20px;
+    background: var(--rule);
+    border-radius: 1px;
+    transition: background 0.3s, width 0.3s;
+    cursor: pointer;
   }
-
-  .project-year {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 300;
-    color: var(--ink-faint);
-    white-space: nowrap;
-    padding-top: 3px;
+  .progress-dot.active {
+    background: var(--ink-muted);
+    width: 36px;
   }
-
-  .project-sticky {
-    display: none;
-    position: absolute;
-    right: var(--sp-6);
-    top: var(--sp-3);
-    background: var(--sticky-yellow);
-    border: 0.5px solid var(--sticky-y-border);
-    padding: var(--sp-1) var(--sp-2);
-    font-family: var(--mono);
-    font-size: 9px;
-    font-weight: 300;
-    color: #5a5a3a;
-    line-height: 1.6;
-    max-width: 130px;
-    box-shadow: 1px 2px 5px rgba(0,0,0,0.07);
-    transform: rotate(-1deg);
-    pointer-events: none;
-    z-index: 10;
-  }
-  .project-row:hover .project-sticky { display: block; }
 
   /* ── ANNOTATION STRIP ── */
   .annotation-strip {
@@ -358,7 +440,7 @@
 
   .annotation-label {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.1em;
@@ -399,35 +481,9 @@
     50%       { opacity: 0; }
   }
 
-  /* ── PAGE TABS ── */
-  .page-marker {
-    grid-column: 5;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    gap: var(--sp-1);
-  }
-
-  .page-dot {
-    width: 3px;
-    height: 20px;
-    background: var(--rule);
-    border-radius: 2px 0 0 2px;
-    transition: background 0.2s, height 0.2s;
-    cursor: pointer;
-  }
-  .page-dot.active {
-    background: var(--ink-muted);
-    height: 32px;
-  }
-
   /* ── FOOTER ── */
   .footer-line {
-    margin-top: var(--sp-8);
+    margin-top: 40px;
     padding-top: var(--sp-3);
     border-top: 0.5px solid var(--rule);
     display: flex;
@@ -460,8 +516,13 @@
     <div class="nav-name">Lanna Hu</div>
     <div class="nav-links">
       <div class="nav-section-label">Pages</div>
-      <a href="#" class="active">Index</a>
-      <a href="#">Work</a>
+      <a href="#" id="nav-index" class="active">Index</a>
+      <a href="#" id="nav-work">Work</a>
+      <div class="nav-sub" id="nav-sub-work">
+        <a href="#" class="nav-sub-item active" data-slide="0">Project name here</a>
+        <a href="#" class="nav-sub-item" data-slide="1">Second project name</a>
+        <a href="#" class="nav-sub-item" data-slide="2">Third project — in progress</a>
+      </div>
       <a href="#">Play</a>
       <a href="#">About</a>
     </div>
@@ -494,50 +555,74 @@
       </div>
     </section>
 
-    <div class="project-list">
-      <div class="section-label">Selected work</div>
+    <div class="projects-outer" id="projects-outer">
+      <div class="projects-sticky">
+        <div class="section-label">Selected work</div>
+        <div class="projects-track-wrap">
+          <div class="projects-track" id="projects-track">
 
-      <div class="project-row">
-        <span class="project-num">01</span>
-        <div>
-          <div class="project-thumb">project image</div>
-          <div class="project-title">Project name here</div>
-          <div class="project-tags">
-            <span class="tag">UX Research</span>
-            <span class="tag">Interaction Design</span>
+            <div class="project-slide slide-active">
+              <div class="project-info">
+                <span class="project-num">01</span>
+                <div class="project-bottom">
+                  <div class="project-title">Project name here</div>
+                  <div class="project-tags">
+                    <span class="tag">UX Research</span>
+                    <span class="tag">Interaction Design</span>
+                  </div>
+                  <div class="project-year">2025</div>
+                </div>
+                <div class="project-progress">
+                  <div class="progress-dot active"></div>
+                  <div class="progress-dot"></div>
+                  <div class="progress-dot"></div>
+                </div>
+              </div>
+              <div class="project-img-panel">project image</div>
+            </div>
+
+            <div class="project-slide">
+              <div class="project-info">
+                <span class="project-num">02</span>
+                <div class="project-bottom">
+                  <div class="project-title">Second project name</div>
+                  <div class="project-tags">
+                    <span class="tag">Product Design</span>
+                    <span class="tag">Prototyping</span>
+                  </div>
+                  <div class="project-year">2024</div>
+                </div>
+                <div class="project-progress">
+                  <div class="progress-dot"></div>
+                  <div class="progress-dot active"></div>
+                  <div class="progress-dot"></div>
+                </div>
+              </div>
+              <div class="project-img-panel">project image</div>
+            </div>
+
+            <div class="project-slide">
+              <div class="project-info">
+                <span class="project-num">03</span>
+                <div class="project-bottom">
+                  <div class="project-title">Third project — in progress</div>
+                  <div class="project-tags">
+                    <span class="tag">Systems Thinking</span>
+                  </div>
+                  <div class="project-year">2025 ↻</div>
+                </div>
+                <div class="project-progress">
+                  <div class="progress-dot"></div>
+                  <div class="progress-dot"></div>
+                  <div class="progress-dot active"></div>
+                </div>
+              </div>
+              <div class="project-img-panel">project image</div>
+            </div>
+
           </div>
         </div>
-        <span class="project-year">2025</span>
-        <div class="project-sticky">research → insight → form</div>
       </div>
-
-      <div class="project-row">
-        <span class="project-num">02</span>
-        <div>
-          <div class="project-thumb">project image</div>
-          <div class="project-title">Second project name</div>
-          <div class="project-tags">
-            <span class="tag">Product Design</span>
-            <span class="tag">Prototyping</span>
-          </div>
-        </div>
-        <span class="project-year">2024</span>
-        <div class="project-sticky">how do people decide?</div>
-      </div>
-
-      <div class="project-row">
-        <span class="project-num">03</span>
-        <div>
-          <div class="project-thumb">project image</div>
-          <div class="project-title">Third project — in progress</div>
-          <div class="project-tags">
-            <span class="tag">Systems Thinking</span>
-          </div>
-        </div>
-        <span class="project-year">2025 ↻</span>
-        <div class="project-sticky">still figuring it out</div>
-      </div>
-
     </div>
 
     <div class="section-label">Now</div>
@@ -567,13 +652,8 @@
 
   </main>
 
-  <!-- col 5: page tabs -->
-  <div class="page-marker">
-    <div class="page-dot active"></div>
-    <div class="page-dot"></div>
-    <div class="page-dot"></div>
-    <div class="page-dot"></div>
-  </div>
+  <!-- col 6: right gutter (empty) -->
+  <div></div>
 
 </div>
 
@@ -586,34 +666,214 @@
   updateClock();
   setInterval(updateClock, 1000);
 
-  const text = 'I design interactions.';
-  const el = document.getElementById('typed-text');
+  const phrases = [
+    'I design interactions.',
+    'I think in systems.',
+    'I care about details.',
+    'I make things feel right.',
+  ];
+  const el  = document.getElementById('typed-text');
   const cur = document.getElementById('cursor');
-  let i = 0;
-  setTimeout(() => {
+  let phraseIdx = 0;
+
+  function typePhrase(phrase, cb) {
+    let i = 0;
     const iv = setInterval(() => {
-      el.textContent = text.slice(0, ++i);
-      if (i === text.length) {
-        clearInterval(iv);
-        setTimeout(() => cur.style.display = 'none', 2000);
-      }
+      el.textContent = phrase.slice(0, ++i);
+      if (i === phrase.length) { clearInterval(iv); cb(); }
     }, 55);
-  }, 800);
+  }
 
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', e => {
+  function erasePhrase(cb) {
+    const iv = setInterval(() => {
+      el.textContent = el.textContent.slice(0, -1);
+      if (!el.textContent) { clearInterval(iv); cb(); }
+    }, 30);
+  }
+
+  function loop() {
+    typePhrase(phrases[phraseIdx], () => {
+      // pause, then erase — first phrase pauses longer
+      setTimeout(() => {
+        erasePhrase(() => {
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          setTimeout(loop, 300);
+        });
+      }, phraseIdx === 0 ? 2800 : 1800);
+    });
+  }
+
+  // cursor always blinks; start after brief delay
+  setTimeout(loop, 800);
+
+  // ── NAV CLICKS ──────────────────────────────────────────────────────────────
+  const projectsOuter = document.getElementById('projects-outer');
+  const navIndex      = document.getElementById('nav-index');
+  const navWork       = document.getElementById('nav-work');
+  const navSubWork    = document.getElementById('nav-sub-work');
+  const navSubItems   = Array.from(navSubWork.querySelectorAll('.nav-sub-item'));
+
+  navIndex.addEventListener('click', e => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  navWork.addEventListener('click', e => {
+    e.preventDefault();
+    // Instant scroll to wherever we left off (activeSlide persists).
+    // Smooth scroll fires mid-animation scroll events that flip inWork=false,
+    // immediately undoing any forced state — so we use instant instead.
+    const outerTop = projectsOuter.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, outerTop + activeSlide * window.innerHeight);
+    navIndex.classList.remove('active');
+    navWork.classList.add('active');
+    navSubWork.classList.add('visible');
+    projectsSticky.classList.add('label-visible');
+  });
+
+  navSubItems.forEach(item => {
+    item.addEventListener('click', e => {
       e.preventDefault();
-      document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
+      const idx = parseInt(item.dataset.slide, 10);
+      frozen = false;
+      snapToSlide(idx);
     });
   });
 
-  document.querySelectorAll('.page-dot').forEach(dot => {
-    dot.addEventListener('click', () => {
-      document.querySelectorAll('.page-dot').forEach(d => d.classList.remove('active'));
-      dot.classList.add('active');
+  // ── NAV ACTIVE STATE (scroll-driven) ────────────────────────────────────────
+  function updateNavActive() {
+    const rect   = projectsOuter.getBoundingClientRect();
+    // Use < 1 not <= 0: sub-pixel rounding can return 0.1 at the boundary,
+    // which would falsely set inWork=false and collapse the sub-nav.
+    const inWork = rect.top < 1 && rect.bottom > 0;
+    navIndex.classList.toggle('active', !inWork);
+    navWork.classList.toggle('active', inWork);
+    navSubWork.classList.toggle('visible', inWork);
+  }
+  window.addEventListener('scroll', updateNavActive, { passive: true });
+
+  // ── SECTION-LABEL REVEAL (fades in L→R on zone entry) ──
+  const projectsSticky = document.querySelector('.projects-sticky');
+  window.addEventListener('scroll', () => {
+    const r = projectsOuter.getBoundingClientRect();
+    if (r.top < 1) {
+      projectsSticky.classList.add('label-visible');
+    } else {
+      projectsSticky.classList.remove('label-visible');
+    }
+  }, { passive: true });
+
+  // ── VERTICAL STICKY CAROUSEL ──
+  const slides    = Array.from(document.querySelectorAll('.project-slide'));
+  const numSlides = slides.length;
+  let activeSlide = 0;
+  let prevInZone  = false;
+
+  // ── Idle-based freeze ────────────────────────────────────────────────────────
+  // "frozen" means: eat all wheel events (no snapping).
+  // Unfreeze only after wheel events have been SILENT for IDLE_MS.
+  // This means a hard swipe's long inertia tail keeps the lock alive naturally —
+  // no fixed timeout that inertia can outlast.
+  let frozen      = false;
+  let idleTimer   = null;
+  const IDLE_MS   = 120;   // silence needed before unfreeze
+  const TRANS_MS  = 600;   // CSS transition duration
+
+  function freeze()           { frozen = true; clearTimeout(idleTimer); }
+  function scheduleUnfreeze() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { frozen = false; }, IDLE_MS);
+  }
+
+  function initProjectsHeight() {
+    projectsOuter.style.height = (window.innerHeight * numSlides + 2) + 'px';
+  }
+
+  function goToSlide(idx) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('slide-active', 'slide-exited');
+      if (i < idx)        slide.classList.add('slide-exited');
+      else if (i === idx) slide.classList.add('slide-active');
+    });
+    navSubItems.forEach((item, i) => item.classList.toggle('active', i === idx));
+    activeSlide = idx;
+  }
+
+  function snapToSlide(idx) {
+    goToSlide(idx);
+    const absTop = projectsOuter.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, absTop + idx * window.innerHeight);
+
+    // Freeze immediately; after transition completes, hand off to idle detection.
+    // If inertia events keep coming they'll call scheduleUnfreeze() themselves,
+    // continuously resetting the timer until silence → unfreeze.
+    freeze();
+    setTimeout(scheduleUnfreeze, TRANS_MS);
+  }
+
+  window.addEventListener('wheel', (e) => {
+    const rect   = projectsOuter.getBoundingClientRect();
+    const inZone = rect.top <= 0 && rect.bottom >= window.innerHeight;
+    const goingDown = e.deltaY > 0;
+
+    // On zone entry: snap immediately to the boundary slide so that any
+    // pre-freeze native scroll that pushed us deep into the section is
+    // corrected before we hand off to the slide carousel.
+    if (inZone && !prevInZone) {
+      e.preventDefault();
+      const entrySlide = goingDown ? 0 : numSlides - 1;
+      snapToSlide(entrySlide);
+      prevInZone = inZone;
+      return;
+    }
+    prevInZone = inZone;
+
+    if (!inZone) { frozen = false; return; }
+
+    if (frozen) {
+      e.preventDefault();
+      scheduleUnfreeze();   // each event resets the idle timer
+      return;
+    }
+
+    // Last slide → natural sticky exit into footer
+    if (goingDown  && activeSlide >= numSlides - 1) return;
+    // First slide → natural scroll back to hero
+    if (!goingDown && activeSlide <= 0)             return;
+
+    e.preventDefault();
+    if (Math.abs(e.deltaY) < 8) return;  // ignore accidental micro-twitches
+
+    snapToSlide(goingDown ? activeSlide + 1 : activeSlide - 1);
+  }, { passive: false });
+
+  // Dot clicks
+  slides.forEach((slide) => {
+    slide.querySelectorAll('.progress-dot').forEach((dot, dotIdx) => {
+      dot.addEventListener('click', () => { frozen = false; snapToSlide(dotIdx); });
     });
   });
+
+  // Align "01" with the top edge of the project image.
+  // Image is align-self:end in the 3fr column; compute its top offset
+  // mathematically so it works before images are loaded.
+  function syncNumTop() {
+    const trackWrap = document.querySelector('.projects-track-wrap');
+    if (!trackWrap) return;
+    const tw = trackWrap.getBoundingClientRect().width;
+    const th = trackWrap.getBoundingClientRect().height;
+    const gap = 24; // --gap
+    const imgW  = (tw - gap) * (3 / 4); // 3fr of 1fr+3fr grid
+    const imgH  = imgW * (9 / 16);
+    const pt    = Math.max(0, th - imgH);
+    document.querySelectorAll('.project-num').forEach(n => {
+      n.style.paddingTop = pt + 'px';
+    });
+  }
+
+  function initAll() { initProjectsHeight(); syncNumTop(); }
+  initAll();
+  window.addEventListener('resize', initAll);
 </script>
 </body>
 </html>
