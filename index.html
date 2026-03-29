@@ -78,7 +78,7 @@
 
   .nav-name {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     letter-spacing: 0.02em;
     color: var(--ink);
@@ -93,19 +93,18 @@
   .nav-section-label,
   .nav-bottom-label {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     line-height: 2;
-    margin-bottom: var(--sp-1);
   }
 
   .nav-links a,
   .nav-bottom a {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 300;
     color: var(--ink-muted);
     text-decoration: none;
@@ -125,7 +124,7 @@
     content: '—';
     position: absolute;
     left: 0;
-    font-size: 10px;
+    font-size: 12px;
     color: var(--ink-faint);
   }
 
@@ -141,7 +140,7 @@
 
   .nav-sub .nav-sub-item {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-faint);
     text-decoration: none;
@@ -163,7 +162,7 @@
     content: '—';
     position: absolute;
     left: var(--sp-2);   /* indented to the main-nav text level, not the dash column */
-    font-size: 10px;
+    font-size: 12px;
     color: var(--ink-faint);
   }
 
@@ -208,7 +207,7 @@
   .hero-bio {
     font-family: var(--sans);
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.8;
     color: var(--ink-muted);
     max-width: 640px;
@@ -217,7 +216,7 @@
   /* ── STICKY NOTES ── */
   .sticky {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     line-height: 1.7;
     letter-spacing: 0.02em;
@@ -258,7 +257,7 @@
   /* ── SECTION LABEL ── */
   .section-label {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.1em;
@@ -276,22 +275,22 @@
   }
 
   /* ── VERTICAL STICKY CAROUSEL ── */
-  .projects-outer { position: relative; margin-bottom: 120px; }
+  .projects-outer { margin-top: 200px; margin-bottom: 120px; }
 
   .projects-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding: 40px 0 40px;
   }
 
-  /* Divider: hidden until zone entry, then fades in L→R aligned with nav-name */
+  /* Divider: hidden until zone entry, then fades in L→R and sticks at top */
   .projects-sticky .section-label {
-    margin-top: 0;              /* aligns with "Lanna Hu" at 40px from top */
-    margin-bottom: var(--sp-5); /* 40px gap to slide content below */
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 5;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 40px 0;
     opacity: 0;
     transition: opacity 0.5s ease 0.1s;
   }
@@ -303,34 +302,32 @@
   .projects-sticky.label-visible .section-label { opacity: 1; }
   .projects-sticky.label-visible .section-label::after { transform: scaleX(1); }
 
-  .projects-track-wrap {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
+  /* Gap between divider and first project */
+  .projects-track-wrap { padding-top: 60px; }
 
-  .projects-track {
-    position: relative;
-    height: 100%;
-  }
-
-  /* Each slide is absolutely stacked; default = waiting below */
+  /* Project slides — start hidden, fade up on scroll */
   .project-slide {
-    position: absolute;
-    inset: 0;
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .project-slide:last-child { margin-bottom: 0; }
+  .project-slide.slide-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .project-row {
     display: grid;
     grid-template-columns: 1fr 3fr;
     gap: var(--gap);
-    transform: translateY(100%);
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
   }
-  .project-slide.slide-active  { transform: translateY(0); }
-  .project-slide.slide-exited  { transform: translateY(-100%); }
 
   .project-info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
   }
 
   .project-num {
@@ -342,13 +339,12 @@
   }
 
   .project-bottom {
-    margin-top: auto;
-    margin-bottom: 16px;
+    margin-bottom: 0;
   }
 
   .project-title {
     font-family: var(--serif);
-    font-size: 17px;
+    font-size: 24px;
     font-weight: 400;
     color: var(--ink);
     line-height: 1.4;
@@ -365,7 +361,7 @@
 
   .tag {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.06em;
@@ -379,9 +375,10 @@
 
   .project-year {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-faint);
+    line-height: 1;
   }
 
   .project-img-panel {
@@ -392,14 +389,87 @@
     align-items: center;
     justify-content: center;
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.06em;
     aspect-ratio: 16 / 9;
     width: 100%;
-    align-self: end;
+    align-self: start;
+    position: relative;
   }
+
+  .img-note {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    background: var(--sticky-yellow);
+    color: #4a3f2f;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.5;
+    padding: 11px 14px;
+    width: 290px;
+    transform: rotate(2.5deg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    clip-path: polygon(
+      0% 16%, 3% 3%, 7% 14%, 11% 1%, 15% 12%, 19% 2%, 24% 14%,
+      28% 1%, 33% 12%, 38% 3%, 43% 14%, 48% 0%, 53% 12%, 58% 2%,
+      63% 13%, 68% 1%, 73% 12%, 78% 2%, 83% 14%, 88% 1%, 93% 12%,
+      97% 3%, 100% 10%,
+      100% 84%, 97% 98%, 92% 85%, 88% 100%, 83% 86%, 78% 99%,
+      73% 85%, 68% 100%, 63% 86%, 58% 100%, 53% 85%, 48% 100%,
+      43% 86%, 38% 100%, 33% 85%, 28% 99%, 23% 86%, 18% 100%,
+      13% 85%, 8% 100%, 3% 86%, 0% 98%
+    );
+  }
+
+  .project-img-panel:hover .img-note {
+    opacity: 1;
+    transform: rotate(2.5deg) scale(1.02);
+    pointer-events: auto;
+  }
+
+  /* Clickable project card */
+  .project-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  /* Image hover: dim + show "View →" */
+  .project-link .project-img-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    border-radius: 2px;
+  }
+  .project-link .project-img-panel::after {
+    content: 'View →';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--bg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+  }
+  .project-link .project-img-panel:hover::before { opacity: 0.35; }
+  .project-link .project-img-panel:hover::after  { opacity: 1; }
 
   .project-progress { display: none; }
 
@@ -440,7 +510,7 @@
 
   .annotation-label {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.1em;
@@ -493,7 +563,7 @@
 
   .footer-line span {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     color: var(--ink-faint);
     letter-spacing: 0.04em;
@@ -502,6 +572,79 @@
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+
+  /* ── RESPONSIVENESS ── */
+  html { overflow-x: hidden; }
+  .page > * { min-width: 0; }
+  main { min-width: 0; }
+  .project-img-panel img { max-width: 100%; }
+
+  /* Medium — compress gutters / nav column */
+  @media (max-width: 960px) {
+    :root {
+      --gutter: 24px;
+      --gutter-right: 24px;
+      --nav-col: 130px;
+      --gap: 16px;
+    }
+  }
+
+  /* Small — collapse to single-column, stack project rows */
+  @media (max-width: 680px) {
+    .page {
+      grid-template-columns: 16px 1fr 16px;
+    }
+    /* remap nav to full top row, main below */
+    nav {
+      grid-column: 2;
+      position: static;
+      height: auto;
+      padding: 20px 0 12px;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0 var(--sp-3);
+    }
+    .nav-name { margin-right: auto; }
+    .nav-links, .nav-bottom { display: flex; flex-direction: row; flex-wrap: wrap; gap: 0 var(--sp-2); margin-top: 0; }
+    .nav-links { margin-right: auto; }
+    .nav-section-label, .nav-bottom-label { display: none; }
+    .nav-sub { display: none; }
+
+    main {
+      grid-column: 2;
+      padding: 0 0 40px;
+    }
+
+    .hero { padding-top: 32px; }
+    .sticky.yellow { position: static; display: none; }
+
+    .project-row {
+      grid-template-columns: 1fr;
+    }
+    .project-info {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--sp-2);
+      margin-bottom: var(--sp-2);
+    }
+    .project-num { font-size: 18px; }
+    .project-bottom { margin-left: auto; text-align: right; }
+    .project-tags { justify-content: flex-end; }
+
+    .annotation-strip {
+      grid-template-columns: 1fr;
+      gap: var(--sp-3);
+    }
+    .annotation-item {
+      border-right: none;
+      border-bottom: 0.5px solid var(--rule);
+      padding: 0 0 var(--sp-3);
+    }
+    .annotation-item:last-child { border-bottom: none; padding-bottom: 0; padding-left: 0; }
+    .annotation-item:nth-child(2) { padding-left: 0; }
+  }
 </style>
 </head>
 <body>
@@ -519,7 +662,7 @@
       <a href="#" id="nav-index" class="active">Index</a>
       <a href="#" id="nav-work">Work</a>
       <div class="nav-sub" id="nav-sub-work">
-        <a href="#" class="nav-sub-item active" data-slide="0">Project name here</a>
+        <a href="#" class="nav-sub-item active" data-slide="0">Salud</a>
         <a href="#" class="nav-sub-item" data-slide="1">Second project name</a>
         <a href="#" class="nav-sub-item" data-slide="2">Third project — in progress</a>
       </div>
@@ -561,63 +704,74 @@
         <div class="projects-track-wrap">
           <div class="projects-track" id="projects-track">
 
-            <div class="project-slide slide-active">
-              <div class="project-info">
-                <span class="project-num">01</span>
-                <div class="project-bottom">
-                  <div class="project-title">Project name here</div>
-                  <div class="project-tags">
-                    <span class="tag">UX Research</span>
-                    <span class="tag">Interaction Design</span>
+            <div class="project-slide">
+              <a href="salud.html" class="project-link">
+              <div class="project-row">
+                <div class="project-info">
+                  <span class="project-num">01</span>
+                  <div class="project-bottom">
+                    <div class="project-title">Salud</div>
+                    <div class="project-tags">
+                      <span class="tag">User Research</span>
+                      <span class="tag">Service Design</span>
+                    </div>
+                    <div class="project-year">2025</div>
                   </div>
-                  <div class="project-year">2025</div>
+                  <div class="project-progress">
+                    <div class="progress-dot active"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                  </div>
                 </div>
-                <div class="project-progress">
-                  <div class="progress-dot active"></div>
-                  <div class="progress-dot"></div>
-                  <div class="progress-dot"></div>
+                <div class="project-img-panel">
+                  <img src="images/salud-hero.png" alt="Salud" style="width:100%;height:100%;object-fit:cover;display:block;">
+                  <div class="img-note">an ai-powered, community-centered cancer screening experience</div>
                 </div>
               </div>
-              <div class="project-img-panel">project image</div>
+              </a>
             </div>
 
             <div class="project-slide">
-              <div class="project-info">
-                <span class="project-num">02</span>
-                <div class="project-bottom">
-                  <div class="project-title">Second project name</div>
-                  <div class="project-tags">
-                    <span class="tag">Product Design</span>
-                    <span class="tag">Prototyping</span>
+              <div class="project-row">
+                <div class="project-info">
+                  <span class="project-num">02</span>
+                  <div class="project-bottom">
+                    <div class="project-title">Second project name</div>
+                    <div class="project-tags">
+                      <span class="tag">Product Design</span>
+                      <span class="tag">Prototyping</span>
+                    </div>
+                    <div class="project-year">2024</div>
                   </div>
-                  <div class="project-year">2024</div>
+                  <div class="project-progress">
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot active"></div>
+                    <div class="progress-dot"></div>
+                  </div>
                 </div>
-                <div class="project-progress">
-                  <div class="progress-dot"></div>
-                  <div class="progress-dot active"></div>
-                  <div class="progress-dot"></div>
-                </div>
+                <div class="project-img-panel">project image</div>
               </div>
-              <div class="project-img-panel">project image</div>
             </div>
 
             <div class="project-slide">
-              <div class="project-info">
-                <span class="project-num">03</span>
-                <div class="project-bottom">
-                  <div class="project-title">Third project — in progress</div>
-                  <div class="project-tags">
-                    <span class="tag">Systems Thinking</span>
+              <div class="project-row">
+                <div class="project-info">
+                  <span class="project-num">03</span>
+                  <div class="project-bottom">
+                    <div class="project-title">Third project — in progress</div>
+                    <div class="project-tags">
+                      <span class="tag">Systems Thinking</span>
+                    </div>
+                    <div class="project-year">2025 ↻</div>
                   </div>
-                  <div class="project-year">2025 ↻</div>
+                  <div class="project-progress">
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot active"></div>
+                  </div>
                 </div>
-                <div class="project-progress">
-                  <div class="progress-dot"></div>
-                  <div class="progress-dot"></div>
-                  <div class="progress-dot active"></div>
-                </div>
+                <div class="project-img-panel">project image</div>
               </div>
-              <div class="project-img-panel">project image</div>
             </div>
 
           </div>
@@ -707,11 +861,11 @@
   setTimeout(loop, 800);
 
   // ── NAV CLICKS ──────────────────────────────────────────────────────────────
-  const projectsOuter = document.getElementById('projects-outer');
-  const navIndex      = document.getElementById('nav-index');
-  const navWork       = document.getElementById('nav-work');
-  const navSubWork    = document.getElementById('nav-sub-work');
-  const navSubItems   = Array.from(navSubWork.querySelectorAll('.nav-sub-item'));
+  const projectsOuter  = document.getElementById('projects-outer');
+  const projectsSticky = document.querySelector('.projects-sticky');
+  const navIndex       = document.getElementById('nav-index');
+  const navWork        = document.getElementById('nav-work');
+  const navSubWork     = document.getElementById('nav-sub-work');
 
   navIndex.addEventListener('click', e => {
     e.preventDefault();
@@ -720,160 +874,51 @@
 
   navWork.addEventListener('click', e => {
     e.preventDefault();
-    // Instant scroll to wherever we left off (activeSlide persists).
-    // Smooth scroll fires mid-animation scroll events that flip inWork=false,
-    // immediately undoing any forced state — so we use instant instead.
     const outerTop = projectsOuter.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo(0, outerTop + activeSlide * window.innerHeight);
-    navIndex.classList.remove('active');
-    navWork.classList.add('active');
-    navSubWork.classList.add('visible');
-    projectsSticky.classList.add('label-visible');
+    window.scrollTo({ top: outerTop, behavior: 'smooth' });
   });
 
-  navSubItems.forEach(item => {
-    item.addEventListener('click', e => {
-      e.preventDefault();
-      const idx = parseInt(item.dataset.slide, 10);
-      frozen = false;
-      snapToSlide(idx);
+  // ── SECTION LABEL: fades in the moment the section enters the viewport ───────
+  // (appears from below, well before it needs to stick — no surprise overlay)
+  const labelObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        projectsSticky.classList.add('label-visible');
+      } else if (entry.boundingClientRect.top > 0) {
+        // Section has scrolled back below the viewport — hide again
+        projectsSticky.classList.remove('label-visible');
+      }
+      // When section scrolls ABOVE viewport the label stays visible (it's sticky)
     });
-  });
+  }, { threshold: 0 });
+  labelObserver.observe(projectsOuter);
 
-  // ── NAV ACTIVE STATE (scroll-driven) ────────────────────────────────────────
+  // ── NAV ACTIVE STATE: switch when section crosses 50% down the viewport ──────
+  // (much earlier than waiting for section top to hit y=0)
   function updateNavActive() {
     const rect   = projectsOuter.getBoundingClientRect();
-    // Use < 1 not <= 0: sub-pixel rounding can return 0.1 at the boundary,
-    // which would falsely set inWork=false and collapse the sub-nav.
-    const inWork = rect.top < 1 && rect.bottom > 0;
+    const inWork = rect.top < window.innerHeight * 0.5 && rect.bottom > 0;
     navIndex.classList.toggle('active', !inWork);
-    navWork.classList.toggle('active', inWork);
+    navWork.classList.toggle('active',  inWork);
     navSubWork.classList.toggle('visible', inWork);
   }
   window.addEventListener('scroll', updateNavActive, { passive: true });
 
-  // ── SECTION-LABEL REVEAL (fades in L→R on zone entry) ──
-  const projectsSticky = document.querySelector('.projects-sticky');
-  window.addEventListener('scroll', () => {
-    const r = projectsOuter.getBoundingClientRect();
-    if (r.top < 1) {
-      projectsSticky.classList.add('label-visible');
-    } else {
-      projectsSticky.classList.remove('label-visible');
-    }
-  }, { passive: true });
-
-  // ── VERTICAL STICKY CAROUSEL ──
-  const slides    = Array.from(document.querySelectorAll('.project-slide'));
-  const numSlides = slides.length;
-  let activeSlide = 0;
-  let prevInZone  = false;
-
-  // ── Idle-based freeze ────────────────────────────────────────────────────────
-  // "frozen" means: eat all wheel events (no snapping).
-  // Unfreeze only after wheel events have been SILENT for IDLE_MS.
-  // This means a hard swipe's long inertia tail keeps the lock alive naturally —
-  // no fixed timeout that inertia can outlast.
-  let frozen      = false;
-  let idleTimer   = null;
-  const IDLE_MS   = 120;   // silence needed before unfreeze
-  const TRANS_MS  = 600;   // CSS transition duration
-
-  function freeze()           { frozen = true; clearTimeout(idleTimer); }
-  function scheduleUnfreeze() {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => { frozen = false; }, IDLE_MS);
-  }
-
-  function initProjectsHeight() {
-    projectsOuter.style.height = (window.innerHeight * numSlides + 2) + 'px';
-  }
-
-  function goToSlide(idx) {
-    slides.forEach((slide, i) => {
-      slide.classList.remove('slide-active', 'slide-exited');
-      if (i < idx)        slide.classList.add('slide-exited');
-      else if (i === idx) slide.classList.add('slide-active');
+  // ── PROJECT SLIDES: fade up as each one approaches the viewport ──────────────
+  const slideObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('slide-visible');
+        slideObserver.unobserve(entry.target); // fire once
+      }
     });
-    navSubItems.forEach((item, i) => item.classList.toggle('active', i === idx));
-    activeSlide = idx;
-  }
-
-  function snapToSlide(idx) {
-    goToSlide(idx);
-    const absTop = projectsOuter.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo(0, absTop + idx * window.innerHeight);
-
-    // Freeze immediately; after transition completes, hand off to idle detection.
-    // If inertia events keep coming they'll call scheduleUnfreeze() themselves,
-    // continuously resetting the timer until silence → unfreeze.
-    freeze();
-    setTimeout(scheduleUnfreeze, TRANS_MS);
-  }
-
-  window.addEventListener('wheel', (e) => {
-    const rect   = projectsOuter.getBoundingClientRect();
-    const inZone = rect.top <= 0 && rect.bottom >= window.innerHeight;
-    const goingDown = e.deltaY > 0;
-
-    // On zone entry: snap immediately to the boundary slide so that any
-    // pre-freeze native scroll that pushed us deep into the section is
-    // corrected before we hand off to the slide carousel.
-    if (inZone && !prevInZone) {
-      e.preventDefault();
-      const entrySlide = goingDown ? 0 : numSlides - 1;
-      snapToSlide(entrySlide);
-      prevInZone = inZone;
-      return;
-    }
-    prevInZone = inZone;
-
-    if (!inZone) { frozen = false; return; }
-
-    if (frozen) {
-      e.preventDefault();
-      scheduleUnfreeze();   // each event resets the idle timer
-      return;
-    }
-
-    // Last slide → natural sticky exit into footer
-    if (goingDown  && activeSlide >= numSlides - 1) return;
-    // First slide → natural scroll back to hero
-    if (!goingDown && activeSlide <= 0)             return;
-
-    e.preventDefault();
-    if (Math.abs(e.deltaY) < 8) return;  // ignore accidental micro-twitches
-
-    snapToSlide(goingDown ? activeSlide + 1 : activeSlide - 1);
-  }, { passive: false });
-
-  // Dot clicks
-  slides.forEach((slide) => {
-    slide.querySelectorAll('.progress-dot').forEach((dot, dotIdx) => {
-      dot.addEventListener('click', () => { frozen = false; snapToSlide(dotIdx); });
-    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -60px 0px' // trigger slightly before bottom edge
   });
-
-  // Align "01" with the top edge of the project image.
-  // Image is align-self:end in the 3fr column; compute its top offset
-  // mathematically so it works before images are loaded.
-  function syncNumTop() {
-    const trackWrap = document.querySelector('.projects-track-wrap');
-    if (!trackWrap) return;
-    const tw = trackWrap.getBoundingClientRect().width;
-    const th = trackWrap.getBoundingClientRect().height;
-    const gap = 24; // --gap
-    const imgW  = (tw - gap) * (3 / 4); // 3fr of 1fr+3fr grid
-    const imgH  = imgW * (9 / 16);
-    const pt    = Math.max(0, th - imgH);
-    document.querySelectorAll('.project-num').forEach(n => {
-      n.style.paddingTop = pt + 'px';
-    });
-  }
-
-  function initAll() { initProjectsHeight(); syncNumTop(); }
-  initAll();
-  window.addEventListener('resize', initAll);
+  document.querySelectorAll('.project-slide').forEach(slide => {
+    slideObserver.observe(slide);
+  });
 </script>
 </body>
 </html>
