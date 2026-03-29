@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KnowNow — Lanna Hu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gutter:       40px;
+    --nav-col:      160px;
+    --gap:          24px;
+    --gutter-right: 40px;
+    --nav-offset:   160px;
+    --hero-offset:  180px;
+
+    --sp-1:  8px;
+    --sp-2:  16px;
+    --sp-3:  24px;
+    --sp-4:  32px;
+    --sp-5:  40px;
+    --sp-6:  48px;
+    --sp-8:  64px;
+    --sp-10: 80px;
+
+    --bg:        #F3F3F1;
+    --ink:       #1e1e1c;
+    --ink-muted: #3f3f3a;
+    --ink-faint: #3f3f3a;
+    --rule:      #d6d5ce;
+
+    --serif: 'Libre Baskerville', serif;
+    --sans:  'IBM Plex Sans', sans-serif;
+    --mono:  'DM Mono', monospace;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  body { overflow-x: hidden; }
+
+  /* ── PAGE GRID — 10-column, 1728px base ── */
+  .page {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    column-gap: var(--gap);
+    padding: 0 var(--gutter);
+    min-height: 100vh;
+  }
+  .page > * { min-width: 0; }
+
+  /* ── NAV ── */
+  nav {
+    grid-column: 1;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0 40px;
+  }
+
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-name:hover { color: var(--ink-muted); }
+
+  .nav-links {
+    margin-top: var(--nav-offset);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: #7a7a74;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 400;
+    color: #7a7a74;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    line-height: 2;
+    padding-left: var(--sp-2);
+    display: block;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--ink); }
+  .nav-links a.active::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  /* ── MAIN ── */
+  main {
+    grid-column: 3 / span 8;
+    min-width: 0;
+    padding: 40px 0 120px;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.1s forwards;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* ── CASE STUDY HERO ── */
+  .cs-hero {
+    padding-top: var(--hero-offset);
+    padding-bottom: 80px;
+    border-bottom: 0.5px solid var(--rule);
+    margin-bottom: 80px;
+  }
+
+  .cs-meta {
+    display: flex;
+    gap: var(--sp-2);
+    align-items: center;
+    margin-bottom: var(--sp-3);
+    flex-wrap: wrap;
+  }
+
+  .cs-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--rule);
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  .cs-year {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+
+  .cs-title {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--sp-3);
+  }
+
+  .cs-subtitle {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+
+  .cs-hero-image {
+    margin-top: var(--sp-8);
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: #E8E8E4;
+  }
+  .cs-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-3);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--rule);
+  }
+
+  /* ── CASE STUDY SECTIONS ── */
+  .cs-section {
+    margin-bottom: 100px;
+    scroll-margin-top: 80px;
+  }
+
+  .cs-section h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: var(--sp-3);
+    letter-spacing: -0.01em;
+    max-width: 640px;
+  }
+
+  .cs-section p {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.85;
+    max-width: 640px;
+    margin-bottom: var(--sp-3);
+  }
+  .cs-section p:last-child { margin-bottom: 0; }
+
+  /* ── STATS GRID ── */
+  .cs-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: var(--sp-6) 0;
+    border-top: 0.5px solid var(--rule);
+    border-left: 0.5px solid var(--rule);
+  }
+  .cs-stat {
+    padding: var(--sp-4);
+    border-right: 0.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .cs-stat-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+  }
+  .cs-stat-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* ── METADATA GRID ── */
+  .cs-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 0.5px solid var(--rule);
+    margin-top: var(--sp-8);
+  }
+  .cs-meta-cell {
+    padding: 20px 24px;
+    border-right: 0.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .cs-meta-cell:nth-child(3n)   { border-right: none; }
+  .cs-meta-cell:nth-last-child(-n+3) { border-bottom: none; }
+  .cs-meta-cell-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: #7a7a74;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .cs-meta-cell-value {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+
+  /* ── INSIGHT CARDS ── */
+  .cs-insights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+    margin: var(--sp-5) 0;
+  }
+  .cs-insight-card {
+    border: 0.5px solid var(--rule);
+    border-radius: 3px;
+    padding: var(--sp-4);
+  }
+  .cs-insight-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--sp-2);
+  }
+  .cs-insight-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.75;
+  }
+  .cs-insight-heading {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: var(--sp-1);
+  }
+
+  /* ── IMAGE BLOCK ── */
+  .cs-image {
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--rule);
+    margin: var(--sp-5) 0 0;
+  }
+  .cs-image img,
+  .cs-image video { width: 100%; height: auto; display: block; }
+  .cs-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    background: #E8E8E4;
+  }
+  .cs-caption,
+  .cs-section p.cs-caption {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    max-width: none;
+    margin-top: 6px;
+    margin-bottom: var(--sp-5);
+  }
+
+  /* ── PULL QUOTE ── */
+  .cs-quote {
+    border-left: 2px solid var(--rule);
+    padding: var(--sp-3) var(--sp-5);
+    margin: var(--sp-5) 0;
+  }
+  .cs-quote p {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-style: italic;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    max-width: 100%;
+    margin: 0;
+  }
+  .cs-quote cite {
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    font-style: normal;
+    margin-top: var(--sp-2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── STAT CARDS WITH NUMBER ── */
+  .cs-stat-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: var(--sp-6) 0;
+    border-top: 0.5px solid var(--rule);
+    border-left: 0.5px solid var(--rule);
+  }
+  .cs-stat-cards .cs-stat {
+    padding: var(--sp-4);
+    border-right: 0.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .cs-stat-number {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  /* ── PERSONA CARD ── */
+  .cs-persona {
+    border: 0.5px solid var(--rule);
+    border-radius: 3px;
+    padding: var(--sp-5);
+    margin: var(--sp-5) 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-6);
+  }
+  .cs-persona-block { margin-bottom: var(--sp-4); }
+  .cs-persona-block:last-child { margin-bottom: 0; }
+  .cs-persona-sublabel {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: #7a7a74;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+  }
+  .cs-persona-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+
+  /* ── PROCESS SPLIT ── */
+  .cs-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-6);
+    margin: var(--sp-5) 0;
+    align-items: start;
+  }
+  .cs-split-sublabel {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: #7a7a74;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+    margin-top: var(--sp-4);
+  }
+  .cs-split-sublabel:first-child { margin-top: 0; }
+  .cs-split-list {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    padding-left: var(--sp-3);
+    list-style: none;
+  }
+  .cs-split-list li::before { content: '—'; margin-right: 8px; color: var(--rule); }
+
+  /* ── DESIGN DECISIONS / FEATURE CARDS ── */
+  .cs-decisions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-3);
+    margin: var(--sp-5) 0;
+  }
+  .cs-decision-heading {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: var(--sp-1);
+  }
+
+  /* ── FOOTER ── */
+  .footer-line {
+    margin-top: 80px;
+    padding-top: var(--sp-3);
+    border-top: 0.5px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-line span,
+  .footer-line a {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-line a:hover { color: var(--ink); }
+
+  ::-webkit-scrollbar { width: 2px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #1e1e1c; border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: #7a7a74; }
+
+  /* ── RESPONSIVE ── */
+  html { scrollbar-gutter: stable; }
+  @media (max-width: 960px) {
+    :root { --gutter: 24px; --gap: 16px; }
+  }
+  @media (max-width: 680px) {
+    .page { grid-template-columns: 1fr; padding: 0 16px; }
+    nav {
+      grid-column: 1;
+      position: static;
+      height: auto;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 20px 0 12px;
+      gap: 0 var(--sp-3);
+    }
+    .nav-links { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 0 var(--sp-2); }
+    .nav-section-label { display: none; }
+    main { grid-column: 1; padding: 0 0 80px; }
+    .cs-hero { padding-top: 32px; }
+    .cs-title { font-size: 36px; }
+    .cs-stats { grid-template-columns: 1fr 1fr; }
+    .cs-insights { grid-template-columns: 1fr; }
+    .cs-split { grid-template-columns: 1fr; }
+    .cs-decisions { grid-template-columns: 1fr; }
+    .cs-persona { grid-template-columns: 1fr; }
+    .cs-stat-cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <nav>
+    <a class="nav-name" href="index.html">← Index</a>
+    <div class="nav-links">
+      <div class="nav-section-label">Sections</div>
+      <a href="#overview" class="active">Overview</a>
+      <a href="#the-problem">The Problem</a>
+      <a href="#research">Research</a>
+      <a href="#insights">Insights</a>
+      <a href="#who-we-designed-for">Who We Designed For</a>
+      <a href="#concept">Concept</a>
+      <a href="#prototype-process">Prototype Process</a>
+      <a href="#reflection">Reflection</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ── HERO / OVERVIEW ── -->
+    <div class="cs-hero cs-section" id="overview" style="border-bottom: none; margin-bottom: 100px;">
+      <p style="font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: var(--sp-2);">Interaction Design 3 — Spring 2025</p>
+      <h1 class="cs-title">KnowNow</h1>
+      <div class="cs-meta">
+        <span class="cs-tag">Mobile App</span>
+        <span class="cs-tag">Emergency UX</span>
+        <span class="cs-year">2025</span>
+      </div>
+      <p class="cs-subtitle">
+        When time matters, language shouldn't be a barrier. A mobile app designed to help non-English speaking communities access emergency alerts, shelter information, and evacuation guidance in their native language.
+      </p>
+      <div class="cs-hero-image"></div>
+      <p class="cs-caption" style="margin-top: 6px;">KnowNow — Language-accessible emergency response app</p>
+      <div class="cs-meta-grid">
+        <div class="cs-meta-cell">
+          <div class="cs-meta-cell-label">Role</div>
+          <div class="cs-meta-cell-value">Interaction Design, User Research</div>
+        </div>
+        <div class="cs-meta-cell">
+          <div class="cs-meta-cell-label">Team</div>
+          <div class="cs-meta-cell-value">Lanna, Silvia, Schteffen</div>
+        </div>
+        <div class="cs-meta-cell">
+          <div class="cs-meta-cell-label">Duration</div>
+          <div class="cs-meta-cell-value">14 weeks, Spring 2025</div>
+        </div>
+        <div class="cs-meta-cell">
+          <div class="cs-meta-cell-label">Tools</div>
+          <div class="cs-meta-cell-value">Figma, Paper Prototyping</div>
+        </div>
+        <div class="cs-meta-cell">
+          <div class="cs-meta-cell-label">Methods</div>
+          <div class="cs-meta-cell-value">Field Research, User Testing</div>
+        </div>
+        <div class="cs-meta-cell">
+          <div class="cs-meta-cell-label">Course</div>
+          <div class="cs-meta-cell-value">Interaction Design 3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── THE PROBLEM ── -->
+    <section class="cs-section" id="the-problem">
+      <div class="section-label">The Problem</div>
+      <h2>Emergency alerts were built for English speakers</h2>
+      <p style="max-width: 640px;">
+        During the 2025 LA wildfires, over 12,000 of 50,000 Asian residents in four evacuation zones needed language assistance — yet alerts arrived in English and Spanish only. For non-English speaking communities, a language barrier in an emergency isn't an inconvenience. It's a life-safety failure.
+      </p>
+
+      <div class="cs-stat-cards">
+        <div class="cs-stat">
+          <div class="cs-stat-label">Language access in emergency plans</div>
+          <div class="cs-stat-number">67%</div>
+          <div class="cs-stat-value">of U.S. counties recognize language access in emergency plans</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">LEP households impacted</div>
+          <div class="cs-stat-number">4,178</div>
+          <div class="cs-stat-value">LEP households impacted in Eaton fire zone alone</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">English literacy gap</div>
+          <div class="cs-stat-number">30M+</div>
+          <div class="cs-stat-value">adults in the U.S. who cannot read or write in English</div>
+        </div>
+      </div>
+
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 2/1;"></div>
+      </div>
+      <p class="cs-caption">Secondary research findings — language gaps in emergency infrastructure</p>
+    </section>
+
+    <!-- ── RESEARCH ── -->
+    <section class="cs-section" id="research">
+      <div class="section-label">Research</div>
+      <h2>Going to where the crisis actually was</h2>
+      <p style="max-width: 640px;">
+        We didn't start in a classroom. We visited an active Red Cross emergency shelter, recruited interviewees through social media and physical posters, and conducted text-based outreach to first responders, bilingual community members, and emergency workers across LA.
+      </p>
+
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 3/2;"></div>
+      </div>
+      <p class="cs-caption">Field visit — Red Cross emergency shelter, Los Angeles, January 2025</p>
+
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 3/2;"></div>
+      </div>
+      <p class="cs-caption">Participant recruiting — Instagram story outreach and physical poster in the community</p>
+    </section>
+
+    <!-- ── INSIGHTS ── -->
+    <section class="cs-section" id="insights">
+      <div class="section-label">Insights</div>
+      <h2>Three things research kept telling us</h2>
+
+      <!-- Insight 01 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); align-items: start;">
+        <p style="font-family: var(--serif); font-size: 1.8rem; font-weight: 400; line-height: 1.4; color: var(--ink); max-width: none; margin-bottom: 0;">
+          During the LA Fire, over 12,000 of 50,000 Asian residents in the four evacuation zones required language assistance, yet alerts were issued in English and Spanish only.
+        </p>
+        <div>
+          <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">
+            "Most of the alerts came through our phones eventually, but they were in English, and understanding them was hard for me... I ended up calling a friend from the cultural association to help translate."
+          </p>
+          <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— HUA LI</span>
+        </div>
+      </div>
+
+      <!-- Insight 02 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); align-items: start;">
+        <p style="font-family: var(--serif); font-size: 1.8rem; font-weight: 400; line-height: 1.4; color: var(--ink); max-width: none; margin-bottom: 0;">
+          6,387 non-English speaking residents in the Eaton Fire struggled to verify accuracy of information due to language barriers and a lack of trusted sources.
+        </p>
+        <div>
+          <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">
+            "I didn't get any official information right away. I don't really watch TV much because I'm busy working, and when I do, it's usually in Spanish because my English is still hard for me sometimes."
+          </p>
+          <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— MARIA LOPEZ (synthetic user)</span>
+        </div>
+      </div>
+
+      <!-- Insight 03 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); border-bottom: 0.5px solid var(--rule); align-items: start;">
+        <p style="font-family: var(--serif); font-size: 1.8rem; font-weight: 400; line-height: 1.4; color: var(--ink); max-width: none; margin-bottom: 0;">
+          More than 30 million adults in the U.S. can't read or write, and over 26.6% of the California population are LEP, while most alerts during LA fire were purely in English text.
+        </p>
+        <div>
+          <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">
+            "Everything seemed designed for people who already had more resources or who spoke the language perfectly."
+          </p>
+          <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— MARIA LOPEZ (synthetic user)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WHO WE DESIGNED FOR ── -->
+    <section class="cs-section" id="who-we-designed-for">
+      <div class="section-label">Who We Designed For</div>
+      <h2>The most vulnerable user: a recent immigrant</h2>
+      <p style="max-width: 640px;">
+        From our user type matrix, we focused on the quadrant with the highest risk — limited English proficiency combined with no disaster readiness training. Our primary user is Li Xiao: 42, Cantonese-speaking, arrived from Guangzhou 4 months ago on a family reunification visa, living in a small apartment in LA's Cantonese community.
+      </p>
+
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 16/9;"></div>
+      </div>
+      <p class="cs-caption">User type matrix — axes: English proficiency × disaster readiness</p>
+
+      <div class="cs-persona">
+        <div>
+          <div class="cs-persona-block">
+            <div class="cs-persona-sublabel">Profile</div>
+            <div class="cs-persona-value">
+              42 years old, male, Cantonese-speaking<br>
+              Arrived 4 months ago, family visa<br>
+              Low-income household<br>
+              No prior disaster experience
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cs-persona-block">
+            <div class="cs-persona-sublabel">Motivations</div>
+            <div class="cs-persona-value">
+              Finding information in his language<br>
+              Getting reliable help without fear<br>
+              Keeping family safe<br>
+              Learning how to prepare
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONCEPT ── -->
+    <section class="cs-section" id="concept">
+      <div class="section-label">Concept</div>
+      <h2>One storyboard scene captures the whole problem</h2>
+      <p style="max-width: 640px;">
+        Li Xiao gets an English-only wildfire alert at work. His wife texts him in panic — she can see smoke from their apartment. He can't tell if they need to evacuate. He opens KnowNow, which translates the alert into Cantonese, shows fire zones visually, and sends his wife a simple message: "Start getting ready, pack important items."
+      </p>
+
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 3/1;"></div>
+      </div>
+      <p class="cs-caption">Storyboard Section 1 — Li Xiao receives the alert and responds</p>
+
+      <div class="cs-decisions">
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Feature</div>
+          <div class="cs-decision-heading">Multilingual Alerts</div>
+          <div class="cs-insight-text">Real-time emergency alerts translated to your preferred language</div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Feature</div>
+          <div class="cs-decision-heading">Shelter Finder</div>
+          <div class="cs-insight-text">Nearest shelters sorted by distance, with accessibility and pet filters</div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Feature</div>
+          <div class="cs-decision-heading">Packing List</div>
+          <div class="cs-insight-text">Disaster-type packing lists with swipe-to-complete micro-interactions</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PROTOTYPE PROCESS ── -->
+    <section class="cs-section" id="prototype-process">
+      <div class="section-label">Prototype Process</div>
+      <h2>Paper first, then iterate</h2>
+      <p style="max-width: 640px;">
+        We built and tested a paper prototype with 4 participants — product design students and a faculty member. Three rounds of key findings shaped our revisions: unclear delete interactions on the packing list, an unnoticeable alert icon, and a confusing shelter filter menu.
+      </p>
+
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 3/2;"></div>
+      </div>
+      <p class="cs-caption">Paper prototype — language selection, alerts, shelter map, packing list</p>
+
+      <div class="cs-insights" style="grid-template-columns: 1fr;">
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Revision 01</div>
+          <div class="cs-insight-heading">Packing list micro-interactions</div>
+          <div class="cs-insight-text">Updated to left-swipe = delete, right-swipe = complete, tap = edit. Added disaster-type filter tabs.</div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Revision 02</div>
+          <div class="cs-insight-heading">Alert navigation</div>
+          <div class="cs-insight-text">Moved alert button to center of bottom nav and scaled up the active disaster display.</div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Revision 03</div>
+          <div class="cs-insight-heading">Shelter filter</div>
+          <div class="cs-insight-text">Replaced confusing filter menu with a Sort By dropdown and set current location as default.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── REFLECTION ── -->
+    <section class="cs-section" id="reflection">
+      <div class="section-label">Reflection</div>
+      <h2>What we'd still want to know</h2>
+      <p style="max-width: 640px;">
+        KnowNow reached paper prototype stage. The design process surfaced questions we didn't get to answer — and that honesty feels important to carry forward.
+      </p>
+
+      <div class="cs-decisions">
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Open Question</div>
+          <div class="cs-decision-heading">Real emergency use</div>
+          <div class="cs-insight-text">How would people actually use this under genuine crisis conditions?</div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Open Question</div>
+          <div class="cs-decision-heading">Expert feedback</div>
+          <div class="cs-insight-text">What would people with real emergency response experience critique?</div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">Open Question</div>
+          <div class="cs-decision-heading">Universal language</div>
+          <div class="cs-insight-text">How can we further explore iconography and visual language that transcends linguistic backgrounds?</div>
+        </div>
+      </div>
+
+      <div class="footer-line">
+        <span>KnowNow — Lanna Hu, 2025</span>
+        <a href="index.html">← Back to Index</a>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  // ── SCROLL SPY ──────────────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('.cs-section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, {
+    rootMargin: '-15% 0px -65% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(s => spy.observe(s));
+
+  // ── SMOOTH SCROLL ───────────────────────────────────────────────────────────
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

@@ -570,9 +570,10 @@
     letter-spacing: 0.04em;
   }
 
-  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar { width: 2px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb { background: #1e1e1c; border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: #7a7a74; }
 
   /* ── RESPONSIVENESS ── */
   html { overflow-x: hidden; scrollbar-gutter: stable; }
@@ -657,7 +658,7 @@
       <a href="#" id="nav-work">Work</a>
       <div class="nav-sub" id="nav-sub-work">
         <a href="#" class="nav-sub-item active" data-slide="0">Salud</a>
-        <a href="#" class="nav-sub-item" data-slide="1">Second project name</a>
+        <a href="#" class="nav-sub-item" data-slide="1">KnowNow</a>
         <a href="#" class="nav-sub-item" data-slide="2">Third project — in progress</a>
       </div>
       <a href="#">Play</a>
@@ -723,16 +724,17 @@
             </div>
 
             <div class="project-slide" id="slide-1">
+              <a href="knownow.html" class="project-link">
               <div class="project-row">
                 <div class="project-info">
                   <span class="project-num">02</span>
                   <div class="project-bottom">
-                    <div class="project-title">Second project name</div>
+                    <div class="project-title">KnowNow</div>
                     <div class="project-tags">
-                      <span class="tag">Product Design</span>
-                      <span class="tag">Prototyping</span>
+                      <span class="tag">Mobile App</span>
+                      <span class="tag">Emergency UX</span>
                     </div>
-                    <div class="project-year">2024</div>
+                    <div class="project-year">2025</div>
                   </div>
                   <div class="project-progress">
                     <div class="progress-dot"></div>
@@ -740,8 +742,11 @@
                     <div class="progress-dot"></div>
                   </div>
                 </div>
-                <div class="project-img-panel">project image</div>
+                <div class="project-img-panel" style="background:#E8E8E4; display:flex; align-items:flex-end; padding:24px;">
+                  <div class="img-note">a language-accessible emergency response app for non-English speaking communities</div>
+                </div>
               </div>
+              </a>
             </div>
 
             <div class="project-slide" id="slide-2">
