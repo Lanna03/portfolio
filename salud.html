@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salud — Lanna Hu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gutter:       40px;
+    --nav-col:      160px;
+    --gap:          24px;
+    --gutter-right: 40px;
+    --nav-offset:   160px;
+
+    --sp-1:  8px;
+    --sp-2:  16px;
+    --sp-3:  24px;
+    --sp-4:  32px;
+    --sp-5:  40px;
+    --sp-6:  48px;
+    --sp-8:  64px;
+    --sp-10: 80px;
+
+    --bg:        #F3F3F1;
+    --ink:       #1e1e1c;
+    --ink-muted: #7a7a74;
+    --ink-faint: #7a7a74;
+    --rule:      #d6d5ce;
+
+    --serif: 'Libre Baskerville', serif;
+    --sans:  'IBM Plex Sans', sans-serif;
+    --mono:  'DM Mono', monospace;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  body { overflow-x: hidden; }
+
+  /* ── PAGE GRID — identical to index.html ── */
+  .page {
+    display: grid;
+    grid-template-columns: var(--gutter) var(--nav-col) var(--gap) var(--nav-col) 1fr var(--gutter-right);
+    min-height: 100vh;
+  }
+  .page > * { min-width: 0; }
+
+  /* ── NAV — exact same CSS as index.html ── */
+  nav {
+    grid-column: 2;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0 40px;
+  }
+
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-name:hover { color: var(--ink-muted); }
+
+  .nav-links {
+    margin-top: var(--nav-offset);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    line-height: 2;
+    padding-left: var(--sp-2);
+    display: block;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--ink); }
+  .nav-links a.active::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  /* ── MAIN ── */
+  main {
+    grid-column: 5;
+    min-width: 0;
+    padding: 40px 0 120px;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.1s forwards;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* ── CASE STUDY HERO ── */
+  .cs-hero {
+    padding-top: 160px;
+    padding-bottom: 80px;
+    border-bottom: 0.5px solid var(--rule);
+    margin-bottom: 80px;
+  }
+
+  .cs-meta {
+    display: flex;
+    gap: var(--sp-2);
+    align-items: center;
+    margin-bottom: var(--sp-3);
+    flex-wrap: wrap;
+  }
+
+  .cs-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--rule);
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  .cs-year {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+
+  .cs-title {
+    font-family: var(--serif);
+    font-size: 56px;
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--sp-3);
+  }
+
+  .cs-subtitle {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+
+  .cs-hero-image {
+    margin-top: var(--sp-8);
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: var(--rule);
+  }
+  .cs-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-3);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--rule);
+  }
+
+  /* ── CASE STUDY SECTIONS ── */
+  .cs-section {
+    margin-bottom: 100px;
+    scroll-margin-top: 80px;
+  }
+
+  .cs-section h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: var(--sp-3);
+    letter-spacing: -0.01em;
+    max-width: 640px;
+  }
+
+  .cs-section p {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.85;
+    max-width: 640px;
+    margin-bottom: var(--sp-3);
+  }
+  .cs-section p:last-child { margin-bottom: 0; }
+
+  /* ── STATS GRID ── */
+  .cs-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: var(--sp-6) 0;
+    border-top: 0.5px solid var(--rule);
+    border-left: 0.5px solid var(--rule);
+  }
+  .cs-stat {
+    padding: var(--sp-4);
+    border-right: 0.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .cs-stat-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+  }
+  .cs-stat-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ── INSIGHT CARDS ── */
+  .cs-insights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+    margin: var(--sp-5) 0;
+  }
+  .cs-insight-card {
+    border: 0.5px solid var(--rule);
+    border-radius: 3px;
+    padding: var(--sp-4);
+  }
+  .cs-insight-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--sp-2);
+  }
+  .cs-insight-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.75;
+  }
+  .cs-insight-text em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* ── IMAGE BLOCK ── */
+  .cs-image {
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--rule);
+    margin: var(--sp-5) 0 var(--sp-2);
+  }
+  .cs-image img { width: 100%; height: auto; display: block; }
+  .cs-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+  }
+  .cs-caption {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    margin-bottom: var(--sp-5);
+  }
+
+  /* ── PULL QUOTE ── */
+  .cs-quote {
+    border-left: 2px solid var(--rule);
+    padding: var(--sp-3) var(--sp-5);
+    margin: var(--sp-5) 0;
+  }
+  .cs-quote p {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.6;
+    max-width: 100%;
+    margin: 0;
+  }
+  .cs-quote cite {
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    font-style: normal;
+    margin-top: var(--sp-2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FOOTER ── */
+  .footer-line {
+    margin-top: 80px;
+    padding-top: var(--sp-3);
+    border-top: 0.5px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-line span,
+  .footer-line a {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-line a:hover { color: var(--ink); }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    :root { --gutter: 24px; --gutter-right: 24px; --nav-col: 130px; --gap: 16px; }
+  }
+  @media (max-width: 680px) {
+    .page { grid-template-columns: 16px 1fr 16px; }
+    nav {
+      grid-column: 2;
+      position: static;
+      height: auto;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 20px 0 12px;
+      gap: 0 var(--sp-3);
+    }
+    .nav-links { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 0 var(--sp-2); }
+    .nav-section-label { display: none; }
+    main { grid-column: 2; padding: 0 0 80px; }
+    .cs-hero { padding-top: 32px; }
+    .cs-title { font-size: 36px; }
+    .cs-stats { grid-template-columns: 1fr 1fr; }
+    .cs-insights { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div></div>
+
+  <nav>
+    <a class="nav-name" href="index.html">← Lanna Hu</a>
+    <div class="nav-links">
+      <div class="nav-section-label">Sections</div>
+      <a href="#overview">Overview</a>
+      <a href="#context">Context</a>
+      <a href="#insights">Insights</a>
+      <a href="#problem">The Problem</a>
+      <a href="#solution">Solution</a>
+      <a href="#outcome">The Outcome</a>
+    </div>
+  </nav>
+
+  <div></div>
+
+  <main>
+
+    <!-- ── HERO ── -->
+    <div class="cs-hero">
+      <div class="cs-meta">
+        <span class="cs-tag">User Research</span>
+        <span class="cs-tag">Service Design</span>
+        <span class="cs-year">2025</span>
+      </div>
+      <h1 class="cs-title">Salud</h1>
+      <p class="cs-subtitle">
+        An AI-powered, community-centered cancer screening experience
+        designed with and for underserved Latino communities in Los Angeles.
+      </p>
+      <div class="cs-hero-image">
+        <img src="images/salud-hero.png" alt="Salud — From Questions to Next Steps">
+      </div>
+    </div>
+
+    <!-- ── OVERVIEW ── -->
+    <section class="cs-section" id="overview">
+      <div class="section-label">Overview</div>
+      <h2>Project at a glance</h2>
+      <p>
+        Salud is a service design project developed in partnership with Cedars-Sinai,
+        focused on reducing barriers to cancer screening for underserved Latino communities.
+        The project combines AI-driven personalization with human-centered service touchpoints
+        to make screening accessible, trusted, and actionable.
+      </p>
+      <div class="cs-stats">
+        <div class="cs-stat">
+          <div class="cs-stat-label">Role</div>
+          <div class="cs-stat-value">Interaction Design<br>User Research</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">Team</div>
+          <div class="cs-stat-value">Balinda, Lanna,<br>Max, Sabrina</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">Duration</div>
+          <div class="cs-stat-value">14 weeks<br>Spring 2025</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">Tools</div>
+          <div class="cs-stat-value">Figma, Miro,<br>Field Research</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">Methods</div>
+          <div class="cs-stat-value">Co-design,<br>Service Blueprint</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">Partner</div>
+          <div class="cs-stat-value">Cedars-Sinai<br>Medical Center</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTEXT ── -->
+    <section class="cs-section" id="context">
+      <div class="section-label">Context</div>
+      <h2>Why cancer screening falls short for Latino communities</h2>
+      <p>
+        Latino adults in the US are significantly less likely to receive timely cancer
+        screenings compared to their white counterparts — not because of indifference,
+        but because the system was not designed with them in mind.
+      </p>
+      <p>
+        Language barriers, distrust of medical institutions, lack of insurance,
+        and logistical friction — transportation, time off work, childcare — compound
+        to create a system that feels inaccessible, even hostile, to many.
+      </p>
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 16/7;">
+          context diagram / research ecosystem map
+        </div>
+      </div>
+      <p class="cs-caption">Service ecosystem map — barriers across the full screening journey</p>
+    </section>
+
+    <!-- ── INSIGHTS ── -->
+    <section class="cs-section" id="insights">
+      <div class="section-label">Insights</div>
+      <h2>What we heard, what we learned</h2>
+      <p>
+        Through contextual interviews, community shadowing, and co-design sessions
+        with patients and community health workers, four critical insight clusters emerged.
+      </p>
+      <div class="cs-insights">
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">01</div>
+          <div class="cs-insight-text">
+            <em>"I don't know what questions to ask."</em><br><br>
+            Patients felt underprepared and overwhelmed in clinical settings,
+            leading to missed follow-throughs.
+          </div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">02</div>
+          <div class="cs-insight-text">
+            <em>"I trust my neighbor more than a flyer."</em><br><br>
+            Community health workers (promotoras) are the most trusted channel
+            for health information in the community.
+          </div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">03</div>
+          <div class="cs-insight-text">
+            <em>"The paperwork is in English."</em><br><br>
+            Administrative burden — forms, portals, letters — is a significant
+            drop-off point for non-English speakers.
+          </div>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-insight-num">04</div>
+          <div class="cs-insight-text">
+            <em>"I didn't know I needed it."</em><br><br>
+            Low awareness of screening eligibility and urgency, particularly
+            for asymptomatic conditions like cervical cancer.
+          </div>
+        </div>
+      </div>
+      <div class="cs-quote">
+        <p>"When the letter arrived, it was all in English. I didn't understand it,
+        so I put it aside. I never went."</p>
+        <cite>— Interview participant, East LA, age 58</cite>
+      </div>
+    </section>
+
+    <!-- ── THE PROBLEM ── -->
+    <section class="cs-section" id="problem">
+      <div class="section-label">The Problem</div>
+      <h2>How might we make cancer screening feel safe, clear, and worth showing up for?</h2>
+      <p>
+        The core tension: Cedars-Sinai has the clinical capability to reach these communities,
+        but the existing touchpoints — digital portals, mailed letters, phone trees — are
+        built for a patient who is already engaged with the healthcare system.
+      </p>
+      <p>
+        The problem is not awareness alone. It is trust, language, logistics, and the feeling
+        that "this system is not for me." Our challenge was to work within existing infrastructure
+        while creating moments that feel human, culturally resonant, and actionable.
+      </p>
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 16/8;">
+          problem framing / HMW map
+        </div>
+      </div>
+      <p class="cs-caption">Problem framing workshop — redefining success with the Cedars-Sinai team</p>
+    </section>
+
+    <!-- ── SOLUTION ── -->
+    <section class="cs-section" id="solution">
+      <div class="section-label">Solution</div>
+      <h2>A three-layer service: AI, community, and care coordination</h2>
+      <p>
+        Salud is not a single app — it is a service system that operates across digital,
+        human, and physical touchpoints. The design centers a community health worker
+        (promotora) as the trusted intermediary, supported by an AI screening assistant
+        and simplified care coordination tools.
+      </p>
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 16/9;">
+          service blueprint — three-layer system
+        </div>
+      </div>
+      <p class="cs-caption">Service blueprint — community, digital, and clinical touchpoints working in concert</p>
+      <p>
+        The AI assistant surfaces eligibility, answers questions in Spanish, and generates
+        a simple "next step" card for the patient and their promotora. The promotora
+        receives a coordinated dashboard — not a clinical EMR — designed for someone
+        who is not a medical professional but is the most trusted link in the chain.
+      </p>
+      <div class="cs-image">
+        <div class="cs-image-placeholder" style="aspect-ratio: 4/3;">
+          UI screens — AI screening assistant
+        </div>
+      </div>
+      <p class="cs-caption">AI-powered screening assistant — bilingual, conversational, action-oriented</p>
+    </section>
+
+    <!-- ── THE OUTCOME ── -->
+    <section class="cs-section" id="outcome">
+      <div class="section-label">The Outcome</div>
+      <h2>What we learned by designing in community</h2>
+      <p>
+        The project was presented to Cedars-Sinai's Community Health team in April 2025.
+        The service blueprint and promotora dashboard were received as immediately actionable
+        within their existing outreach infrastructure.
+      </p>
+      <p>
+        The most important lesson: effective health design requires meeting people in their
+        existing networks of trust, not building new ones. The promotora is not a workaround
+        — she is the system.
+      </p>
+      <div class="cs-stats">
+        <div class="cs-stat">
+          <div class="cs-stat-label">Presented to</div>
+          <div class="cs-stat-value">Cedars-Sinai<br>Community Health</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">Key artifact</div>
+          <div class="cs-stat-value">Service Blueprint<br>+ Promotora Tool</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-label">Status</div>
+          <div class="cs-stat-value">Ongoing collaboration<br>in discussion</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-line">
+      <span>Lanna Hu — Interaction Design</span>
+      <a href="index.html">← Back to index</a>
+    </div>
+
+  </main>
+
+  <div></div>
+
+</div>
+
+<script>
+  // ── SCROLL SPY ──────────────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('.cs-section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, {
+    rootMargin: '-15% 0px -65% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(s => spy.observe(s));
+
+  // ── SMOOTH SCROLL ───────────────────────────────────────────────────────────
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
