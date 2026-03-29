@@ -34,8 +34,8 @@
     /* colors */
     --bg:             #F3F3F1;
     --ink:            #1e1e1c;
-    --ink-muted:      #7a7a74;
-    --ink-faint:      #7a7a74;
+    --ink-muted:      #3f3f3a;
+    --ink-faint:      #3f3f3a;
     --rule:           #d6d5ce;
     --sticky-yellow:  #F5F0D0;
     --sticky-y-border:#e0d8a0;
@@ -58,16 +58,18 @@
     min-height: 100vh;
   }
 
-  /* ── PAGE LAYOUT ── */
+  /* ── PAGE LAYOUT — 10-column grid, 1728px base ── */
   .page {
     display: grid;
-    grid-template-columns: var(--gutter) var(--nav-col) var(--gap) var(--nav-col) 1fr var(--gutter-right);
+    grid-template-columns: repeat(10, 1fr);
+    column-gap: var(--gap);
+    padding: 0 var(--gutter);
     min-height: 100vh;
   }
 
   /* ── NAV ── */
   nav {
-    grid-column: 2;
+    grid-column: 1;
     position: sticky;
     top: 0;
     height: 100vh;
@@ -95,7 +97,7 @@
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 300;
-    color: var(--ink-faint);
+    color: #7a7a74;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     line-height: 2;
@@ -106,7 +108,7 @@
     font-family: var(--mono);
     font-size: 13px;
     font-weight: 300;
-    color: var(--ink-muted);
+    color: #7a7a74;
     text-decoration: none;
     letter-spacing: 0.04em;
     line-height: 2;
@@ -142,7 +144,7 @@
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 300;
-    color: var(--ink-faint);
+    color: #7a7a74;
     text-decoration: none;
     letter-spacing: 0.04em;
     line-height: 2;
@@ -172,7 +174,7 @@
 
   /* ── MAIN CONTENT ── */
   main {
-    grid-column: 5;
+    grid-column: 3 / span 8;
     padding: 40px 0 40px 0;
     opacity: 0;
     animation: fadeIn 0.7s ease 0.15s forwards;
@@ -200,7 +202,7 @@
 
   .hero h1 em {
     font-style: italic;
-    color: var(--ink-muted);
+    color: #7a7a74;
     display: block;
   }
 
@@ -307,7 +309,7 @@
 
   /* Project slides — start hidden, fade up on scroll */
   .project-slide {
-    margin-bottom: 80px;
+    margin-bottom: 140px;
     opacity: 0;
     transform: translateY(28px);
     transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
@@ -399,37 +401,31 @@
     position: relative;
   }
 
+  /* Sticky note — upper right corner, soft warm paper tone */
   .img-note {
     position: absolute;
-    bottom: 24px;
-    right: 24px;
-    background: var(--sticky-yellow);
-    color: #4a3f2f;
+    top: 16px;
+    right: 16px;
+    background: #EDE8D2;
+    color: #3a3525;
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 300;
-    line-height: 1.5;
-    padding: 11px 14px;
-    width: 290px;
-    transform: rotate(2.5deg);
+    line-height: 1.65;
+    letter-spacing: 0.03em;
+    padding: 10px 12px;
+    width: 148px;
+    transform: rotate(2.5deg) scale(0.88);
+    transform-origin: top right;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    clip-path: polygon(
-      0% 16%, 3% 3%, 7% 14%, 11% 1%, 15% 12%, 19% 2%, 24% 14%,
-      28% 1%, 33% 12%, 38% 3%, 43% 14%, 48% 0%, 53% 12%, 58% 2%,
-      63% 13%, 68% 1%, 73% 12%, 78% 2%, 83% 14%, 88% 1%, 93% 12%,
-      97% 3%, 100% 10%,
-      100% 84%, 97% 98%, 92% 85%, 88% 100%, 83% 86%, 78% 99%,
-      73% 85%, 68% 100%, 63% 86%, 58% 100%, 53% 85%, 48% 100%,
-      43% 86%, 38% 100%, 33% 85%, 28% 99%, 23% 86%, 18% 100%,
-      13% 85%, 8% 100%, 3% 86%, 0% 98%
-    );
+    box-shadow: 2px 4px 12px rgba(0,0,0,0.14);
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 3;
   }
-
   .project-img-panel:hover .img-note {
     opacity: 1;
-    transform: rotate(2.5deg) scale(1.02);
+    transform: rotate(2.5deg) scale(1);
     pointer-events: auto;
   }
 
@@ -441,16 +437,15 @@
     cursor: pointer;
   }
 
-  /* Image hover: dim + show "View →" */
+  /* Overlay + "View →": opaque enough so text is clearly legible */
   .project-link .project-img-panel::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--ink);
+    background: rgba(243, 243, 241, 0.82);
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 1;
-    border-radius: 2px;
   }
   .project-link .project-img-panel::after {
     content: 'View →';
@@ -462,14 +457,20 @@
     font-family: var(--mono);
     font-size: 13px;
     font-weight: 300;
-    letter-spacing: 0.08em;
-    color: var(--bg);
+    letter-spacing: 0.12em;
+    color: var(--ink);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease 0.05s;
     z-index: 2;
   }
-  .project-link .project-img-panel:hover::before { opacity: 0.35; }
+  .project-link .project-img-panel:hover::before { opacity: 1; }
   .project-link .project-img-panel:hover::after  { opacity: 1; }
+
+  /* Image scales up */
+  .project-link .project-img-panel img {
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .project-link .project-img-panel:hover img { transform: scale(1.015); }
 
   .project-progress { display: none; }
 
@@ -574,29 +575,25 @@
   ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
 
   /* ── RESPONSIVENESS ── */
-  html { overflow-x: hidden; }
+  html { overflow-x: hidden; scrollbar-gutter: stable; }
   .page > * { min-width: 0; }
   main { min-width: 0; }
   .project-img-panel img { max-width: 100%; }
 
-  /* Medium — compress gutters / nav column */
+  /* Medium — tighter margins */
   @media (max-width: 960px) {
-    :root {
-      --gutter: 24px;
-      --gutter-right: 24px;
-      --nav-col: 130px;
-      --gap: 16px;
-    }
+    :root { --gutter: 24px; --gap: 16px; }
   }
 
   /* Small — collapse to single-column, stack project rows */
   @media (max-width: 680px) {
     .page {
-      grid-template-columns: 16px 1fr 16px;
+      grid-template-columns: 1fr;
+      padding: 0 16px;
     }
     /* remap nav to full top row, main below */
     nav {
-      grid-column: 2;
+      grid-column: 1;
       position: static;
       height: auto;
       padding: 20px 0 12px;
@@ -612,7 +609,7 @@
     .nav-sub { display: none; }
 
     main {
-      grid-column: 2;
+      grid-column: 1;
       padding: 0 0 40px;
     }
 
@@ -651,10 +648,7 @@
 
 <div class="page">
 
-  <!-- col 1: left gutter (empty) -->
-  <div></div>
-
-  <!-- col 2: nav -->
+  <!-- col 1: nav -->
   <nav>
     <div class="nav-name">Lanna Hu</div>
     <div class="nav-links">
@@ -671,15 +665,12 @@
     </div>
     <div class="nav-bottom">
       <div class="nav-bottom-label">Contact</div>
-      <a href="#">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/lanna-hu-549358304/" target="_blank">LinkedIn</a>
       <a href="#">Resume ↗</a>
     </div>
   </nav>
 
-  <!-- col 3: gap (empty) -->
-  <div></div>
-
-  <!-- col 4: content -->
+  <!-- cols 3–10: content -->
   <main>
 
     <section class="hero">
@@ -704,7 +695,7 @@
         <div class="projects-track-wrap">
           <div class="projects-track" id="projects-track">
 
-            <div class="project-slide">
+            <div class="project-slide slide-visible" id="slide-0">
               <a href="salud.html" class="project-link">
               <div class="project-row">
                 <div class="project-info">
@@ -731,7 +722,7 @@
               </a>
             </div>
 
-            <div class="project-slide">
+            <div class="project-slide" id="slide-1">
               <div class="project-row">
                 <div class="project-info">
                   <span class="project-num">02</span>
@@ -753,7 +744,7 @@
               </div>
             </div>
 
-            <div class="project-slide">
+            <div class="project-slide" id="slide-2">
               <div class="project-row">
                 <div class="project-info">
                   <span class="project-num">03</span>
@@ -914,10 +905,29 @@
     });
   }, {
     threshold: 0.08,
-    rootMargin: '0px 0px -60px 0px' // trigger slightly before bottom edge
+    rootMargin: '0px 0px -60px 0px'
   });
   document.querySelectorAll('.project-slide').forEach(slide => {
     slideObserver.observe(slide);
+  });
+
+  // ── SUB-NAV ACTIVE: highlight project in nav as it enters view ───────────────
+  const subNavItems = document.querySelectorAll('.nav-sub-item');
+  const subNavObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = entry.target.id.split('-')[1]; // "slide-0" → "0"
+        subNavItems.forEach(a => {
+          a.classList.toggle('active', a.dataset.slide === idx);
+        });
+      }
+    });
+  }, {
+    rootMargin: '-10% 0px -60% 0px',
+    threshold: 0
+  });
+  document.querySelectorAll('.project-slide').forEach(slide => {
+    subNavObserver.observe(slide);
   });
 </script>
 </body>
