@@ -277,7 +277,7 @@
   }
 
   /* ── VERTICAL STICKY CAROUSEL ── */
-  .projects-outer { margin-top: 200px; margin-bottom: 120px; }
+  .projects-outer { margin-top: 200px; margin-bottom: 200px; }
 
   .projects-sticky {
     display: flex;
@@ -662,7 +662,7 @@
         <a href="#" class="nav-sub-item" data-slide="2">Float OS</a>
       </div>
       <a href="#">Play</a>
-      <a href="#">About</a>
+      <a href="#" id="nav-about">About</a>
     </div>
     <div class="nav-bottom">
       <div class="nav-bottom-label">Contact</div>
@@ -779,23 +779,19 @@
       </div>
     </div>
 
-    <div class="section-label">Now</div>
+    <div id="about-section" class="section-label">Now</div>
     <div class="annotation-strip">
       <div class="annotation-item">
         <div class="annotation-label">Currently reading</div>
         <div class="annotation-text"><em>"The Design of Everyday Things"</em></div>
       </div>
       <div class="annotation-item">
-        <div class="annotation-label">Thinking about</div>
-        <div class="annotation-text">how structure creates freedom</div>
+        <div class="annotation-label">Based in</div>
+        <div class="annotation-text">Los Angeles</div>
       </div>
       <div class="annotation-item">
-        <div class="annotation-label">Based in</div>
-        <div class="annotation-text">Shanghai</div>
-        <div class="sticky blue" style="position:absolute; bottom:-8px; right:-8px; max-width:110px;">
-          <span class="note-mark" style="font-size:11px;">→</span>
-          open to remote
-        </div>
+        <div class="annotation-label">Education</div>
+        <div class="annotation-text">ArtCenter College of Design, IxD '27</div>
       </div>
     </div>
 
@@ -866,6 +862,8 @@
   const navIndex       = document.getElementById('nav-index');
   const navWork        = document.getElementById('nav-work');
   const navSubWork     = document.getElementById('nav-sub-work');
+  const navAbout       = document.getElementById('nav-about');
+  const aboutSection   = document.getElementById('about-section');
 
   navIndex.addEventListener('click', e => {
     e.preventDefault();
@@ -876,6 +874,12 @@
     e.preventDefault();
     const outerTop = projectsOuter.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: outerTop, behavior: 'smooth' });
+  });
+
+  navAbout.addEventListener('click', e => {
+    e.preventDefault();
+    const top = aboutSection.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top, behavior: 'smooth' });
   });
 
   // ── SECTION LABEL: fades in the moment the section enters the viewport ───────
@@ -896,10 +900,14 @@
   // ── NAV ACTIVE STATE: switch when section crosses 50% down the viewport ──────
   // (much earlier than waiting for section top to hit y=0)
   function updateNavActive() {
-    const rect   = projectsOuter.getBoundingClientRect();
-    const inWork = rect.top < window.innerHeight * 0.5 && rect.bottom > 0;
-    navIndex.classList.toggle('active', !inWork);
+    const workRect  = projectsOuter.getBoundingClientRect();
+    const aboutRect = aboutSection.getBoundingClientRect();
+    const inAbout   = aboutRect.top < window.innerHeight * 0.5;
+    const inWork    = !inAbout && workRect.top < window.innerHeight * 0.5 && workRect.bottom > 0;
+    const inIndex   = !inWork && !inAbout;
+    navIndex.classList.toggle('active', inIndex);
     navWork.classList.toggle('active',  inWork);
+    navAbout.classList.toggle('active', inAbout);
     navSubWork.classList.toggle('visible', inWork);
   }
   window.addEventListener('scroll', updateNavActive, { passive: true });
