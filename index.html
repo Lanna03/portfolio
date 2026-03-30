@@ -277,7 +277,7 @@
   }
 
   /* ── VERTICAL STICKY CAROUSEL ── */
-  .projects-outer { margin-top: 200px; margin-bottom: 120px; }
+  .projects-outer { margin-top: 200px; margin-bottom: 200px; }
 
   .projects-sticky {
     display: flex;
@@ -487,6 +487,59 @@
     width: 36px;
   }
 
+  /* ── PLAY STRIP ── */
+  .play-strip {
+    display: flex;
+    gap: 16px;
+    height: 480px;
+    margin-top: var(--sp-3);
+    overflow: hidden;
+  }
+  .play-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    flex-shrink: 0;
+    background: var(--rule);
+    text-decoration: none;
+    display: block;
+  }
+  .play-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .play-card:hover img { transform: scale(1.015); }
+  .play-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(243, 243, 241, 0.82);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+  .play-card::after {
+    content: 'View more →';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    opacity: 0;
+    transition: opacity 0.3s ease 0.05s;
+    z-index: 2;
+  }
+  .play-card:hover::before { opacity: 1; }
+  .play-card:hover::after  { opacity: 1; }
+
   /* ── ANNOTATION STRIP ── */
   .annotation-strip {
     display: grid;
@@ -661,13 +714,13 @@
         <a href="#" class="nav-sub-item" data-slide="1">KnowNow</a>
         <a href="#" class="nav-sub-item" data-slide="2">Float OS</a>
       </div>
-      <a href="#">Play</a>
-      <a href="#">About</a>
+      <a href="#" id="nav-play">Play</a>
+      <a href="#" id="nav-about">About</a>
     </div>
     <div class="nav-bottom">
       <div class="nav-bottom-label">Contact</div>
       <a href="https://www.linkedin.com/in/lanna-hu-549358304/" target="_blank">LinkedIn</a>
-      <a href="#">Resume ↗</a>
+      <a href="https://drive.google.com/file/d/1tRxLVYfsAtTAhV0ybAn1vKenDqqe8aL9/view?usp=sharing" target="_blank">Resume ↗</a>
     </div>
   </nav>
 
@@ -779,23 +832,32 @@
       </div>
     </div>
 
-    <div class="section-label">Now</div>
+    <div id="play-section" class="section-label">Play</div>
+    <div class="play-strip">
+      <a href="#" class="play-card" style="aspect-ratio: 1224/792;">
+        <img src="images/makeplay.png" alt="Makeplay Magazine">
+      </a>
+      <a href="#" class="play-card" style="aspect-ratio: 3/4;">
+        <img src="images/render.png" alt="From Earth to Sky">
+      </a>
+      <a href="#" class="play-card" style="aspect-ratio: 2/3;">
+        <img src="images/play-typo.jpg" alt="Typography & Composition">
+      </a>
+    </div>
+
+    <div id="about-section" class="section-label" style="margin-top: 200px;">Now</div>
     <div class="annotation-strip">
       <div class="annotation-item">
         <div class="annotation-label">Currently reading</div>
         <div class="annotation-text"><em>"The Design of Everyday Things"</em></div>
       </div>
       <div class="annotation-item">
-        <div class="annotation-label">Thinking about</div>
-        <div class="annotation-text">how structure creates freedom</div>
+        <div class="annotation-label">Based in</div>
+        <div class="annotation-text">Los Angeles</div>
       </div>
       <div class="annotation-item">
-        <div class="annotation-label">Based in</div>
-        <div class="annotation-text">Shanghai</div>
-        <div class="sticky blue" style="position:absolute; bottom:-8px; right:-8px; max-width:110px;">
-          <span class="note-mark" style="font-size:11px;">→</span>
-          open to remote
-        </div>
+        <div class="annotation-label">Education</div>
+        <div class="annotation-text">ArtCenter College of Design, IxD '27</div>
       </div>
     </div>
 
@@ -866,6 +928,10 @@
   const navIndex       = document.getElementById('nav-index');
   const navWork        = document.getElementById('nav-work');
   const navSubWork     = document.getElementById('nav-sub-work');
+  const navPlay        = document.getElementById('nav-play');
+  const playSection    = document.getElementById('play-section');
+  const navAbout       = document.getElementById('nav-about');
+  const aboutSection   = document.getElementById('about-section');
 
   navIndex.addEventListener('click', e => {
     e.preventDefault();
@@ -876,6 +942,12 @@
     e.preventDefault();
     const outerTop = projectsOuter.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: outerTop, behavior: 'smooth' });
+  });
+
+  navAbout.addEventListener('click', e => {
+    e.preventDefault();
+    const top = aboutSection.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top, behavior: 'smooth' });
   });
 
   // ── SECTION LABEL: fades in the moment the section enters the viewport ───────
@@ -896,10 +968,18 @@
   // ── NAV ACTIVE STATE: switch when section crosses 50% down the viewport ──────
   // (much earlier than waiting for section top to hit y=0)
   function updateNavActive() {
-    const rect   = projectsOuter.getBoundingClientRect();
-    const inWork = rect.top < window.innerHeight * 0.5 && rect.bottom > 0;
-    navIndex.classList.toggle('active', !inWork);
+    const workRect   = projectsOuter.getBoundingClientRect();
+    const playRect   = playSection.getBoundingClientRect();
+    const aboutRect  = aboutSection.getBoundingClientRect();
+    const nearBottom = window.scrollY + window.innerHeight >= document.body.scrollHeight - 80;
+    const inAbout    = nearBottom || aboutRect.top < window.innerHeight * 0.5;
+    const inPlay     = !inAbout && playRect.top < window.innerHeight * 0.5;
+    const inWork     = !inAbout && !inPlay && workRect.top < window.innerHeight * 0.5 && workRect.bottom > 0;
+    const inIndex    = !inWork && !inPlay && !inAbout;
+    navIndex.classList.toggle('active', inIndex);
     navWork.classList.toggle('active',  inWork);
+    navPlay.classList.toggle('active',  inPlay);
+    navAbout.classList.toggle('active', inAbout);
     navSubWork.classList.toggle('visible', inWork);
   }
   window.addEventListener('scroll', updateNavActive, { passive: true });
