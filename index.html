@@ -488,31 +488,38 @@
   }
 
   /* ── PLAY STRIP ── */
-  .play-strip {
-    display: flex;
-    gap: 16px;
-    height: 480px;
-    margin-top: var(--sp-3);
-    overflow: hidden;
+  /* ── PLAY GALLERY ── */
+  .play-outer { margin-top: 200px; margin-bottom: 200px; }
+  .play-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    padding-top: 40px;
+    padding-bottom: 16px;
   }
-  .play-card {
+  .play-gallery {
+    columns: 3;
+    column-gap: 16px;
+  }
+  .play-item {
+    break-inside: avoid;
+    margin-bottom: 16px;
     position: relative;
     overflow: hidden;
     border-radius: 2px;
-    flex-shrink: 0;
     background: var(--rule);
-    text-decoration: none;
+    cursor: pointer;
     display: block;
   }
-  .play-card img {
+  .play-item img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .play-card:hover img { transform: scale(1.015); }
-  .play-card::before {
+  .play-item:hover img { transform: scale(1.015); }
+  .play-item::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -521,8 +528,8 @@
     transition: opacity 0.3s ease;
     z-index: 1;
   }
-  .play-card::after {
-    content: 'View more →';
+  .play-item[data-images]::after {
+    content: 'View →';
     position: absolute;
     inset: 0;
     display: flex;
@@ -537,8 +544,82 @@
     transition: opacity 0.3s ease 0.05s;
     z-index: 2;
   }
-  .play-card:hover::before { opacity: 1; }
-  .play-card:hover::after  { opacity: 1; }
+  .play-item[data-images]:hover::before { opacity: 1; }
+  .play-item[data-images]:hover::after  { opacity: 1; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 30, 28, 0.92);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+    will-change: opacity;
+    scrollbar-width: none;
+  }
+  .lightbox::-webkit-scrollbar { display: none; }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+
+  /* While lightbox is open (or fading out), block all play item clicks */
+  body.lb-open .play-gallery { pointer-events: none; }
+
+  /* Single: centered, 32px top, 16px gap to caption, caption 16px from bottom */
+  .lightbox.single {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 32px;
+    padding-bottom: 66px; /* 16px caption bottom + 16px gap + ~34px caption line */
+    overflow: hidden;
+  }
+  .lightbox.single .lightbox-images img {
+    max-width: calc(100vw - 80px);
+    max-height: calc(100vh - 98px); /* 32px top + 16px gap + 16px bottom + ~34px caption */
+    width: auto;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* Multi: scrollable, pad bottom for caption, hide scrollbar */
+  .lightbox.multi {
+    overflow-y: auto;
+    padding: 32px 0 66px;
+    scrollbar-width: none;
+  }
+  .lightbox.multi::-webkit-scrollbar { display: none; }
+  .lightbox.multi .lightbox-images {
+    width: 56vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .lightbox.multi .lightbox-images img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* Caption: always fixed 16px from bottom, centered, 11px */
+  #lightbox-caption {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: rgba(243,243,241,0.5);
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1001;
+  }
 
   /* ── ANNOTATION STRIP ── */
   .annotation-strip {
@@ -832,17 +913,49 @@
       </div>
     </div>
 
-    <div id="play-section" class="section-label">Play</div>
-    <div class="play-strip">
-      <a href="#" class="play-card" style="aspect-ratio: 1224/792;">
-        <img src="images/makeplay.png" alt="Makeplay Magazine">
-      </a>
-      <a href="#" class="play-card" style="aspect-ratio: 3/4;">
-        <img src="images/render.png" alt="From Earth to Sky">
-      </a>
-      <a href="#" class="play-card" style="aspect-ratio: 2/3;">
-        <img src="images/play-typo.jpg" alt="Typography & Composition">
-      </a>
+    <div class="play-outer" id="play-outer">
+      <div class="play-header">
+        <div id="play-section" class="section-label">Play</div>
+      </div>
+      <div class="play-gallery">
+
+        <div class="play-item"
+             data-images="images/type-leefriendlander.jpg,images/type-leefriendlander2.jpg,images/type-leefriendlander3.jpg,images/type-leefriendlander4.jpg,images/type-leefriendlander5.jpg,images/type-leefriendlander6.jpg,images/type-leefriendlander7.jpg,images/type-leefriendlander8.jpg,images/type-leefriendlander9.jpg"
+             data-caption="Brochure of Lee Friedlander">
+          <img src="images/type-leefriendlander.jpg" alt="Lee Friedlander Brochure">
+        </div>
+        <div class="play-item"
+             data-images="images/type-makeplay.jpg"
+             data-caption="Magazine Cover Design">
+          <img src="images/type-makeplay.jpg" alt="Makeplay Magazine">
+        </div>
+        <div class="play-item"
+             data-images="images/render.png"
+             data-caption="From Earth to Sky — 3D modeling and rendering.">
+          <img src="images/render.png" alt="From Earth to Sky">
+        </div>
+        <div class="play-item"
+             data-images="images/type-atthethreshold.jpg"
+             data-caption="a Movie Series Poster">
+          <img src="images/type-atthethreshold.jpg" alt="At the Threshold">
+        </div>
+        <div class="play-item"
+             data-images="images/type-helvetica.jpg,images/type-helvetica2.jpg,images/type-helvetica3.jpg,images/type-helvetica4.jpg,images/type-helvetica5.jpg,images/type-helvetica6.jpg,images/type-helvetica7.jpg,images/type-helvetica8.jpg,images/type-helvetica9.jpg,images/type-helvetica10.jpg,images/type-helvetica11.jpg,images/type-helvetica12.jpg,images/type-helvetica13.jpg"
+             data-caption="Typography Specimen">
+          <img src="images/type-helvetica.jpg" alt="Helvetica Specimen">
+        </div>
+        <div class="play-item"
+             data-images="images/type-type2poster.jpg"
+             data-caption="Typography & Composition — ArtCenter Type 2, Spring 2025.">
+          <img src="images/type-type2poster.jpg" alt="Type 2 Poster">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+      <div class="lightbox-images" id="lightbox-images"></div>
+      <p id="lightbox-caption"></p>
     </div>
 
     <div id="about-section" class="section-label" style="margin-top: 200px;">Now</div>
@@ -1018,7 +1131,47 @@
   document.querySelectorAll('.project-slide').forEach(slide => {
     subNavObserver.observe(slide);
   });
+
+  // ── LIGHTBOX ──────────────────────────────────────────────────────────────
+  const lightbox        = document.getElementById('lightbox');
+  const lightboxImages  = document.getElementById('lightbox-images');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+
+  document.querySelectorAll('.play-item[data-images]').forEach(card => {
+    card.addEventListener('click', () => {
+      const srcs = card.dataset.images.split(',').map(s => s.trim());
+      // Set up DOM first (before any animation)
+      lightbox.classList.remove('single', 'multi', 'open');
+      lightbox.classList.add(srcs.length > 1 ? 'multi' : 'single');
+      lightboxImages.innerHTML = '';
+      srcs.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.addEventListener('click', e => e.stopPropagation());
+        lightboxImages.appendChild(img);
+      });
+      lightboxCaption.textContent = card.dataset.caption || '';
+      lightbox.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('lb-open');
+      // Trigger fade-in on next frame so browser settles layout first
+      requestAnimationFrame(() => lightbox.classList.add('open'));
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightboxCaption.textContent = '';
+    // Restore scroll and clean up only after fade-out finishes
+    setTimeout(() => {
+      lightbox.classList.remove('single', 'multi');
+      lightboxImages.innerHTML = '';
+      document.body.style.overflow = '';
+      document.body.classList.remove('lb-open');
+    }, 250);
+  }
+
+  lightbox.addEventListener('click', () => closeLightbox());
 </script>
-<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
