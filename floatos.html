@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Float OS — Lanna Hu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gutter:       40px;
+    --nav-col:      160px;
+    --gap:          24px;
+    --gutter-right: 40px;
+    --nav-offset:   160px;
+    --hero-offset:  184px;
+
+    --sp-1:  8px;
+    --sp-2:  16px;
+    --sp-3:  24px;
+    --sp-4:  32px;
+    --sp-5:  40px;
+    --sp-6:  48px;
+    --sp-8:  64px;
+    --sp-10: 80px;
+
+    --bg:        #F3F3F1;
+    --ink:       #1e1e1c;
+    --ink-muted: #3f3f3a;
+    --ink-faint: #3f3f3a;
+    --rule:      #d6d5ce;
+
+    --serif: 'Libre Baskerville', serif;
+    --sans:  'IBM Plex Sans', sans-serif;
+    --mono:  'DM Mono', monospace;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  body { overflow-x: hidden; }
+
+  /* ── PAGE GRID ── */
+  .page {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    column-gap: var(--gap);
+    padding: 0 var(--gutter);
+    min-height: 100vh;
+  }
+  .page > * { min-width: 0; }
+
+  /* ── NAV ── */
+  nav {
+    grid-column: 1;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0 40px;
+  }
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-name:hover { color: var(--ink-muted); }
+  .nav-links {
+    margin-top: var(--nav-offset);
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: #7a7a74;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 400;
+    color: #7a7a74;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    line-height: 2;
+    padding-left: var(--sp-2);
+    display: block;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--ink); }
+  .nav-links a.active::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  /* ── MAIN ── */
+  main {
+    grid-column: 3 / span 8;
+    min-width: 0;
+    padding: 40px 0 120px;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.1s forwards;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* ── HERO ── */
+  .cs-hero {
+    padding-top: var(--hero-offset);
+    padding-bottom: 80px;
+    border-bottom: 0.5px solid var(--rule);
+    margin-bottom: 80px;
+  }
+  .cs-meta {
+    display: flex;
+    gap: var(--sp-2);
+    align-items: center;
+    margin-bottom: var(--sp-3);
+    flex-wrap: wrap;
+  }
+  .cs-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--rule);
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .cs-year {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .cs-title {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--sp-3);
+  }
+  .cs-subtitle {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-3);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--rule);
+  }
+
+  /* ── SECTIONS ── */
+  .cs-section {
+    margin-bottom: 100px;
+    scroll-margin-top: 80px;
+  }
+  .cs-section h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: var(--sp-3);
+    letter-spacing: -0.01em;
+    max-width: 640px;
+  }
+  .cs-section p {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.85;
+    margin-bottom: var(--sp-3);
+  }
+  .cs-section p:last-child { margin-bottom: 0; }
+
+  /* ── FOOTER ── */
+  .footer-line {
+    margin-top: 80px;
+    padding-top: var(--sp-3);
+    border-top: 0.5px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-line span,
+  .footer-line a {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-line a:hover { color: var(--ink); }
+
+  ::-webkit-scrollbar { width: 2px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #1e1e1c; border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: #7a7a74; }
+
+  html { scrollbar-gutter: stable; }
+
+  @media (max-width: 960px) {
+    :root { --gutter: 24px; --gap: 16px; }
+  }
+  @media (max-width: 680px) {
+    .page { grid-template-columns: 1fr; padding: 0 16px; }
+    nav {
+      grid-column: 1;
+      position: static;
+      height: auto;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 20px 0 12px;
+      gap: 0 var(--sp-3);
+    }
+    .nav-links { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 0 var(--sp-2); }
+    .nav-section-label { display: none; }
+    main { grid-column: 1; padding: 0 0 80px; }
+    .cs-hero { padding-top: 32px; }
+    .cs-title { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <nav>
+    <a class="nav-name" href="index.html">← Index</a>
+    <div class="nav-links">
+      <div class="nav-section-label">Sections</div>
+      <a href="#concept" class="active">Concept</a>
+      <a href="#weather">Weather</a>
+      <a href="#wallet">Wallet</a>
+      <a href="#timer">Timer</a>
+      <a href="#lock-home">Lock & Home</a>
+      <a href="#next-steps">Next Steps</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ── SECTION 1: HERO / CONCEPT ── -->
+    <div class="cs-hero cs-section" id="concept" style="border-bottom: none; margin-bottom: 100px;">
+      <p style="font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: var(--sp-2);">Advanced Interface Design — Spring 2025</p>
+      <h1 class="cs-title">Float OS</h1>
+      <div class="cs-meta">
+        <span class="cs-tag">UI Design</span>
+        <span class="cs-tag">OS Design</span>
+        <span class="cs-year">2025</span>
+      </div>
+      <p class="cs-subtitle">Most operating systems optimize for efficiency. Float OS asks a different question: what if your phone felt like a space you actually wanted to be in? An exploration of calmness, depth, and warmth as core design values.</p>
+    </div>
+
+    <!-- ── SECTION 2: DESIGN LANGUAGE ── -->
+    <section class="cs-section" id="design-language">
+      <div class="section-label">Design Language</div>
+      <h2>Soft, breathable, warm</h2>
+      <p style="max-width: 640px;">The visual language draws from Scandinavian interior design and frosted glass materiality — organic shapes, grainy texture, and a palette of muted terracotta, dusty blue, and warm cream. Nothing is sharp. Nothing is cold.</p>
+      <div style="display:flex; gap:12px; margin-top:32px;">
+        <div style="width:56px;height:56px;border-radius:8px;background:#A8B8C4;"></div>
+        <div style="width:56px;height:56px;border-radius:8px;background:#F0E6CC;"></div>
+        <div style="width:56px;height:56px;border-radius:8px;background:#D4845A;"></div>
+        <div style="width:56px;height:56px;border-radius:8px;background:#C8936E;"></div>
+        <div style="width:56px;height:56px;border-radius:8px;background:#3D1A1A;"></div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 3: WEATHER ── -->
+    <section class="cs-section" id="weather">
+      <div class="section-label">Weather</div>
+      <div style="display:grid; grid-template-columns:2fr 6fr; gap:40px; align-items:start; margin-top:24px;">
+        <div>
+          <h2>A sky that shifts with the forecast</h2>
+          <p>The weather app replaces icon-based condition indicators with abstract, painterly backgrounds that shift in color and form — warm terracotta for sun, cool blue-grey for rain. The interface recedes so the atmosphere takes over.</p>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 4: WALLET ── -->
+    <section class="cs-section" id="wallet">
+      <div class="section-label">Wallet</div>
+      <div style="display:grid; grid-template-columns:2fr 6fr; gap:40px; align-items:start; margin-top:24px;">
+        <div>
+          <h2>Cards that float, not stack</h2>
+          <p>The digital wallet reimagines card management as a soft, layered experience. Cards surface gently, selection is toggled rather than tapped aggressively, and the grainy gradient background gives the interface a tactile, almost physical quality.</p>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 5: TIMER ── -->
+    <section class="cs-section" id="timer">
+      <div class="section-label">Timer</div>
+      <div style="display:grid; grid-template-columns:2fr 6fr; gap:40px; align-items:start; margin-top:24px;">
+        <div>
+          <h2>Time made visible</h2>
+          <p>The timer replaces the conventional progress ring with a field of hand-drawn tick marks that fade as time elapses — a quieter, more poetic way to feel time passing. The blurred shape background shifts subtly as the countdown moves.</p>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center; visibility:hidden;">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 6: LOCK & HOME ── -->
+    <section class="cs-section" id="lock-home">
+      <div class="section-label">Lock & Home</div>
+      <div style="display:grid; grid-template-columns:2fr 6fr; gap:40px; align-items:start; margin-top:24px;">
+        <div>
+          <h2>The first thing you see</h2>
+          <p>The lock screen uses the same abstract shape language as the rest of the OS — organic blobs of terracotta, cream, and dusty blue layered over a grainy field. The time sits inside the composition rather than above it.</p>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <div style="flex:1; aspect-ratio:9/19.5; background:#E8E8E4; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;">VIDEO PLACEHOLDER</span>
+          </div>
+          <div style="flex:1; aspect-ratio:9/19.5; visibility:hidden;"></div>
+          <div style="flex:1; aspect-ratio:9/19.5; visibility:hidden;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 7: NEXT STEPS ── -->
+    <section class="cs-section" id="next-steps">
+      <div class="section-label">Next Steps</div>
+      <h2>What I'd push further</h2>
+      <p style="max-width: 640px;">Given more time, I'd explore animation more deeply — the shapes should breathe and shift slowly in real time, not just sit still. I'm also curious about a sound layer that matches the visual softness: subtle, ambient, barely-there. And a dark mode that uses shadow depth rather than color inversion to define space.</p>
+
+      <div class="footer-line">
+        <span>Float OS — Lanna Hu, 2025</span>
+        <a href="index.html">← Back to Index</a>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.cs-section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0px -65% 0px', threshold: 0 });
+
+  sections.forEach(s => spy.observe(s));
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
