@@ -32,7 +32,7 @@
     --hero-offset: 180px;   /* hero h1:  40(pad) + 180 = 220px from top */
 
     /* colors */
-    --bg:             #F3F3F1;
+    --bg:             #ffffff;
     --ink:            #1e1e1c;
     --ink-muted:      #3f3f3a;
     --ink-faint:      #3f3f3a;
@@ -208,11 +208,11 @@
 
   .hero-bio {
     font-family: var(--sans);
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 400;
     line-height: 1.8;
-    color: var(--ink-muted);
-    max-width: 640px;
+    color: var(--ink);
+    max-width: 780px;
   }
 
   /* ── STICKY NOTES ── */
@@ -277,7 +277,7 @@
   }
 
   /* ── VERTICAL STICKY CAROUSEL ── */
-  .projects-outer { margin-top: 200px; margin-bottom: 200px; }
+  .projects-outer { margin-top: 160px; margin-bottom: 200px; }
 
   .projects-sticky {
     display: flex;
@@ -305,7 +305,7 @@
   .projects-sticky.label-visible .section-label::after { transform: scaleX(1); }
 
   /* Gap between divider and first project */
-  .projects-track-wrap { padding-top: 60px; }
+  .projects-track-wrap { padding-top: 20px; }
 
   /* Project slides — start hidden, fade up on scroll */
   .project-slide {
@@ -958,7 +958,7 @@
       <p id="lightbox-caption"></p>
     </div>
 
-    <div id="about-section" class="section-label" style="margin-top: 200px;">Now</div>
+    <div id="about-section" class="section-label" style="margin-top: 160px;">Now</div>
     <div class="annotation-strip">
       <div class="annotation-item">
         <div class="annotation-label">Currently reading</div>
@@ -1001,9 +1001,17 @@
     'I care about details.',
     'I make things feel right.',
   ];
+  const phraseColors = ['#CBE995', '#AFCFF0', '#F9D680', '#F9B4C6'];
   const el  = document.getElementById('typed-text');
   const cur = document.getElementById('cursor');
+  const typewriterLine = document.querySelector('.typewriter-line');
   let phraseIdx = 0;
+
+  function applyColor(idx) {
+    const c = phraseColors[idx];
+    typewriterLine.style.color = c;
+    cur.style.background = c;
+  }
 
   function typePhrase(phrase, cb) {
     let i = 0;
@@ -1021,6 +1029,7 @@
   }
 
   function loop() {
+    applyColor(phraseIdx);
     typePhrase(phrases[phraseIdx], () => {
       // pause, then erase — first phrase pauses longer
       setTimeout(() => {
