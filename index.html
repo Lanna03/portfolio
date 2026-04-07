@@ -6,7 +6,7 @@
 <title>Lanna Hu</title>
 <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -32,7 +32,7 @@
     --hero-offset: 180px;   /* hero h1:  40(pad) + 180 = 220px from top */
 
     /* colors */
-    --bg:             #ffffff;
+    --bg:             #FFFFFD;
     --ink:            #1e1e1c;
     --ink-muted:      #3f3f3a;
     --ink-faint:      #3f3f3a;
@@ -670,6 +670,7 @@
   .typewriter-line {
     font-family: 'Playfair Display', serif;
     font-style: italic;
+    font-weight: 500;
     color: var(--ink-muted);
   }
 
@@ -1002,7 +1003,7 @@
     'I care about details.',
     'I make things feel right.',
   ];
-  const phraseColors = ['#CBE995', '#AFCFF0', '#F9D680', '#F9B4C6'];
+  const phraseColors = ['#BFE184', '#AFCFF0', '#F9D680', '#F9B4C6'];
   const el  = document.getElementById('typed-text');
   const cur = document.getElementById('cursor');
   const typewriterLine = document.querySelector('.typewriter-line');
