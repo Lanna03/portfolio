@@ -768,8 +768,7 @@
   /* ── DESIGN DECISION ROWS ── */
   .privacy-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 0.8fr));
-    justify-content: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6rem 3rem;
     margin-top: var(--sp-4);
   }
@@ -849,13 +848,13 @@
   /* ── SURVEY CAROUSEL ── */
   .cs-survey-split {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(10, 1fr);
     gap: var(--gap);
     margin: var(--sp-5) 0;
     align-items: start;
   }
-  .cs-survey-text { grid-column: 1 / span 3; }
-  .cs-survey-carousel { grid-column: 4 / span 5; }
+  .cs-survey-video { grid-column: 3 / span 4; align-self: start; }
+  .cs-survey-text { grid-column: 7 / span 4; align-self: start; }
   .cs-carousel-container {
     position: relative;
     border: 0.5px solid var(--rule);
@@ -1049,13 +1048,13 @@
       <div class="cs-research-block">
         <div class="cs-primary-split">
           <div class="cs-primary-image">
-            <div class="cs-research-label" style="margin-bottom: var(--sp-2);">Primary Research — Navigator interviews</div>
             <div class="cs-image" style="margin-top: 0;">
               <img src="images/salud-primary.png" alt="Primary research — navigator interviews" style="width: 100%; height: auto; display: block;">
             </div>
           </div>
           <div class="cs-primary-text">
-            <p style="max-width: 100%;">
+            <div class="cs-research-label" style="margin-bottom: var(--sp-2);">Primary Research — Navigator interviews</div>
+            <p style="max-width: 100%; font-size: 16px; line-height: 1.85; color: #1e1e1c;">
               We interviewed Community Cancer Navigators with the Cedars-Sinai Antelope Valley program. What we found: the navigators themselves were the most trusted channel — but the materials they were given to deliver were working against them.
             </p>
           </div>
@@ -1166,37 +1165,15 @@
       <div class="cs-research-block">
         <div class="cs-research-label">The Survey — 10 questions, designed by Lanna</div>
         <div class="cs-survey-split">
+          <div class="cs-survey-video">
+            <video src="images/salud-question-screen.mp4" autoplay loop muted playsinline style="width:100%"></video>
+          </div>
           <div class="cs-survey-text">
-            <p style="max-width: 100%;">
+            <p style="max-width: 100%; font-size: 16px; line-height: 1.5;">
               Each of the 10 survey questions was designed to feel like a conversation, not a clinical assessment. I designed the UI for all 10 screens and the per-question AI feedback that appears after each answer — giving users a moment of gentle acknowledgment before moving forward.
             </p>
           </div>
-          <div class="cs-survey-carousel">
-            <div class="cs-carousel-container">
-              <div class="cs-carousel-placeholder" id="survey-placeholder">
-                survey screen — Q<span id="survey-q-num">1</span>
-              </div>
-              <div class="cs-carousel-nav">
-                <button class="cs-carousel-btn" onclick="surveyPrev()">← prev</button>
-                <span class="cs-carousel-counter"><span id="survey-current">1</span> / 10</span>
-                <button class="cs-carousel-btn" onclick="surveyNext()">next →</button>
-              </div>
-            </div>
-          </div>
         </div>
-        <script>
-          let surveyQ = 1;
-          function surveyNext() {
-            if (surveyQ < 10) surveyQ++;
-            document.getElementById('survey-q-num').textContent = surveyQ;
-            document.getElementById('survey-current').textContent = surveyQ;
-          }
-          function surveyPrev() {
-            if (surveyQ > 1) surveyQ--;
-            document.getElementById('survey-q-num').textContent = surveyQ;
-            document.getElementById('survey-current').textContent = surveyQ;
-          }
-        </script>
       </div>
 
       <div style="margin-bottom: var(--sp-8);">
@@ -1223,8 +1200,8 @@
               <p class="cs-decision-body">A clear call-to-action allows users to connect with a health navigator for questions or next steps — without requiring additional data sharing or digital follow-up.</p>
             </div>
           </div>
-          <div class="privacy-grid-card">
-            <img src="images/salud-summary-ticket.png" alt="Summary ticket showing no personal data" style="width: 100%; height: 420px; object-fit: contain; object-position: left top; display: block; background: #ffffff;">
+          <div class="privacy-grid-card" style="align-self: start;">
+            <img src="images/salud-summary-ticket.png" alt="Summary ticket showing no personal data" style="width: 100%; height: 507.82px; object-fit: contain; object-position: left top; display: block; background: #ffffff;">
             <div class="privacy-grid-card-text">
               <div class="cs-decision-title">AI output contains no personal data</div>
               <p class="cs-decision-body">The printed and electronic summaries include no identifiable information. All recommendations are based only on user responses, not stored records.</p>
@@ -1283,9 +1260,7 @@
       </p>
 
       <div class="cs-research-block">
-        <div class="cs-image" style="margin-top: var(--sp-4);">
-          <img src="images/salud-outcome.png" alt="Physical deliverables — tote bag, keychain, mirror, cookie, kiosk enclosure" style="width: 100%; height: auto; display: block;">
-        </div>
+        <img src="images/salud-outcome.png" alt="Physical deliverables — tote bag, keychain, mirror, cookie, kiosk enclosure" style="width: 100%; height: auto; display: block; border-radius: 3px; margin-top: var(--sp-4);">
         <p class="cs-caption">Physical touchpoints — tote bag, keychain, mirror, cookie, summary ticket, iPad kiosk enclosure</p>
       </div>
     </section>
