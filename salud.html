@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  video { border: none; outline: none; display: block; }
 
   :root {
     --gutter:       40px;
@@ -853,8 +854,8 @@
     margin: var(--sp-5) 0;
     align-items: start;
   }
-  .cs-survey-video { grid-column: 3 / span 4; align-self: start; }
-  .cs-survey-text { grid-column: 7 / span 4; align-self: start; }
+  .cs-survey-video { grid-column: 1 / span 5; align-self: start; }
+  .cs-survey-text { grid-column: 6 / span 5; align-self: start; }
   .cs-carousel-container {
     position: relative;
     border: 0.5px solid var(--rule);
@@ -1166,7 +1167,7 @@
         <div class="cs-research-label">The Survey — 10 questions, designed by Lanna</div>
         <div class="cs-survey-split">
           <div class="cs-survey-video">
-            <video src="images/salud-question-screen.mp4" autoplay loop muted playsinline style="width:100%"></video>
+            <video src="images/salud-question-screen.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block; border-radius:3px;"></video>
           </div>
           <div class="cs-survey-text">
             <p style="max-width: 100%; font-size: 16px; line-height: 1.5;">
@@ -1200,8 +1201,8 @@
               <p class="cs-decision-body">A clear call-to-action allows users to connect with a health navigator for questions or next steps — without requiring additional data sharing or digital follow-up.</p>
             </div>
           </div>
-          <div class="privacy-grid-card" style="align-self: start;">
-            <img src="images/salud-summary-ticket.png" alt="Summary ticket showing no personal data" style="width: 100%; height: 507.82px; object-fit: contain; object-position: left top; display: block; background: #ffffff;">
+          <div class="privacy-grid-card">
+            <video src="images/salud-summary.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block; border-radius:3px;"></video>
             <div class="privacy-grid-card-text">
               <div class="cs-decision-title">AI output contains no personal data</div>
               <p class="cs-decision-body">The printed and electronic summaries include no identifiable information. All recommendations are based only on user responses, not stored records.</p>
