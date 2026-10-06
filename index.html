@@ -382,8 +382,8 @@
   .view[hidden] { display: none !important; }
 
   /* Play / About first line top-aligns with hero h1 cap-top */
-  #view-play  > .m-grid > .m-content,
-  #view-about > .m-grid > .m-content {
+  .view[data-view="play"]  > .m-grid > .m-content,
+  .view[data-view="about"] > .m-grid > .m-content {
     padding-top: var(--hero-offset);
   }
 
@@ -880,7 +880,10 @@
 
             <article class="work-card" id="work-card-2">
               <a href="floatos.html" class="work-card-link">
-                <img class="work-card-img" src="images/floatos-cover.png" alt="Float OS" width="7680" height="4320" decoding="async" loading="lazy">
+                <picture>
+                  <source srcset="images/floatos-cover-2400.webp" type="image/webp">
+                  <img class="work-card-img" src="images/floatos-cover.png" alt="Float OS" width="2400" height="1350" decoding="async" loading="lazy">
+                </picture>
                 <div class="work-card-info">
                   <div class="work-card-left">
                     <span class="work-card-title">Float OS</span>
@@ -908,32 +911,47 @@
               <div class="play-item"
                    data-images="images/type-leefriendlander.jpg,images/type-leefriendlander2.jpg,images/type-leefriendlander3.jpg,images/type-leefriendlander4.jpg,images/type-leefriendlander5.jpg,images/type-leefriendlander6.jpg,images/type-leefriendlander7.jpg,images/type-leefriendlander8.jpg,images/type-leefriendlander9.jpg"
                    data-caption="Brochure of Lee Friedlander">
-                <img src="images/type-leefriendlander.jpg" alt="Lee Friedlander Brochure">
+                <picture>
+                  <source srcset="images/type-leefriendlander-2400.webp" type="image/webp">
+                  <img src="images/type-leefriendlander.jpg" alt="Lee Friedlander Brochure" width="1855" height="2400">
+                </picture>
               </div>
               <div class="play-item"
                    data-images="images/type-makeplay.jpg"
                    data-caption="Magazine Cover Design">
-                <img src="images/type-makeplay.jpg" alt="Makeplay Magazine">
+                <picture>
+                  <source srcset="images/type-makeplay-2400.webp" type="image/webp">
+                  <img src="images/type-makeplay.jpg" alt="Makeplay Magazine" width="2400" height="1553">
+                </picture>
               </div>
               <div class="play-item"
                    data-images="images/render.png"
                    data-caption="From Earth to Sky — 3D modeling and rendering.">
-                <img src="images/render.png" alt="From Earth to Sky">
+                <img src="images/render.png" alt="From Earth to Sky" width="2200" height="1375">
               </div>
               <div class="play-item"
                    data-images="images/type-atthethreshold.jpg"
                    data-caption="a Movie Series Poster">
-                <img src="images/type-atthethreshold.jpg" alt="At the Threshold">
+                <picture>
+                  <source srcset="images/type-atthethreshold-2400.webp" type="image/webp">
+                  <img src="images/type-atthethreshold.jpg" alt="At the Threshold" width="1600" height="2400">
+                </picture>
               </div>
               <div class="play-item"
                    data-images="images/type-helvetica.jpg,images/type-helvetica2.jpg,images/type-helvetica3.jpg,images/type-helvetica4.jpg,images/type-helvetica5.jpg,images/type-helvetica6.jpg,images/type-helvetica7.jpg,images/type-helvetica8.jpg,images/type-helvetica9.jpg,images/type-helvetica10.jpg,images/type-helvetica11.jpg,images/type-helvetica12.jpg,images/type-helvetica13.jpg"
                    data-caption="Typography Specimen">
-                <img src="images/type-helvetica.jpg" alt="Helvetica Specimen">
+                <picture>
+                  <source srcset="images/type-helvetica-2400.webp" type="image/webp">
+                  <img src="images/type-helvetica.jpg" alt="Helvetica Specimen" width="2400" height="2400">
+                </picture>
               </div>
               <div class="play-item"
                    data-images="images/type-type2poster.jpg"
                    data-caption="Typography & Composition — ArtCenter Type 2, Spring 2025.">
-                <img src="images/type-type2poster.jpg" alt="Type 2 Poster">
+                <picture>
+                  <source srcset="images/type-type2poster-2400.webp" type="image/webp">
+                  <img src="images/type-type2poster.jpg" alt="Type 2 Poster" width="1607" height="2400">
+                </picture>
               </div>
 
             </div>
@@ -1409,6 +1427,7 @@
   const FLIP_DUR   = SLOW_FLIP ? 4400 : 1100;
   let currentView  = null;
   let peelStage    = null;
+  let peelFinish   = null;
 
   // Cubic-bezier(0.45,0,0.2,1) solver for peel easing
   const peelEase = (() => {
@@ -1428,157 +1447,138 @@
     };
   })();
 
-  // CC Page Turn corner peel — bottom-right corner lifts and sweeps toward upper-left.
-  // Geometry: C = bottom-right, U = normalize(-1,-0.5), M = C + U*(d/2), fold ⊥ U.
-  // clip-path on flapInner (clipped to C-side, then reflected over it) per spec.
-  function createPeel({ stage, oldNode, R }) {
-    const el = (css) => { const n = document.createElement('div'); n.style.cssText = 'position:absolute;' + (css||''); return n; };
-
-    // Layers: newShadow (shadow on revealed page), kept (flat old page), flapOuter (drop-shadow wrapper),
-    // flapInner (clip + reflection), flapPaper (white back), flapGhost (10% old-page), flapShade (curl)
-    const newShadow  = el('inset:0;pointer-events:none;');   stage.appendChild(newShadow);
-    const kept       = el('inset:0;');                       stage.appendChild(kept);
-    const flapOuter  = el('inset:0;');                       stage.appendChild(flapOuter);
-    const flapInner  = el('inset:0;will-change:transform;'); flapOuter.appendChild(flapInner);
-    const flapPaper  = el('inset:0;background:#fff;');       flapInner.appendChild(flapPaper);
-    const flapGhost  = oldNode.cloneNode(true);
-    flapGhost.style.cssText += ';opacity:.10;filter:none;';  flapInner.appendChild(flapGhost);
-    const flapShade  = el('pointer-events:none;');           flapInner.appendChild(flapShade);
-    const keptInner  = oldNode.cloneNode(true);              kept.appendChild(keptInner);
-    const shadowStrip = el('pointer-events:none;');          newShadow.appendChild(shadowStrip);
-
-    // Direction U = normalize(-1, -0.5) — from bottom-right toward upper-left
-    const _l  = Math.hypot(-1, -0.5);
-    const Ux  = -1 / _l, Uy = -0.5 / _l;           // ≈ (-0.894, -0.447)
-    const ang = Math.atan2(Uy, Ux) * 180 / Math.PI; // strip rotation angle
-    const Cx  = R.x + R.w, Cy = R.y + R.h;          // dragged corner (bottom-right)
-    const dFinal = 2*(R.w*Math.abs(Ux) + R.h*Math.abs(Uy)) + 160;
-    const RADIUS = 56;
-    // Reflection matrix components (constant for fixed U)
-    const mA = 1 - 2*Ux*Ux, mB = -2*Ux*Uy, mD = 1 - 2*Uy*Uy; // ≈ -0.6, 0.8, 0.6
-
-    const rectPts = [
-      [R.x,     R.y      ],
-      [R.x+R.w, R.y      ],
-      [R.x+R.w, R.y+R.h  ],
-      [R.x,     R.y+R.h  ],
-    ];
-
-    function clipHalf(Mx, My, sign) {
-      const out = [];
-      for (let i = 0; i < 4; i++) {
-        const a = rectPts[i], b = rectPts[(i+1)%4];
-        const sa = sign*((a[0]-Mx)*Ux + (a[1]-My)*Uy);
-        const sb = sign*((b[0]-Mx)*Ux + (b[1]-My)*Uy);
-        if (sa >= 0) out.push(a);
-        if ((sa >= 0) !== (sb >= 0)) {
-          const f = sa / (sa - sb);
-          out.push([a[0] + f*(b[0]-a[0]), a[1] + f*(b[1]-a[1])]);
-        }
-      }
-      return out;
+  // Corner page-peel, "rolled edge" version: only a band of the back of the page is visible along the fold.
+  function createPeel(opts){
+    const {stage, mainRect, oldNode} = opts;
+    const R = {x:mainRect.left, y:mainRect.top, w:mainRect.width, h:mainRect.height};
+    const U = (()=>{const v=[-1,-0.5];const l=Math.hypot(v[0],v[1]);return [v[0]/l,v[1]/l]})(); // peel direction
+    const C = [R.x+R.w, R.y+R.h];                       // dragged corner: bottom-right
+    const BAND = 200;                                   // visible width of the folded-over back side (px)
+    const dFinal = 2*(R.w*Math.abs(U[0])+R.h*Math.abs(U[1])+BAND*0.5)+80;
+    const el=(cls)=>{const d=document.createElement('div');d.className=cls;d.style.position='absolute';return d};
+    stage.innerHTML='';
+    const newShadow=el('pl-newshadow'), kept=el('pl-kept'), flapOuter=el('pl-flap'), flapInner=el('pl-flap-in'), flapPaper=el('pl-paper'), flapShade=el('pl-shade');
+    const keptInner=oldNode.cloneNode(true);
+    stage.append(newShadow,kept,flapOuter); kept.appendChild(keptInner); flapOuter.appendChild(flapInner); flapInner.append(flapPaper,flapShade);
+    flapInner.style.willChange='transform'; // lives only as long as the stage
+    const rect=[[R.x,R.y],[R.x+R.w,R.y],[R.x+R.w,R.y+R.h],[R.x,R.y+R.h]];
+    const clip=(pts,M,sign,c)=>{ // keep sign*s(X)+c >= 0, s=(X-M)·U  (Sutherland-Hodgman)
+      const f=p=>sign*((p[0]-M[0])*U[0]+(p[1]-M[1])*U[1])+c; const out=[];
+      for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length],fa=f(a),fb=f(b);
+        if(fa>=0)out.push(a); if((fa>=0)!==(fb>=0)){const k=fa/(fa-fb);out.push([a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k]);}}
+      return out;};
+    const poly=pts=>pts.length<3?'polygon(0 0,0 0,0 0)':'polygon('+pts.map(p=>p[0].toFixed(1)+'px '+p[1].toFixed(1)+'px').join(',')+')';
+    const ang=Math.atan2(U[1],U[0])*180/Math.PI;
+    const strip=(node,M,from,to,bg)=>{node.style.cssText+=';left:'+M[0]+'px;top:'+M[1]+'px;width:'+(to-from)+'px;height:'+((R.w+R.h)*2)+'px;margin-top:'+(-(R.w+R.h))+'px;transform-origin:0 50%;transform:rotate('+ang+'deg) translateX('+from+'px);background:'+bg;};
+    flapPaper.style.cssText+=';inset:0;background:#fff';
+    flapShade.style.cssText+=';pointer-events:none';
+    function set(t){
+      const d=t*dFinal, M=[C[0]+U[0]*d/2, C[1]+U[1]*d/2];
+      kept.style.cssText+=';inset:0;clip-path:'+poly(clip(rect,M,+1,0));
+      const band=clip(clip(rect,M,-1,0),M,+1,BAND);               // -BAND <= s <= 0, pre-reflection
+      flapInner.style.cssText+=';inset:0;clip-path:'+poly(band);
+      const k=2*(M[0]*U[0]+M[1]*U[1]);
+      flapInner.style.transformOrigin='0 0';
+      flapInner.style.transform='matrix('+(1-2*U[0]*U[0])+','+(-2*U[0]*U[1])+','+(-2*U[0]*U[1])+','+(1-2*U[1]*U[1])+','+(k*U[0])+','+(k*U[1])+')';
+      // cylinder shading across the band: s from -BAND (far edge) to 0 (fold)
+      strip(flapShade,M,-BAND,0,'linear-gradient(to right,rgba(0,0,0,.20) 0%,rgba(0,0,0,.04) 14%,rgba(255,255,255,.0) 40%,rgba(255,255,255,.6) 62%,rgba(0,0,0,.06) 86%,rgba(0,0,0,.30) 100%)');
+      flapOuter.style.filter='drop-shadow(-8px 8px 12px rgba(0,0,0,.22))';
+      newShadow.style.cssText+=';inset:0;clip-path:'+poly(clip(rect,M,-1,0));
+      newShadow.innerHTML='';const s2=el('x');strip(s2,M,-100,0,'linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,.20))');newShadow.appendChild(s2);
     }
-
-    function poly(pts) {
-      if (pts.length < 3) return 'polygon(0px 0px,0px 0px,0px 0px)';
-      return 'polygon(' + pts.map(p => p[0].toFixed(1) + 'px ' + p[1].toFixed(1) + 'px').join(',') + ')';
-    }
-
-    // Place a strip at M, rotated to fold direction, shifted by `from` along U
-    function strip(node, Mx, My, from, to, bg) {
-      node.style.cssText = 'position:absolute;left:' + Mx + 'px;top:' + My + 'px;width:' + (to-from) + 'px;height:' + (R.w+R.h)*2 + 'px;margin-top:' + (-(R.w+R.h)) + 'px;transform-origin:0 50%;transform:rotate(' + ang + 'deg) translateX(' + from + 'px);background:' + bg + ';pointer-events:none';
-    }
-
-    return {
-      set(t) {
-        const d  = t * dFinal;
-        const Mx = Cx + Ux * d/2, My = Cy + Uy * d/2;
-        const keptPts = clipHalf(Mx, My, +1);  // s >= 0: flat old page (far from C)
-        const flapPts = clipHalf(Mx, My, -1);  // s <= 0: folded flap (C-side)
-
-        // Flat old page, clipped to keptPts
-        kept.style.clipPath = poly(keptPts);
-
-        // Shadow on the revealed new page (clipped to flapPts, no transform)
-        newShadow.style.clipPath = poly(flapPts);
-        strip(shadowStrip, Mx, My, -90, 0, 'linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,.20))');
-
-        // Folded flap: clip flapInner to flapPts first, then apply reflection —
-        // the clipped white/ghost visual reflects over the fold onto the keptPts side.
-        flapInner.style.clipPath = poly(flapPts);
-        const k = 2*(Mx*Ux + My*Uy);
-        flapInner.style.transform = 'matrix(' + mA + ',' + mB + ',' + mB + ',' + mD + ',' + (k*Ux) + ',' + (k*Uy) + ')';
-
-        // Curl shading inside flap (pre-reflection, toward C = negative-U side of M)
-        strip(flapShade, Mx, My, -RADIUS*2, 0, 'linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(255,255,255,.55) 38%,rgba(0,0,0,.10) 72%,rgba(0,0,0,.34) 100%)');
-
-        // Drop-shadow on the whole reflected flap (no clip on flapOuter)
-        flapOuter.style.filter = d > 4 ? 'drop-shadow(-10px 10px 14px rgba(0,0,0,.22))' : 'none';
-      }
-    };
+    set(0);
+    return {set,dFinal};
   }
 
-  function makeOldNode(viewId, scrollOffsetY) {
-    const viewEl  = getViewEl(viewId);
-    const main    = document.querySelector('main');
-    const mainRect = main.getBoundingClientRect();
+  // Visual proxy of a whole page (nav + view + footer + dot paper) at the viewport size.
+  // Built before any DOM swap, with ids stripped and everything inert.
+  function makePeelProxy(viewId, scrollOffsetY) {
+    const W = window.innerWidth, H = window.innerHeight;
+    const nav  = document.querySelector('nav');
+    const main = document.querySelector('main');
     const node = document.createElement('div');
-    node.style.cssText = 'position:absolute;left:' + mainRect.left + 'px;top:0;width:' + mainRect.width + 'px;height:' + window.innerHeight + 'px;overflow:hidden;background:var(--bg)';
-    // Reproduce dot pattern offset by scrollY
+    node.style.cssText = 'position:absolute;left:0;top:0;width:' + W + 'px;height:' + H + 'px;overflow:hidden;background:var(--bg)';
+
+    // Dot paper (same as body::before), offset by the scroll position
     const dots = document.createElement('div');
-    dots.style.cssText = 'position:absolute;top:' + (-scrollOffsetY) + 'px;left:0;right:0;height:900px;background-image:radial-gradient(circle,rgba(30,30,28,.20) 1px,transparent 1.2px);background-size:24px 24px;mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.6) 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.6) 45%,transparent 100%);pointer-events:none;z-index:0';
+    dots.style.cssText = 'position:absolute;left:0;right:0;top:' + (-scrollOffsetY) + 'px;height:900px;background-image:radial-gradient(circle,rgba(30,30,28,.20) 1px,transparent 1.2px);background-size:24px 24px;mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.6) 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.6) 45%,transparent 100%);pointer-events:none;z-index:0';
     node.appendChild(dots);
-    const clone = viewEl.cloneNode(true);
-    clone.removeAttribute('id');
-    clone.removeAttribute('hidden');
-    clone.setAttribute('aria-hidden', 'true');
-    clone.setAttribute('inert', '');
-    clone.style.cssText = 'position:absolute;inset:0;overflow:hidden;transform:translateY(' + (-scrollOffsetY) + 'px);z-index:1';
-    clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
-    clone.querySelectorAll('button').forEach(b => { b.tabIndex = -1; b.disabled = true; });
-    clone.querySelectorAll('a').forEach(a => { a.tabIndex = -1; });
-    clone.querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
-    clone.querySelectorAll('video').forEach(v => v.pause && v.pause());
-    // Freeze CSS animations: anything with opacity:0 initial state (e.g. main { opacity:0; animation:fadeIn })
-    clone.querySelectorAll('main, .m-content, .m-grid').forEach(el => {
-      el.style.animation = 'none';
-      el.style.opacity = '1';
-    });
-    node.appendChild(clone);
+
+    // Nav at its current on-screen rect (no sticky), active link set for this view
+    const nr = nav.getBoundingClientRect();
+    const navClone = nav.cloneNode(true);
+    navClone.style.cssText = 'position:absolute;margin:0;left:' + nr.left + 'px;top:' + nr.top + 'px;width:' + nr.width + 'px;height:' + nr.height + 'px;z-index:2';
+    navClone.querySelectorAll('a').forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+    const act = navClone.querySelector('#nav-' + viewId);
+    if (act) { act.classList.add('active'); act.setAttribute('aria-current', 'page'); }
+    node.appendChild(navClone);
+
+    // Main column: shallow main + .views + deep view clone + footer, in normal flow, shifted by -scroll
+    const mr   = main.getBoundingClientRect();
+    const wrap = main.cloneNode(false);
+    wrap.style.cssText = 'position:absolute;margin:0;left:' + mr.left + 'px;top:' + (mr.top + window.scrollY - scrollOffsetY) + 'px;width:' + mr.width + 'px;animation:none;opacity:1;z-index:1';
+    const views = main.querySelector('.views').cloneNode(false);
+    const view  = getViewEl(viewId).cloneNode(true);
+    view.removeAttribute('hidden');
+    view.querySelectorAll('main, .m-content, .m-grid').forEach(e => { e.style.animation = 'none'; e.style.opacity = '1'; });
+    views.appendChild(view);
+    wrap.appendChild(views);
+    const footer = main.querySelector('.footer-line');
+    if (footer) wrap.appendChild(footer.cloneNode(true));
+    node.appendChild(wrap);
+
+    node.querySelectorAll('[id]').forEach(e => e.removeAttribute('id'));
+    node.setAttribute('aria-hidden', 'true');
+    node.setAttribute('inert', '');
+    node.querySelectorAll('a,button,input,textarea,select,[tabindex]').forEach(e => { e.tabIndex = -1; });
+    node.querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
+    node.querySelectorAll('video').forEach(v => v.pause && v.pause());
     return node;
   }
 
-  function doPeel(from, to, forward, oldScrollY, onDone) {
-    const main     = document.querySelector('main');
-    const mainRect = main.getBoundingClientRect();
-    // Content rect in viewport coords (top=0 so the stage covers full vh)
-    const R = { x: mainRect.left, y: 0, w: mainRect.width, h: window.innerHeight };
+  function doPeel(forward, oldNode, onDone) {
+    const stage = document.createElement('div');
+    stage.id = 'peel-stage';
+    stage.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(stage);
+    peelStage = stage;
 
-    peelStage = document.createElement('div');
-    peelStage.id = 'peel-stage';
-    document.body.appendChild(peelStage);
-
-    const oldNode = makeOldNode(forward ? from : to, forward ? oldScrollY : 0);
-    const peel    = createPeel({ stage: peelStage, oldNode, R });
-
-    // Start at correct t: forward 0→1, back 1→0
-    peel.set(forward ? 0 : 1);
-
-    let t0 = null;
-    function frame(now) {
-      if (!peelStage) return;
-      if (t0 === null) t0 = now;
-      const rawT   = Math.min(1, (now - t0) / FLIP_DUR);
-      const easedT = peelEase(rawT);
-      peel.set(forward ? easedT : 1 - easedT);
-      if (rawT < 1) {
-        requestAnimationFrame(frame);
-      } else {
-        if (onDone) onDone();
-        if (peelStage) { peelStage.remove(); peelStage = null; }
+    let raf = 0, finished = false;
+    // Jump to the end state: swap the DOM (back only) and drop the stage in the same frame
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      cancelAnimationFrame(raf);
+      try { if (onDone) onDone(); }
+      finally {
+        stage.remove();
+        if (peelStage === stage) peelStage = null;
+        if (peelFinish === finish) peelFinish = null;
       }
+    };
+    peelFinish = finish;
+
+    let peel;
+    try {
+      peel = createPeel({ stage, mainRect: { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight }, oldNode });
+      peel.set(forward ? 0 : 1);
+    } catch (e) { console.error('peel:', e); finish(); return; }
+
+    // Accumulated clock: one long frame (e.g. image decode) advances the peel by at most 50ms
+    let last = null, elapsed = 0;
+    function frame(now) {
+      if (finished) return;
+      try {
+        if (last === null) { last = now; }
+        else { elapsed += Math.min(now - last, 50); last = now; }
+        const rawT = Math.min(1, elapsed / FLIP_DUR);
+        const t = peelEase(rawT);
+        peel.set(forward ? t : 1 - t);
+        if (rawT < 1) raf = requestAnimationFrame(frame);
+        else finish();
+      } catch (e) { console.error('peel:', e); finish(); }
     }
-    requestAnimationFrame(frame);
+    raf = requestAnimationFrame(frame);
   }
 
   function getViewEl(id) { return document.getElementById('view-' + id); }
@@ -1616,6 +1616,9 @@
   }
 
   function navigate(target, { push = true } = {}) {
+    // A running peel jumps to its end state first; navigations are never queued
+    if (peelFinish) peelFinish();
+
     if (target === currentView) {
       if (target === 'index') window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -1632,9 +1635,6 @@
         catCancel(); catState = 'idle'; catReset();
       }
     }
-
-    // Abort any running peel
-    if (peelStage) { peelStage.remove(); peelStage = null; }
 
     const rm      = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const narrow  = window.innerWidth <= 680;
@@ -1657,29 +1657,36 @@
       return;
     }
 
-    // FORWARD: swap DOM now, peel old page away
-    if (forward) {
+    // The proxy of the page that peels (FORWARD: the old page, BACK: the target page)
+    // is built before anything is swapped. If that fails, switch instantly.
+    let oldNode = null;
+    try { oldNode = makePeelProxy(forward ? from : target, forward ? oldScrollY : 0); }
+    catch (e) { console.error('peel:', e); }
+
+    // FORWARD: swap DOM now (new view + new nav state underneath), peel old page away
+    if (forward || !oldNode) {
       setViewDOM(target);
       window.scrollTo(0, 0);
+      applyNavState(target);
     }
-    // BACK: DOM stays on current view; swap happens in onDone
+    // BACK: DOM and nav state stay on the current view; swap happens in onDone
     currentView = target;
     document.title = VIEW_TITLES[target] || 'Lanna Hu';
-    applyNavState(target);
     if (push) {
       const hash = target === 'index' ? '' : '#' + target;
       history.pushState({ view: target }, '', location.pathname + (SLOW_FLIP ? '?slowflip' : '') + hash);
     }
-    if (forward) postNavSetup(target);
+    if (forward || !oldNode) postNavSetup(target);
+    if (!oldNode) return;
 
     const onDone = forward ? null : () => {
       setViewDOM(target);
       window.scrollTo(0, 0);
+      applyNavState(target);
       postNavSetup(target);
     };
 
-    try { doPeel(from, target, forward, oldScrollY, onDone); }
-    catch(e) { console.error('peel:', e); if (peelStage) { peelStage.remove(); peelStage = null; } if (onDone) onDone(); }
+    doPeel(forward, oldNode, onDone);
   }
 
   function postNavSetup(target) {
