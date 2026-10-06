@@ -302,6 +302,9 @@
     transform: scale(var(--card-inview-scale));
     transition: transform .7s cubic-bezier(.22,1,.36,1);
   }
+  #work-card-0.is-attop {
+    transition: none;
+  }
   @media (prefers-reduced-motion: reduce) {
     .work-card, .work-card.is-inview { transform: none; transition: none; }
   }
@@ -895,10 +898,7 @@
 
         <article class="work-card" id="work-card-1">
           <a href="knownow.html" class="work-card-link">
-            <picture>
-              <source srcset="images/Knownow_cover-2400.webp" type="image/webp">
-              <img class="work-card-img" src="images/Knownow_cover.png" alt="KnowNow" width="1600" height="900" decoding="async" loading="lazy">
-            </picture>
+            <img class="work-card-img" src="images/Knownow_cover.png" srcset="images/Knownow_cover-2400.webp 2400w" alt="KnowNow" width="1600" height="900" decoding="async" loading="lazy">
             <div class="work-card-info">
               <div class="work-card-left">
                 <span class="work-card-title">KnowNow</span>
@@ -1186,7 +1186,9 @@
     // Scroll listener: manage card 0 scale based on top-of-page threshold
     window.addEventListener('scroll', () => {
       if (!card0) return;
-      if (window.scrollY <= 8) {
+      const atTop = window.scrollY <= 8;
+      card0.classList.toggle('is-attop', atTop);
+      if (atTop) {
         card0.classList.remove('is-inview');
       } else if (card0Intersecting) {
         card0.classList.add('is-inview');
