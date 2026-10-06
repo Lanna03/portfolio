@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Float OS — Lanna Hu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -32,7 +32,6 @@
     --ink-faint: #3f3f3a;
     --rule:      #d6d5ce;
 
-    --serif: 'Libre Baskerville', serif;
     --sans:  'IBM Plex Sans', sans-serif;
     --mono:  'DM Mono', monospace;
   }
@@ -115,9 +114,10 @@
     color: var(--ink-faint);
   }
 
+  /* PROJECT DETAIL LAYOUT: nav col 1 · col 2 empty · main col 3–8 (span 6) · col 9–10 empty. All case-study pages use this. New project pages must copy this rule. */
   /* ── MAIN ── */
   main {
-    grid-column: 3 / span 8;
+    grid-column: 3 / span 6;
     min-width: 0;
     padding: 40px 0 120px;
     opacity: 0;
@@ -158,10 +158,10 @@
     letter-spacing: 0.04em;
   }
   .cs-title {
-    font-family: var(--serif);
-    font-size: 36px;
+    font-family: var(--sans);
+    font-size: 28px;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.3;
     color: var(--ink);
     letter-spacing: -0.01em;
     margin-bottom: var(--sp-3);
@@ -201,10 +201,10 @@
     scroll-margin-top: 80px;
   }
   .cs-section h2 {
-    font-family: var(--serif);
-    font-size: 28px;
+    font-family: var(--sans);
+    font-size: 24px;
     font-weight: 400;
-    line-height: 1.3;
+    line-height: 1.35;
     color: var(--ink);
     margin-bottom: var(--sp-3);
     letter-spacing: -0.01em;
@@ -212,10 +212,10 @@
   }
   .cs-section p {
     font-family: var(--sans);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     color: var(--ink);
-    line-height: 1.85;
+    line-height: 1.8;
     margin-bottom: var(--sp-3);
   }
   .cs-section p:last-child { margin-bottom: 0; }
@@ -250,6 +250,9 @@
 
   @media (max-width: 960px) {
     :root { --gutter: 24px; --gap: 16px; }
+    main { grid-column: 3 / span 8; }
+    main video { min-width: 0; flex-shrink: 1; }
+    .cs-section > div > div { min-width: 0; }
   }
   @media (max-width: 680px) {
     .page { grid-template-columns: 1fr; padding: 0 16px; }
@@ -267,7 +270,7 @@
     .nav-section-label { display: none; }
     main { grid-column: 1; padding: 0 0 80px; }
     .cs-hero { padding-top: 32px; }
-    .cs-title { font-size: 28px; }
+    .cs-title { font-size: 24px; }
   }
 </style>
 </head>

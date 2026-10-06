@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KnowNow — Lanna Hu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -32,7 +32,6 @@
     --ink-faint: #3f3f3a;
     --rule:      #d6d5ce;
 
-    --serif: 'Libre Baskerville', serif;
     --sans:  'IBM Plex Sans', sans-serif;
     --mono:  'DM Mono', monospace;
   }
@@ -115,9 +114,10 @@
     color: var(--ink-faint);
   }
 
+  /* PROJECT DETAIL LAYOUT: nav col 1 · col 2 empty · main col 3–8 (span 6) · col 9–10 empty. All case-study pages use this. New project pages must copy this rule. */
   /* ── MAIN ── */
   main {
-    grid-column: 3 / span 8;
+    grid-column: 3 / span 6;
     min-width: 0;
     padding: 40px 0 120px;
     opacity: 0;
@@ -158,20 +158,21 @@
     letter-spacing: 0.04em;
   }
   .cs-title {
-    font-family: var(--serif);
-    font-size: 36px;
+    font-family: var(--sans);
+    font-size: 28px;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.3;
     color: var(--ink);
     letter-spacing: -0.01em;
     margin-bottom: var(--sp-3);
   }
   .cs-subtitle {
     font-family: var(--sans);
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 400;
     color: var(--ink-muted);
-    line-height: 1.8;
+    line-height: 1.6;
+    letter-spacing: 0;
     max-width: 560px;
   }
   .cs-hero-image {
@@ -208,10 +209,10 @@
     scroll-margin-top: 80px;
   }
   .cs-section h2 {
-    font-family: var(--serif);
-    font-size: 28px;
+    font-family: var(--sans);
+    font-size: 24px;
     font-weight: 400;
-    line-height: 1.3;
+    line-height: 1.35;
     color: var(--ink);
     margin-bottom: var(--sp-3);
     letter-spacing: -0.01em;
@@ -219,10 +220,10 @@
   }
   .cs-section p {
     font-family: var(--sans);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     color: var(--ink);
-    line-height: 1.85;
+    line-height: 1.8;
     margin-bottom: var(--sp-3);
   }
   .cs-section p:last-child { margin-bottom: 0; }
@@ -281,11 +282,12 @@
     margin-bottom: var(--sp-1);
   }
   .cs-stat-number {
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: 28px;
     font-weight: 400;
     color: var(--ink);
     line-height: 1.2;
+    letter-spacing: -0.01em;
     margin-bottom: 4px;
   }
   .cs-stat-value {
@@ -434,6 +436,7 @@
 
   @media (max-width: 960px) {
     :root { --gutter: 24px; --gap: 16px; }
+    main { grid-column: 3 / span 8; }
   }
   @media (max-width: 680px) {
     .page { grid-template-columns: 1fr; padding: 0 16px; }
@@ -451,7 +454,7 @@
     .nav-section-label { display: none; }
     main { grid-column: 1; padding: 0 0 80px; }
     .cs-hero { padding-top: 32px; }
-    .cs-title { font-size: 28px; }
+    .cs-title { font-size: 24px; }
     .cs-split { grid-template-columns: 1fr; }
     .cs-decisions { grid-template-columns: 1fr; }
     .cs-persona { grid-template-columns: 1fr; }
@@ -560,7 +563,7 @@
 
       <!-- Insight Block 1 -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); align-items: start;">
-        <p style="font-family: var(--serif); font-size: 1.8rem; font-weight: 400; line-height: 1.4; color: var(--ink); max-width: none; margin-bottom: 0;">12,000 of 50,000 Asian residents in the evacuation zones needed language assistance — alerts came only in English and Spanish.</p>
+        <p style="font-family: var(--sans); font-size: 24px; font-weight: 400; line-height: 1.35; letter-spacing: -0.01em; color: var(--ink); max-width: none; margin-bottom: 0;">12,000 of 50,000 Asian residents in the evacuation zones needed language assistance — alerts came only in English and Spanish.</p>
         <div>
           <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">"Most of the alerts came through our phones eventually, but they were in English, and understanding them was hard for me... I ended up calling a friend from the cultural association to help translate."</p>
           <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— HUA LI</span>
@@ -569,7 +572,7 @@
 
       <!-- Insight Block 2 -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); align-items: start;">
-        <p style="font-family: var(--serif); font-size: 1.8rem; font-weight: 400; line-height: 1.4; color: var(--ink); max-width: none; margin-bottom: 0;">6,387 non-English speaking residents in the Eaton Fire struggled to verify information accuracy due to language barriers.</p>
+        <p style="font-family: var(--sans); font-size: 24px; font-weight: 400; line-height: 1.35; letter-spacing: -0.01em; color: var(--ink); max-width: none; margin-bottom: 0;">6,387 non-English speaking residents in the Eaton Fire struggled to verify information accuracy due to language barriers.</p>
         <div>
           <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">"I didn't get any official information right away... when I do watch TV, it's usually in Spanish because my English is still hard for me sometimes."</p>
           <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— MARIA LOPEZ (synthetic user)</span>
@@ -578,7 +581,7 @@
 
       <!-- Insight Block 3 -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); border-bottom: 0.5px solid var(--rule); align-items: start;">
-        <p style="font-family: var(--serif); font-size: 1.8rem; font-weight: 400; line-height: 1.4; color: var(--ink); max-width: none; margin-bottom: 0;">26.6% of California's population are LEP. Most LA fire alerts were purely in English text.</p>
+        <p style="font-family: var(--sans); font-size: 24px; font-weight: 400; line-height: 1.35; letter-spacing: -0.01em; color: var(--ink); max-width: none; margin-bottom: 0;">26.6% of California's population are LEP. Most LA fire alerts were purely in English text.</p>
         <div>
           <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">"Everything seemed designed for people who already had more resources or who spoke the language perfectly."</p>
           <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— MARIA LOPEZ (synthetic user)</span>

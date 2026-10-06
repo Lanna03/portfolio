@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Salud — Lanna Hu</title>
-<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   video { border: none; outline: none; display: block; }
@@ -34,7 +33,6 @@
     --ink-faint: #3f3f3a;
     --rule:      #d6d5ce;
 
-    --serif: 'Libre Baskerville', serif;
     --sans:  'IBM Plex Sans', sans-serif;
     --mono:  'DM Mono', monospace;
   }
@@ -121,9 +119,10 @@
     color: var(--ink-faint);
   }
 
+  /* PROJECT DETAIL LAYOUT: nav col 1 · col 2 empty · main col 3–8 (span 6) · col 9–10 empty. All case-study pages use this. New project pages must copy this rule. */
   /* ── MAIN ── */
   main {
-    grid-column: 3 / span 8;
+    grid-column: 3 / span 6;
     min-width: 0;
     padding: 40px 0 120px;
     opacity: 0;
@@ -167,10 +166,10 @@
   }
 
   .cs-title {
-    font-family: var(--serif);
-    font-size: 36px;
+    font-family: var(--sans);
+    font-size: 28px;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.3;
     color: var(--ink);
     letter-spacing: -0.01em;
     margin-bottom: var(--sp-3);
@@ -178,10 +177,11 @@
 
   .cs-subtitle {
     font-family: var(--sans);
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 400;
     color: var(--ink-muted);
-    line-height: 1.8;
+    line-height: 1.6;
+    letter-spacing: 0;
     max-width: 560px;
   }
 
@@ -226,10 +226,10 @@
   }
 
   .cs-section h2 {
-    font-family: var(--serif);
-    font-size: 28px;
+    font-family: var(--sans);
+    font-size: 24px;
     font-weight: 400;
-    line-height: 1.3;
+    line-height: 1.35;
     color: var(--ink);
     margin-bottom: var(--sp-3);
     letter-spacing: -0.01em;
@@ -238,10 +238,10 @@
 
   .cs-section p {
     font-family: var(--sans);
-    font-size: 18px;
-    font-weight: 300;
+    font-size: 16px;
+    font-weight: 400;
     color: var(--ink);
-    line-height: 1.85;
+    line-height: 1.8;
     margin-bottom: var(--sp-3);
   }
   .cs-section p:last-child { margin-bottom: 0; }
@@ -379,11 +379,13 @@
     margin: var(--sp-5) 0;
   }
   .cs-quote p {
-    font-family: var(--serif);
-    font-size: 1.25rem;
+    font-family: var(--sans);
+    font-size: 18px;
     font-style: italic;
-    color: var(--ink);
+    font-weight: 400;
     line-height: 1.65;
+    letter-spacing: 0;
+    color: var(--ink);
     max-width: 100%;
     margin: 0;
   }
@@ -433,11 +435,12 @@
     border-bottom: 0.5px solid var(--rule);
   }
   .cs-stat-number {
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: 28px;
     font-weight: 400;
     color: var(--ink);
     line-height: 1.2;
+    letter-spacing: -0.01em;
     margin-bottom: 4px;
   }
 
@@ -502,12 +505,12 @@
     text-transform: uppercase;
   }
   .cs-hmw-text {
-    font-family: var(--serif);
-    font-size: 1.55rem;
-    font-style: italic;
+    font-family: var(--sans);
+    font-size: 20px;
     font-weight: 400;
     color: var(--ink);
-    line-height: 1.55;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
     max-width: 640px;
     margin-top: var(--sp-2);
   }
@@ -580,10 +583,11 @@
     border-radius: 2px;
   }
   .cs-preview-statement {
-    font-family: var(--serif);
-    font-size: 1.45rem;
+    font-family: var(--sans);
+    font-size: 20px;
     font-weight: 400;
-    line-height: 1.55;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
     color: var(--ink);
     max-width: 100%;
     margin-bottom: var(--sp-5);
@@ -613,11 +617,12 @@
     padding: 60px 0 80px;
   }
   .cs-insight-stat {
-    font-family: var(--serif);
-    font-size: 1.3rem;
+    font-family: var(--sans);
+    font-size: 20px;
     font-weight: 400;
     color: var(--ink);
-    line-height: 1.6;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
     max-width: 100%;
     margin-top: var(--sp-4);
   }
@@ -652,11 +657,12 @@
     margin-bottom: var(--sp-1);
   }
   .cs-data-number {
-    font-family: var(--serif);
-    font-size: 2rem;
+    font-family: var(--sans);
+    font-size: 28px;
     font-weight: 400;
     color: var(--ink);
-    line-height: 1.1;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
     margin-bottom: 6px;
   }
   .cs-data-sub {
@@ -700,11 +706,12 @@
     margin-bottom: var(--sp-3);
   }
   .cs-ai-boundary-title {
-    font-family: var(--serif);
-    font-size: 1.2rem;
+    font-family: var(--sans);
+    font-size: 18px;
     font-weight: 400;
     color: var(--ink);
     line-height: 1.4;
+    letter-spacing: -0.01em;
     margin-bottom: var(--sp-3);
     max-width: 100%;
   }
@@ -810,11 +817,12 @@
     margin-bottom: var(--sp-1);
   }
   .cs-decision-title {
-    font-family: var(--serif);
-    font-size: 1.1rem;
+    font-family: var(--sans);
+    font-size: 18px;
     font-weight: 400;
     color: var(--ink);
     line-height: 1.4;
+    letter-spacing: -0.01em;
     margin-bottom: var(--sp-3);
   }
   .cs-decision-body {
@@ -905,10 +913,59 @@
   ::-webkit-scrollbar-thumb { background: #1e1e1c; border-radius: 0; }
   ::-webkit-scrollbar-thumb:hover { background: #7a7a74; }
 
+  /* ── CARD STATS (research cards) ── */
+  .cs-card-stats {
+    display: flex;
+    gap: var(--sp-5);
+    margin-top: var(--sp-4);
+    flex-wrap: wrap;
+  }
+
+  /* ── NUMBERED SERVICE STEPS ── */
+  .cs-steps {
+    margin: var(--sp-5) 0;
+    border-top: 0.5px solid var(--rule);
+  }
+  .cs-step {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: var(--gap);
+    padding: var(--sp-3) 0;
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .cs-step-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 4px;
+  }
+  .cs-step-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.8;
+  }
+
+  /* ── FIGURE GRID (final service screens) ── */
+  .cs-figure-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-5) var(--sp-3);
+    margin: var(--sp-5) 0 0;
+    align-items: start;
+  }
+  .cs-figure-grid .cs-image { margin: 0; }
+  .cs-figure-grid .cs-caption { margin-bottom: 0; }
+
   /* ── RESPONSIVE ── */
   html { scrollbar-gutter: stable; }
   @media (max-width: 960px) {
     :root { --gutter: 24px; --gap: 16px; }
+    main { grid-column: 3 / span 8; }
   }
   @media (max-width: 680px) {
     .page { grid-template-columns: 1fr; padding: 0 16px; }
@@ -926,9 +983,13 @@
     .nav-section-label { display: none; }
     main { grid-column: 1; padding: 0 0 80px; }
     .cs-hero { padding-top: 32px; }
-    .cs-title { font-size: 36px; }
+    .cs-title { font-size: 24px; }
     .cs-stats { grid-template-columns: 1fr 1fr; }
     .cs-insights { grid-template-columns: 1fr; }
+    .cs-insight-row { grid-template-columns: 1fr; }
+    .cs-decisions { grid-template-columns: 1fr; }
+    .cs-step { grid-template-columns: 1fr; gap: var(--sp-1); }
+    .cs-figure-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -941,11 +1002,11 @@
     <div class="nav-links">
       <div class="nav-section-label">Sections</div>
       <a href="#overview" class="active">Overview</a>
-      <a href="#solution-preview">Solution</a>
       <a href="#context">Context</a>
-      <a href="#process">Process</a>
-      <a href="#solution">Design</a>
-      <a href="#outcome">Reflection</a>
+      <a href="#pivot">Pivot</a>
+      <a href="#final-service">Final Service</a>
+      <a href="#design-decisions">Design Decisions</a>
+      <a href="#reflection">Reflection</a>
     </div>
   </nav>
 
@@ -953,317 +1014,184 @@
 
     <!-- ── HERO / OVERVIEW ── -->
     <div class="cs-hero cs-section" id="overview" style="border-bottom: none; margin-bottom: 100px;">
-      <p style="font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: var(--sp-2);">From Questions to Next Steps</p>
-      <h1 class="cs-title">Salud × Cedars-Sinai</h1>
-      <div class="cs-meta">
-        <span class="cs-tag">User Research</span>
-        <span class="cs-tag">Service Design</span>
-        <span class="cs-year">2025</span>
-      </div>
+      <p style="font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: var(--sp-2);">Salud × Cedars-Sinai</p>
+      <h1 class="cs-title">From Risk Assessment to Trusted Next Steps</h1>
       <p class="cs-subtitle" style="max-width: 100%;">
-        An AI-powered, community-centered cancer screening experience
-        designed with and for underserved Latinx communities in Los Angeles.
+        Salud is an AI-supported cancer screening navigation and community outreach
+        experience designed with Cedars-Sinai for Latinx communities in Antelope Valley.
+        Situated in a grocery-store setting, the service uses a guided kiosk survey,
+        personalized takeaways, and on-site promotoras to turn screening questions into
+        approachable next steps.
       </p>
       <div class="cs-hero-image">
-        <img src="images/salud-hero.png" alt="Salud — From Questions to Next Steps">
-      </div>
-      <div class="cs-meta-grid">
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Role</div>
-          <div class="cs-meta-cell-value">UI Designer, UX Research, Physical Experience Designer</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Team</div>
-          <div class="cs-meta-cell-value">Balinda, Lanna, Max, Sabrina</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Duration</div>
-          <div class="cs-meta-cell-value">14 weeks, Spring 2025</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Tools</div>
-          <div class="cs-meta-cell-value">Figma, Miro, Field Research</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Methods</div>
-          <div class="cs-meta-cell-value">Co-design, Service Blueprint</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Partner</div>
-          <div class="cs-meta-cell-value">Cedars-Sinai Medical Center</div>
-        </div>
+        <img src="images/salud-hero.png" alt="Salud — AI Salud Station welcome screen with tote bag and kiosk">
       </div>
     </div>
-
-    <!-- ── SOLUTION PREVIEW ── -->
-    <section class="cs-solution-preview cs-section" id="solution-preview">
-      <div class="section-label">Solution</div>
-      <p class="cs-preview-statement">
-        Help Latinx middle-aged and elderly adults aged <strong>45–80</strong> in
-        <strong>Antelope Valley</strong> discover screening information they may not
-        have heard before — empowering early detection and access within
-        underserved communities.
-      </p>
-      <div class="cs-image" style="margin-top: var(--sp-5);">
-        <img src="images/salud-solutionpreview.png" alt="AI Salud Station — full product overview" style="width: 100%; height: auto; display: block;">
-      </div>
-      <p class="cs-caption">AI Salud Station — deployed at Ralphs, Antelope Valley, Spring 2025</p>
-    </section>
 
     <!-- ── CONTEXT ── -->
     <section class="cs-section" id="context">
       <div class="section-label">Context</div>
-      <h2>Why this community, and why now</h2>
-
+      <h2>Access was not the only barrier. Trust mattered too.</h2>
       <p>
-        Antelope Valley is a community in northern Los Angeles County where
-        <strong>53% of residents identify as Latinx</strong> — one of the highest
-        concentrations in the region. Cedars-Sinai's Cancer Research Center for
-        Health Equity already had an active outreach program here, with trained
-        Community Cancer Navigators working directly with residents. But despite
-        this infrastructure, cancer screening rates remained low and mortality
-        rates remained high.
+        Our project focused on Latinx adults in Antelope Valley, one of the communities
+        already reached through Cedars-Sinai’s outreach work. Cost concerns, distrust of
+        healthcare systems, and the belief that screening is unnecessary without
+        symptoms can make colorectal cancer screening feel distant. Through secondary
+        research and conversations with promotoras, Cedars-Sinai’s community health
+        workers, we learned how they bridge this gap through shared language, cultural
+        understanding, and trusted relationships.
       </p>
-
-      <div class="cs-research-block">
-        <div class="cs-research-label">Secondary Research — Why colorectal cancer</div>
-        <div class="cs-data-row">
-          <div class="cs-data-cell">
-            <div class="cs-data-label">Colorectal screening gap</div>
-            <div class="cs-data-number">52% vs 73%</div>
-            <div class="cs-data-sub">Immigrant vs US-born — the largest gap across all cancer types</div>
-          </div>
-          <div class="cs-data-cell">
-            <div class="cs-data-label">Late-stage CRC rising</div>
-            <div class="cs-data-number">28% → 41%</div>
-            <div class="cs-data-sub">Among Latinx aged 20–29, 2000–2016</div>
-          </div>
-          <div class="cs-data-cell">
-            <div class="cs-data-label">Culturally tailored education</div>
-            <div class="cs-data-number">18% → 55%</div>
-            <div class="cs-data-sub">Completed screening rate with Spanish-language community intervention</div>
-          </div>
-        </div>
+      <div class="cs-insight-stat">
+        Technology could extend access to information, but it needed to support the
+        human relationships that make people willing to engage.
       </div>
 
-      <div class="cs-research-block">
-        <div class="cs-primary-split">
-          <div class="cs-primary-image">
-            <div class="cs-image" style="margin-top: 0;">
-              <img src="images/salud-primary.png" alt="Primary research — navigator interviews" style="width: 100%; height: auto; display: block;">
+      <div class="cs-insight-row">
+        <div class="cs-insight-card">
+          <div class="cs-research-label">Research 1</div>
+          <div class="cs-decision-title">Screening access is not equal</div>
+          <div class="cs-insight-text">
+            Research on immigrant communities showed a gap in colorectal cancer
+            screening compared with U.S.-born communities.
+          </div>
+          <div class="cs-card-stats">
+            <div>
+              <div class="cs-data-number">52%</div>
+              <div class="cs-data-sub">Immigrant communities</div>
+            </div>
+            <div>
+              <div class="cs-data-number">73%</div>
+              <div class="cs-data-sub">U.S.-born communities</div>
             </div>
           </div>
-          <div class="cs-primary-text">
-            <div class="cs-research-label" style="margin-bottom: var(--sp-2);">Primary Research — Navigator interviews</div>
-            <p style="max-width: 100%; font-size: 16px; line-height: 1.85; color: #1e1e1c;">
-              We interviewed Community Cancer Navigators with the Cedars-Sinai Antelope Valley program. What we found: the navigators themselves were the most trusted channel — but the materials they were given to deliver were working against them.
-            </p>
+        </div>
+        <div class="cs-insight-card">
+          <div class="cs-research-label">Research 2</div>
+          <div class="cs-decision-title">Cultural relevance supports participation</div>
+          <div class="cs-insight-text">
+            Culturally tailored education and community-based navigation have been
+            associated with stronger screening participation.
           </div>
-        </div>
-      </div>
-
-      <div class="cs-insight-callout">
-        <div class="cs-hmw-label">Insight</div>
-        <div class="cs-insight-stat">
-          <strong>100% of participants identified lack of awareness</strong> — not lack of access — as the biggest barrier to cancer screening. Free, nearby services went unused simply because people didn't know they existed.
-        </div>
-        <div class="cs-quote" style="margin-top: var(--sp-4);">
-          <p>"There is a need for culturally tailored interventions to increase cancer awareness, education, cancer prevention, and access to early detection and screening."</p>
-          <cite>— Antelope Valley Health Navigator, Cedars-Sinai</cite>
-        </div>
-      </div>
-
-      <div class="cs-hmw" style="border-bottom: none; margin-bottom: 80px; padding-bottom: 0;">
-        <div class="cs-hmw-label">How Might We</div>
-        <div class="cs-hmw-text" style="max-width: 100%;">
-          How might we increase ethnic community awareness and understanding
-          of cancer screening programs so that more people feel informed and
-          motivated to take preventive action?
         </div>
       </div>
     </section>
 
-    <!-- ── PROCESS ── -->
-    <section class="cs-section" id="process">
-      <div class="section-label">Process</div>
-      <h2>From research to service design</h2>
+    <!-- ── PIVOT ── -->
+    <section class="cs-section" id="pivot">
+      <div class="section-label">Pivot</div>
+      <h2>Risk prediction created the wrong relationship.</h2>
       <p>
-        We mapped the full journey — from the moment someone hears about screening
-        to when they leave with a summary ticket — to find where trust breaks down
-        and where design could intervene.
+        Our early concepts used grocery purchases or self-reported dietary habits to
+        estimate colorectal cancer risk. Voluntary input gave users more control over what
+        they shared, but it did not resolve the larger issue. In a public setting,
+        personalized risk scoring could expose sensitive information, create a sense of
+        judgment, and position AI as a medical authority. The problem was not only how
+        the data was collected. It was the assumption that this system should draw
+        cancer-risk conclusions about a person at all.
       </p>
-
-      <div class="cs-research-block">
-        <div class="cs-research-label">Concept ideation — early sketches</div>
-        <div class="cs-image" style="margin-top: 0;">
-          <img src="images/salud-ideation.png" alt="Concept ideation — early sketches and explorations" style="width: 100%; height: auto; display: block;">
-        </div>
-        <p class="cs-caption">Early concept sketches — exploring service touchpoints and interaction models</p>
-      </div>
-
-      <div class="cs-research-block">
-        <div class="cs-research-label">Community Cancer Navigator — the human at the center</div>
-        <div class="cs-split" style="margin-top: 0;">
-          <div>
-            <div class="cs-image" style="margin-top: 0; margin-bottom: 0;">
-              <img src="images/in-ralphs.png" alt="Ralphs — a familiar, trusted community space" style="width: 100%; height: auto; display: block; border-radius: 3px;">
-            </div>
-              </div>
-          <div>
-            <div class="cs-split-sublabel">Why Ralphs</div>
-            <ul class="cs-split-list">
-              <li>Cedars-Sinai already had navigator presence here</li>
-              <li>Familiar, low-pressure environment — not a clinic or government building</li>
-              <li>Highest-frequency community touchpoint — weekly routine for most families</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="cs-research-block">
-        <div class="cs-research-label">User journey map</div>
-        <div class="cs-image" style="margin-top: 0;">
-          <img src="images/salud-journey-map.png" alt="User journey map — 6 stages from awareness to action">
-        </div>
-      </div>
-
-      <div class="cs-research-block">
-        <div class="cs-research-label">Figma design process</div>
-        <div class="cs-image" style="margin-top: 0;">
-          <img src="images/salud-designprocess.png" alt="Figma design process — survey UI components and design system" style="width: 100%; height: auto; display: block;">
-        </div>
+      <div class="cs-insight-stat">
+        We deliberately limited AI’s role: it would support informed next steps, not
+        evaluate personal cancer risk.
       </div>
     </section>
 
-    <!-- ── SOLUTION ── -->
-    <section class="cs-section" id="solution">
-      <div class="section-label">Design</div>
-      <h2>An AI station that educates, not diagnoses</h2>
-
-      <p style="max-width: 100%;">
-        AI Salud Station is a tablet kiosk introduced by a promotora at Ralphs.
-        Our goal was not to tell people what to do — but to <strong>build
-        understanding quickly, educate, and support early detection</strong> so
-        people are more open to learning, more willing to ask questions, and more
-        likely to consider taking action. Users take a 10-question survey and
-        receive a personalized printed summary. No diagnosis. No judgment.
-        Just a gentle next step.
+    <!-- ── FINAL SERVICE ── -->
+    <section class="cs-section" id="final-service">
+      <div class="section-label">Final Service</div>
+      <h2>Bringing screening support into everyday life</h2>
+      <p>
+        We designed Salud as a promotora-supported service concept for a Ralphs
+        grocery store, a familiar place residents may already visit each week. Rather than
+        requiring people to enter the healthcare system to seek information, the service
+        created a low-pressure starting point within a daily routine. The kiosk extended
+        the reach of Cedars-Sinai’s outreach work, while an on-site promotora remained
+        available for questions and personal guidance.
       </p>
 
-      <p style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.04em; margin-bottom: var(--sp-2);">
-        My role — kiosk interaction flow, all 10 survey questions UI, per-question
-        feedback design, privacy system, AI boundary definition, physical kiosk
-        enclosure design
-      </p>
+      <div class="cs-steps">
+        <div class="cs-step">
+          <div class="cs-step-label">1. Discover</div>
+          <div class="cs-step-text">A “Free Tote Bag” prompt and nearby signage offer a low-pressure reason to approach the kiosk, with an on-site promotora available to introduce the experience.</div>
+        </div>
+        <div class="cs-step">
+          <div class="cs-step-label">2. Share</div>
+          <div class="cs-step-text">Users complete a 10-question survey about their screening awareness, concerns, and preferences.</div>
+        </div>
+        <div class="cs-step">
+          <div class="cs-step-label">3. Learn</div>
+          <div class="cs-step-text">Each response is followed by short, relevant feedback rather than a score or risk result.</div>
+        </div>
+        <div class="cs-step">
+          <div class="cs-step-label">4. Take away</div>
+          <div class="cs-step-text">After completing the survey, users receive a tote bag and a personalized summary with a suggested next step, screening information, and a Cedars-Sinai resource.</div>
+        </div>
+        <div class="cs-step">
+          <div class="cs-step-label">5. Connect</div>
+          <div class="cs-step-text">The experience ends with an invitation to speak with the on-site promotora and an optional choice to receive future follow-up from Cedars-Sinai.</div>
+        </div>
+      </div>
 
       <div class="cs-image" style="margin-top: var(--sp-5);">
-        <video width="100%" controls preload="metadata" style="border-radius: 3px; display: block;">
-          <source src="images/salud-walkthrough-video.mp4" type="video/mp4">
-        </video>
-      </div>
-      <p class="cs-caption">Experience walkthrough — full kiosk prototype demo</p>
-
-      <div class="cs-research-block">
-        <div class="cs-research-label">The Survey — 10 questions, designed by Lanna</div>
-        <div class="cs-survey-split">
-          <div class="cs-survey-video">
-            <video src="images/salud-question-screen.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block; border-radius:3px;"></video>
-          </div>
-          <div class="cs-survey-text">
-            <p style="max-width: 100%; font-size: 16px; line-height: 1.5;">
-              Each of the 10 survey questions was designed to feel like a conversation, not a clinical assessment. I designed the UI for all 10 screens and the per-question AI feedback that appears after each answer — giving users a moment of gentle acknowledgment before moving forward.
-            </p>
-          </div>
-        </div>
+        <img src="images/salud-solutionpreview.png" alt="Salud kiosk in a Ralphs setting" style="width: 100%; height: auto; display: block;">
       </div>
 
-      <div style="margin-bottom: var(--sp-8);">
-        <div style="font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--sp-4); padding-bottom: var(--sp-2); border-bottom: 0.5px solid var(--rule);">Design decisions — privacy system, designed by Lanna</div>
-        <div class="privacy-grid">
-          <div class="privacy-grid-card">
-            <img src="images/salud-welcome.png" alt="Welcome screen showing privacy statement">
-            <div class="privacy-grid-card-text">
-              <div class="cs-decision-title">Privacy communicated upfront</div>
-              <p class="cs-decision-body">The welcome screen states our privacy stance before users begin — in plain language, in both English and Spanish. Trust is established before a single question is asked.</p>
-            </div>
+      <div class="cs-figure-grid">
+        <div>
+          <div class="cs-image">
+            <video src="images/salud-question-screen.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block;"></video>
           </div>
-          <div class="privacy-grid-card">
-            <img src="images/salud-contact.png" alt="Contact opt-in screen with skip option">
-            <div class="privacy-grid-card-text">
-              <div class="cs-decision-title">Contact is always opt-in</div>
-              <p class="cs-decision-body">The contact screen appears only after the survey ends, with a visible Skip option and an unchecked checkbox — consent is never assumed.</p>
-            </div>
+          <p class="cs-caption">Survey screens — Questions 1–10</p>
+        </div>
+        <div>
+          <div class="cs-image cs-image-placeholder" style="aspect-ratio: 4 / 3;">Per-question feedback screen — image to add</div>
+          <p class="cs-caption">Per-question feedback screen</p>
+        </div>
+        <div>
+          <div class="cs-image">
+            <img src="images/salud-summary-ticket.png" alt="Printed summary ticket" style="width: 100%; height: auto; display: block;">
           </div>
-          <div class="privacy-grid-card">
-            <img src="images/salud-cta.png" alt="CTA screen offering health navigator connection">
-            <div class="privacy-grid-card-text">
-              <div class="cs-decision-title">A human option, always available</div>
-              <p class="cs-decision-body">A clear call-to-action allows users to connect with a health navigator for questions or next steps — without requiring additional data sharing or digital follow-up.</p>
-            </div>
+          <p class="cs-caption">Printed summary ticket</p>
+        </div>
+        <div>
+          <div class="cs-image">
+            <img src="images/salud-cta.png" alt="Promotora call-to-action screen" style="width: 100%; height: auto; display: block;">
           </div>
-          <div class="privacy-grid-card">
-            <video src="images/salud-summary.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block; border-radius:3px;"></video>
-            <div class="privacy-grid-card-text">
-              <div class="cs-decision-title">AI output contains no personal data</div>
-              <p class="cs-decision-body">The printed and electronic summaries include no identifiable information. All recommendations are based only on user responses, not stored records.</p>
-            </div>
-          </div>
+          <p class="cs-caption">Promotora CTA screen</p>
         </div>
       </div>
-
-      <div class="cs-ai-boundary">
-        <div class="cs-ai-boundary-label">AI Boundary — by design</div>
-        <div class="cs-ai-boundary-title">
-          AI is used for one thing only: generating a personalized summary ticket
-          based on your survey answers. It does not diagnose. It does not evaluate
-          risk. It does not give medical advice.
-        </div>
-        <p style="font-family: var(--sans); font-size: 14px; font-weight: 400; color: var(--ink-muted); line-height: 1.8; max-width: 100%;">
-          This boundary was a deliberate design decision — not a technical
-          limitation. In a community where mistrust of AI is high, clarity about
-          what AI can and cannot do is itself a trust-building act. The ticket
-          contains three things: your next gentle step, one screening fact
-          relevant to you, and nearby Cedars-Sinai resources. Nothing more.
-        </p>
-        <div class="cs-ai-rules">
-          <div class="cs-ai-rule">
-            <div class="cs-ai-rule-label no">AI does not</div>
-            <div class="cs-ai-rule-text">
-              Diagnose conditions<br>
-              Assess your health risk<br>
-              Store your personal information<br>
-              Make medical recommendations
-            </div>
-          </div>
-          <div class="cs-ai-rule">
-            <div class="cs-ai-rule-label yes">AI does</div>
-            <div class="cs-ai-rule-text">
-              Personalize your summary ticket<br>
-              Surface a relevant screening fact<br>
-              Suggest one gentle next step<br>
-              Connect you to local Cedars-Sinai resources
-            </div>
-          </div>
-        </div>
-      </div>
-
     </section>
 
-    <!-- ── OUTCOME ── -->
-    <section class="cs-section" id="outcome">
-      <div class="section-label">Reflection</div>
-      <h2>What we built, what we left behind</h2>
+    <!-- ── DESIGN DECISIONS ── -->
+    <section class="cs-section" id="design-decisions">
+      <div class="section-label">Design Decisions</div>
+      <h2>Designing for support, not assessment</h2>
 
-      <p>
-        The most important lesson: <strong>effective health design requires
-        meeting people in their existing networks of trust, not building new
-        ones.</strong> The promotora is not a workaround — she is the system.
-      </p>
-
-      <div class="cs-research-block">
-        <img src="images/salud-outcome.png" alt="Physical deliverables — tote bag, keychain, mirror, cookie, kiosk enclosure" style="width: 100%; height: auto; display: block; border-radius: 3px; margin-top: var(--sp-4);">
-        <p class="cs-caption">Physical touchpoints — tote bag, keychain, mirror, cookie, summary ticket, iPad kiosk enclosure</p>
+      <div class="cs-decisions">
+        <div>
+          <div class="cs-decision-title">Respond without scoring</div>
+          <div class="cs-decision-body">Each answer receives relevant information without assigning a score or risk level, keeping the experience responsive without judging the user.</div>
+        </div>
+        <div>
+          <div class="cs-decision-title">Limit personalization to guidance</div>
+          <div class="cs-decision-body">Survey responses shape the information and next steps users receive, but the system does not diagnose or predict cancer risk.</div>
+        </div>
+        <div>
+          <div class="cs-decision-title">Lead toward human support</div>
+          <div class="cs-decision-body">The closing screen and summary connect users with an on-site promotora for questions and personal guidance.</div>
+        </div>
       </div>
+    </section>
+
+    <!-- ── REFLECTION ── -->
+    <section class="cs-section" id="reflection">
+      <div class="section-label">Reflection</div>
+      <p>
+        This project challenged my assumption that a more capable AI would
+        automatically create a stronger product. In sensitive contexts, more capability can
+        create distance rather than value when a system takes on more authority than
+        people can reasonably trust it to hold. Designing responsible AI is not only about
+        expanding what it can do. It is also about deciding what it should not do.
+      </p>
     </section>
 
     <div class="footer-line">

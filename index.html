@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lanna Hu</title>
-<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@300;400&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400&family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -29,7 +28,8 @@
 
     /* nav offset — accounts for .nav-name height so PAGES aligns with h1 */
     --nav-offset:  160px;   /* nav-links: 40(pad) + 20(nav-name) + 160 = 220px from top */
-    --hero-offset: 180px;   /* hero h1:  40(pad) + 180 = 220px from top */
+    --hero-offset: calc(19px + var(--nav-offset));   /* hero h1 cap-top aligns with nav "Pages" cap-top */
+    --card-inview-scale: .94;
 
     /* colors */
     --bg:             #FFFFFD;
@@ -43,7 +43,6 @@
     --sticky-b-border:#a8c8dc;
 
     /* type */
-    --serif: 'Libre Baskerville', serif;
     --sans:  'IBM Plex Sans', sans-serif;
     --mono:  'DM Mono', monospace;
   }
@@ -96,7 +95,7 @@
   .nav-bottom-label {
     font-family: var(--mono);
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 400;
     color: #7a7a74;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -107,7 +106,7 @@
   .nav-bottom a {
     font-family: var(--mono);
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 400;
     color: #7a7a74;
     text-decoration: none;
     letter-spacing: 0.04em;
@@ -143,7 +142,7 @@
   .nav-sub .nav-sub-item {
     font-family: var(--mono);
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 400;
     color: #7a7a74;
     text-decoration: none;
     letter-spacing: 0.04em;
@@ -184,17 +183,17 @@
 
   /* ── HERO ── */
   .hero {
-    padding-top: var(--hero-offset);
-    padding-bottom: 40px;
-    margin-bottom: 40px;
+    padding-bottom: 64px;
+    margin-bottom: 64px;
     position: relative;
   }
+  .hero .m-content { padding-top: var(--hero-offset); }
 
   .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 36px;
+    font-family: var(--sans);
+    font-size: 28px;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.3;
     color: var(--ink);
     margin-bottom: var(--sp-3);
     letter-spacing: -0.01em;
@@ -210,7 +209,8 @@
     font-family: var(--sans);
     font-size: 18px;
     font-weight: 400;
-    line-height: 1.8;
+    line-height: 1.6;
+    letter-spacing: 0;
     color: var(--ink);
     max-width: 780px;
   }
@@ -219,7 +219,7 @@
   .sticky {
     font-family: var(--mono);
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.7;
     letter-spacing: 0.02em;
     box-shadow: 1px 2px 6px rgba(0,0,0,0.06);
@@ -260,7 +260,7 @@
   .section-label {
     font-family: var(--mono);
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--ink-faint);
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -276,215 +276,144 @@
     background: var(--rule);
   }
 
-  /* ── VERTICAL STICKY CAROUSEL ── */
-  .projects-outer { margin-top: 160px; margin-bottom: 200px; }
+  /* ── WORK HEAD ── */
+  .work { margin-top: 20px; margin-bottom: 200px; }
 
-  .projects-sticky {
+  /* ── WORK CARDS ── */
+  .work-list {
     display: flex;
     flex-direction: column;
+    gap: 40px;
   }
 
-  /* Divider: hidden until zone entry, then fades in L→R and sticks at top */
-  .projects-sticky .section-label {
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 5;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding: 40px 0;
-    opacity: 0;
-    transition: opacity 0.5s ease 0.1s;
+  .work-card {
+    background: #fff;
+    border: 1px solid #E6E5DF;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.045);
+    position: relative;
+    transform: scale(1);
+    transform-origin: 50% 50%;
+    will-change: transform;
+    transition: transform .9s cubic-bezier(.44,0,.56,1);
   }
-  .projects-sticky .section-label::after {
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  .work-card.is-inview {
+    transform: scale(var(--card-inview-scale));
+    transition: transform .7s cubic-bezier(.22,1,.36,1);
   }
-  .projects-sticky.label-visible .section-label { opacity: 1; }
-  .projects-sticky.label-visible .section-label::after { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    .work-card, .work-card.is-inview { transform: none; transition: none; }
+  }
+  .work-card:first-child { overflow: visible; }
 
-  /* Gap between divider and first project */
-  .projects-track-wrap { padding-top: 20px; }
-
-  /* Project slides — start hidden, fade up on scroll */
-  .project-slide {
-    margin-bottom: 140px;
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .project-slide:last-child { margin-bottom: 0; }
-  .project-slide.slide-visible {
-    opacity: 1;
-    transform: translateY(0);
+  .work-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 0;
   }
 
-  .project-row {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    gap: var(--gap);
+  .work-card-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0;
   }
 
-  .project-info {
+  .work-card-info {
+    padding: 14px 8px 10px;
     display: flex;
-    flex-direction: column;
+    align-items: baseline;
     justify-content: space-between;
+    gap: 12px;
   }
 
-  .project-num {
-    font-family: var(--mono);
-    font-size: 24px;
-    font-weight: 300;
-    color: var(--ink-faint);
-    letter-spacing: -0.02em;
+  .work-card-left {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-shrink: 0;
   }
 
-  .project-bottom {
-    margin-bottom: 0;
-  }
-
-  .project-title {
-    font-family: var(--serif);
-    font-size: 24px;
+  .work-card-title {
+    font-family: var(--sans);
+    font-size: 22px;
     font-weight: 400;
     color: var(--ink);
-    line-height: 1.4;
-    margin-bottom: var(--sp-1);
-  }
-
-  .project-tags {
-    display: flex;
-    gap: var(--sp-1);
-    flex-wrap: nowrap;
-    margin-bottom: var(--sp-1);
-    overflow: hidden;
-  }
-
-  .tag {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--ink-faint);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border: 0.5px solid var(--rule);
-    padding: 2px var(--sp-1);
-    border-radius: 2px;
-    white-space: nowrap;
-    flex-shrink: 0;
+    letter-spacing: -0.01em;
   }
 
   .project-year {
     font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--ink-faint);
-    line-height: 1;
-  }
-
-  .project-img-panel {
-    background: var(--rule);
-    border-radius: 2px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--ink-faint);
-    letter-spacing: 0.06em;
-    aspect-ratio: 16 / 9;
-    width: 100%;
-    align-self: start;
-    position: relative;
-  }
-
-  /* Sticky note — upper right corner, soft warm paper tone */
-  .img-note {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: #EDE8D2;
-    color: #3a3525;
-    font-family: var(--mono);
     font-size: 11px;
-    font-weight: 300;
-    line-height: 1.65;
-    letter-spacing: 0.03em;
-    padding: 10px 12px;
-    width: 148px;
-    transform: rotate(2.5deg) scale(0.88);
-    transform-origin: top right;
-    opacity: 0;
+    font-weight: 400;
+    color: #7A7A74;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .work-card-tags-hw {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    font-weight: 400;
+    color: #3f3f3a;
+    line-height: 1;
+    text-align: right;
+  }
+
+  /* "start here" annotation — right of first card */
+  .start-here-arrow {
+    position: absolute;
+    left: calc(100% + 10px);
+    top: -39px;
     pointer-events: none;
-    box-shadow: 2px 4px 12px rgba(0,0,0,0.14);
-    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    z-index: 3;
   }
-  .project-img-panel:hover .img-note {
-    opacity: 1;
-    transform: rotate(2.5deg) scale(1);
-    pointer-events: auto;
-  }
-
-  /* Clickable project card */
-  .project-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  /* Overlay + "View →": opaque enough so text is clearly legible */
-  .project-link .project-img-panel::before {
-    content: '';
+  .start-here-note {
     position: absolute;
-    inset: 0;
-    background: rgba(243, 243, 241, 0.82);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1;
+    left: calc(100% + 113px);
+    top: -50px;
+    transform: rotate(3deg);
+    white-space: nowrap;
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    font-weight: 400;
+    color: #3f3f3a;
+    line-height: 1;
+    pointer-events: none;
   }
-  .project-link .project-img-panel::after {
-    content: 'View →';
+  @media (max-width: 1100px) {
+    .start-here-arrow, .start-here-note { display: none; }
+  }
+
+  /* ── DESK CAT ── */
+  .desk-cat {
     position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 300;
-    letter-spacing: 0.12em;
-    color: var(--ink);
+    left: 0;
+    top: 248px;
+    transform: rotate(-2deg);
+    pointer-events: none;
+  }
+  .desk-cat .cat-line {
+    stroke-dasharray: 9999;
+    stroke-dashoffset: 9999;
+  }
+  .cat-dots > * {
     opacity: 0;
-    transition: opacity 0.3s ease 0.05s;
-    z-index: 2;
+    transform-box: fill-box;
+    transform-origin: center;
   }
-  .project-link .project-img-panel:hover::before { opacity: 1; }
-  .project-link .project-img-panel:hover::after  { opacity: 1; }
 
-  /* Image scales up */
-  .project-link .project-img-panel img {
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .project-link .project-img-panel:hover img { transform: scale(1.015); }
-
-  .project-progress { display: none; }
-
-  .progress-dot {
-    height: 2px;
-    width: 20px;
-    background: var(--rule);
-    border-radius: 1px;
-    transition: background 0.3s, width 0.3s;
-    cursor: pointer;
-  }
-  .progress-dot.active {
-    background: var(--ink-muted);
-    width: 36px;
+  /* ── CAT PEN (drawing overlay) ── */
+  #cat-pen {
+    position: fixed;
+    display: none;
+    pointer-events: none;
+    z-index: 100;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.08));
   }
 
   /* ── PLAY STRIP ── */
@@ -537,7 +466,7 @@
     justify-content: center;
     font-family: var(--mono);
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 0.12em;
     color: var(--ink);
     opacity: 0;
@@ -612,7 +541,7 @@
     transform: translateX(-50%);
     font-family: var(--mono);
     font-size: 11px;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 0.06em;
     color: rgba(243,243,241,0.5);
     text-align: center;
@@ -646,7 +575,7 @@
   .annotation-label {
     font-family: var(--mono);
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--ink-faint);
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -656,7 +585,7 @@
   .annotation-text {
     font-family: var(--sans);
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--ink-muted);
     line-height: 1.7;
   }
@@ -666,26 +595,118 @@
     font-weight: 400;
   }
 
-  /* ── TYPEWRITER ── */
-  .typewriter-line {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 500;
-    color: var(--ink-muted);
+  /* ── DOT-PAPER BACKGROUND ── */
+  body { position: relative; }
+  .page { position: relative; z-index: 1; }
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 900px;
+    background-image: radial-gradient(circle, rgba(30,30,28,.20) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.6) 45%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.6) 45%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
   }
 
-  .cursor {
-    display: inline-block;
-    width: 2px;
-    height: 0.8em;
-    background: var(--ink-muted);
-    margin-left: 2px;
-    vertical-align: middle;
-    animation: blink 0.9s step-end infinite;
+  /* ── HERO / WORK SPLIT — 6-col content + 2-col aside ── */
+  .m-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    column-gap: var(--gap);
   }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0; }
+  .m-content {
+    grid-column: 1 / span 6;
+    min-width: 0;
+  }
+  .m-aside {
+    grid-column: 7 / span 2;
+    position: relative;
+    align-self: start;
+  }
+
+  /* ── HANDWRITING ANIMATION ── */
+  .hw-wrap {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    vertical-align: baseline;
+  }
+  .hw-mark {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    height: 42%;
+    background: rgba(191, 225, 132, 0.45);
+    width: 0;
+    z-index: 0;
+    border-radius: 1px;
+  }
+  .hw-line {
+    font-family: 'Caveat', cursive;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink-muted);
+    position: relative;
+    z-index: 1;
+  }
+  .hw-pen {
+    width: 18px;
+    height: 18px;
+    margin-left: 3px;
+    opacity: 0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.15s;
+  }
+  .hw-pen.writing { opacity: 1; }
+
+  /* ── DESK OBJECTS ── */
+  .desk-date {
+    position: absolute;
+    top: 7px;
+    right: 64px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.66px;
+    line-height: normal;
+    color: #7A7A74;
+    white-space: nowrap;
+  }
+  .desk-pencil {
+    position: absolute;
+    left: 48px;
+    top: 131px;
+    transform: rotate(10deg);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.08));
+    background: none;
+    border: 0;
+    padding: 8px;
+    margin: -8px;
+    cursor: pointer;
+    display: block;
+    transition: transform 250ms cubic-bezier(0.23,1,0.32,1), filter 250ms;
+  }
+  .desk-pencil:hover {
+    transform: rotate(6deg);
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.12));
+  }
+  .desk-pencil:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+  .desk-ruler {
+    position: absolute;
+    left: 100px;
+    top: 191px;
+    transform: rotate(-6deg);
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.07));
+    display: block;
   }
 
   /* ── FOOTER ── */
@@ -701,7 +722,7 @@
   .footer-line span {
     font-family: var(--mono);
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--ink-faint);
     letter-spacing: 0.04em;
   }
@@ -717,18 +738,31 @@
   main { min-width: 0; }
   .project-img-panel img { max-width: 100%; }
 
+  /* 1360px — shift ruler inward */
+  @media (max-width: 1360px) {
+    .desk-ruler { left: 12px; }
+  }
+
+  /* 1100px — hide all desk objects */
+  @media (max-width: 1100px) {
+    .desk-date, .desk-pencil, .desk-cat, .desk-ruler { display: none; }
+    .m-aside { display: none; }
+    .m-grid { grid-template-columns: 1fr; }
+    .m-content { grid-column: 1; }
+    .hero { padding-bottom: 40px; margin-bottom: 40px; }
+  }
+
   /* Medium — tighter margins */
   @media (max-width: 960px) {
     :root { --gutter: 24px; --gap: 16px; }
   }
 
-  /* Small — collapse to single-column, stack project rows */
+  /* Small — collapse to single-column */
   @media (max-width: 680px) {
     .page {
       grid-template-columns: 1fr;
       padding: 0 16px;
     }
-    /* remap nav to full top row, main below */
     nav {
       grid-column: 1;
       position: static;
@@ -750,22 +784,8 @@
       padding: 0 0 40px;
     }
 
-    .hero { padding-top: 32px; }
+    .hero .m-content { padding-top: 32px; }
     .sticky.yellow { position: static; display: none; }
-
-    .project-row {
-      grid-template-columns: 1fr;
-    }
-    .project-info {
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-start;
-      gap: var(--sp-2);
-      margin-bottom: var(--sp-2);
-    }
-    .project-num { font-size: 18px; }
-    .project-bottom { margin-left: auto; text-align: right; }
-    .project-tags { justify-content: flex-end; }
 
     .annotation-strip {
       grid-template-columns: 1fr;
@@ -811,109 +831,101 @@
   <main>
 
     <section class="hero">
-      <h1>
-        Hi, I am Lanna Hu.<br>
-        <em class="typewriter-line"><span id="typed-text"></span><span class="cursor" id="cursor"></span></em>
-      </h1>
-      <p class="hero-bio">
-        I am an interaction designer who values empathy, structure, and care,
-        making complex research actionable through clear interaction thinking
-        and user focused decisions.
-      </p>
-
-    </section>
-
-    <div class="projects-outer" id="projects-outer">
-      <div class="projects-sticky">
-        <div class="section-label">Selected work</div>
-        <div class="projects-track-wrap">
-          <div class="projects-track" id="projects-track">
-
-            <div class="project-slide slide-visible" id="slide-0">
-              <a href="salud.html" class="project-link">
-              <div class="project-row">
-                <div class="project-info">
-                  <span class="project-num">01</span>
-                  <div class="project-bottom">
-                    <div class="project-title">Salud</div>
-                    <div class="project-tags">
-                      <span class="tag">User Research</span>
-                      <span class="tag">Service Design</span>
-                    </div>
-                    <div class="project-year">2025</div>
-                  </div>
-                  <div class="project-progress">
-                    <div class="progress-dot active"></div>
-                    <div class="progress-dot"></div>
-                    <div class="progress-dot"></div>
-                  </div>
-                </div>
-                <div class="project-img-panel">
-                  <img src="images/salud-hero.png" alt="Salud" style="width:100%;height:100%;object-fit:cover;display:block;">
-                  <div class="img-note">an ai-powered, community-centered cancer screening experience</div>
-                </div>
-              </div>
-              </a>
-            </div>
-
-            <div class="project-slide" id="slide-1">
-              <a href="knownow.html" class="project-link">
-              <div class="project-row">
-                <div class="project-info">
-                  <span class="project-num">02</span>
-                  <div class="project-bottom">
-                    <div class="project-title">KnowNow</div>
-                    <div class="project-tags">
-                      <span class="tag">Mobile App</span>
-                      <span class="tag">Emergency UX</span>
-                    </div>
-                    <div class="project-year">2025</div>
-                  </div>
-                  <div class="project-progress">
-                    <div class="progress-dot"></div>
-                    <div class="progress-dot active"></div>
-                    <div class="progress-dot"></div>
-                  </div>
-                </div>
-                <div class="project-img-panel">
-                  <img src="images/knownow-cover.png" alt="KnowNow" style="width:100%;height:100%;object-fit:cover;display:block;">
-                  <div class="img-note">a language-accessible emergency response app for non-English speaking communities</div>
-                </div>
-              </div>
-              </a>
-            </div>
-
-            <div class="project-slide" id="slide-2">
-              <a href="floatos.html" class="project-link">
-              <div class="project-row">
-                <div class="project-info">
-                  <span class="project-num">03</span>
-                  <div class="project-bottom">
-                    <div class="project-title">Float OS</div>
-                    <div class="project-tags">
-                      <span class="tag">Interface Design</span>
-                      <span class="tag">Mobile OS</span>
-                    </div>
-                    <div class="project-year">2025</div>
-                  </div>
-                  <div class="project-progress">
-                    <div class="progress-dot"></div>
-                    <div class="progress-dot"></div>
-                    <div class="progress-dot active"></div>
-                  </div>
-                </div>
-                <div class="project-img-panel">
-                  <img src="images/floatos-cover.png" alt="Float OS" style="width:100%;height:100%;object-fit:cover;display:block;">
-                  <div class="img-note">an advanced mobile OS interface exploring weather, finance, and time</div>
-                </div>
-              </div>
-              </a>
-            </div>
-
-          </div>
+      <div class="m-grid">
+        <div class="m-content">
+          <h1>
+            Hi, I am Lanna Hu.<br>
+            <span class="hw-wrap">
+              <span class="hw-mark" id="hw-mark"></span>
+              <span class="hw-line" id="hw-text"></span><!--
+              --><svg class="hw-pen" id="hw-pen" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M14.5 2.5l3 3L6 17H3v-3L14.5 2.5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                <path d="M12 5l3 3" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+            </span>
+          </h1>
+          <p class="hero-bio">
+            I value empathy, structure, and care, turning complex research into
+            clear interactions grounded in real user needs.
+          </p>
+        </div>
+        <div class="m-aside">
+          <div class="desk-date" id="desk-date"></div>
+          <svg class="desk-ruler" width="177" height="34" viewBox="0 0 177 34" fill="none" aria-hidden="true"><rect x="1" y="0.5" width="175" height="33" rx="1.5" fill="#F1EFE8"/><rect x="1" y="0.5" width="175" height="33" rx="1.5" stroke="#CFCDC4"/><path d="M0.5 0V13M10.5 0V7M20.5 0V7M30.5 0V7M40.5 0V7M50.5 0V13M60.5 0V7M70.5 0V7M80.5 0V7M90.5 0V7M100.5 0V13M110.5 0V7M120.5 0V7M130.5 0V7M140.5 0V7M150.5 0V13M160.5 0V7" stroke="#3F3F3A" stroke-opacity="0.55"/></svg>
+          <svg class="desk-cat" width="100" height="109" viewBox="56 44 272 296" fill="none" aria-hidden="true">
+            <g class="cat-strokes" stroke="#1E1E1C" stroke-opacity=".85" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+              <path class="cat-line" data-order="1" d="M72 118C68 134 64 150 64 168C65 204 96 238 128 238C158 238 188 208 188 170C188 150 184 134 178 118L158 144C146 150 112 150 92 144L72 118"/>
+              <path class="cat-line" data-order="2" stroke-width="2.4" d="M118 211C121 216 126 216 128 210C130 216 135 216 138 211"/>
+              <path class="cat-line" data-order="3" d="M185 191C215 188 256 188 291 186C290 152 292 102 295 64C297 52 306 52 307 66C311 106 317 152 318 196C321 242 316 286 311 326"/>
+              <path class="cat-line" data-order="4" d="M174 242C198 236 236 238 252 243C262 262 272 290 283 326"/>
+              <path class="cat-line" data-order="5" d="M297 262C300 285 297 308 292 324"/>
+              <path class="cat-line" data-order="6" d="M114 252C113 280 119 300 124 321"/>
+              <path class="cat-line" data-order="7" d="M150 238C146 270 140 300 150 331"/>
+              <path class="cat-line" data-order="8" d="M133 262C132 278 134 288 134 297"/>
+            </g>
+            <g class="cat-dots" fill="#1E1E1C" fill-opacity=".85">
+              <circle cx="100" cy="184" r="3"/><circle cx="152" cy="184" r="3"/>
+              <path d="M122 198H134L128 205Z"/>
+              <circle cx="124" cy="323" r="3"/><circle cx="150" cy="332" r="3"/><circle cx="284" cy="326" r="3"/><circle cx="310" cy="327" r="3"/>
+            </g>
+          </svg>
+          <button class="desk-pencil" id="desk-pencil" type="button" aria-label="Draw a cat"><svg width="150" height="14" viewBox="0 0 150 14" fill="none" aria-hidden="true"><rect x="18" y="1" width="96" height="12" fill="#3F3F3A"/><path d="M0 4C0 2.34315 1.34315 1 3 1H18V13H3C1.34315 13 0 11.6569 0 10V4Z" fill="#F2B8B0"/><path d="M114 1L140 7L114 13V1Z" fill="#E9D3AE" stroke="black"/><path d="M132 4L140 7L132 10V4Z" fill="#1E1E1C" stroke="black"/></svg></button>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section class="work m-grid" id="work">
+      <div class="m-content">
+      <div class="work-list">
+
+        <article class="work-card" id="work-card-0">
+          <svg class="start-here-arrow" width="92" height="32" viewBox="0 0 92 32" fill="none" aria-hidden="true"><path d="M90.8 4.92466C60.8 -5.07534 24.8 2.92466 0.8 30.9247M16.8 26.9247L0.8 30.9247L2.8 14.9247" stroke="#1E1E1C" stroke-opacity="0.75" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="start-here-note" aria-hidden="true">start here</span>
+          <a href="salud.html" class="work-card-link">
+            <img class="work-card-img" src="images/salud-hero.png" alt="Salud" width="1920" height="1080" decoding="async">
+            <div class="work-card-info">
+              <div class="work-card-left">
+                <span class="work-card-title">Salud</span>
+                <span class="project-year">2025</span>
+              </div>
+              <span class="work-card-tags-hw">user research / service design</span>
+            </div>
+          </a>
+        </article>
+
+        <article class="work-card" id="work-card-1">
+          <a href="knownow.html" class="work-card-link">
+            <picture>
+              <source srcset="images/Knownow_cover-2400.webp" type="image/webp">
+              <img class="work-card-img" src="images/Knownow_cover.png" alt="KnowNow" width="1600" height="900" decoding="async" loading="lazy">
+            </picture>
+            <div class="work-card-info">
+              <div class="work-card-left">
+                <span class="work-card-title">KnowNow</span>
+                <span class="project-year">2025</span>
+              </div>
+              <span class="work-card-tags-hw">mobile app / emergency UX</span>
+            </div>
+          </a>
+        </article>
+
+        <article class="work-card" id="work-card-2">
+          <a href="floatos.html" class="work-card-link">
+            <img class="work-card-img" src="images/floatos-cover.png" alt="Float OS" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="work-card-info">
+              <div class="work-card-left">
+                <span class="work-card-title">Float OS</span>
+                <span class="project-year">2025</span>
+              </div>
+              <span class="work-card-tags-hw">interface design / mobile OS</span>
+            </div>
+          </a>
+        </article>
+
+      </div>
+      </div><!-- /.m-content -->
+      <div class="m-aside" aria-hidden="true"></div>
+    </section>
 
     <div class="play-outer" id="play-outer">
       <div class="play-header">
@@ -988,67 +1000,127 @@
 
 </div>
 
+<!-- cat-pen: fixed overlay pencil that follows the cat path while drawing -->
+<div id="cat-pen" aria-hidden="true">
+  <svg width="72" height="7" viewBox="0 0 150 14" fill="none" aria-hidden="true">
+    <rect x="18" y="1" width="96" height="12" fill="#3F3F3A"/>
+    <path d="M0 4C0 2.34315 1.34315 1 3 1H18V13H3C1.34315 13 0 11.6569 0 10V4Z" fill="#F2B8B0"/>
+    <path d="M114 1L140 7L114 13V1Z" fill="#E9D3AE" stroke="black"/>
+    <path d="M132 4L140 7L132 10V4Z" fill="#1E1E1C" stroke="black"/>
+  </svg>
+</div>
+
 <script>
+  // ── CLOCK (LA time) ────────────────────────────────────────────────────────
+  const clockFmt = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Los_Angeles',
+    hour: '2-digit', minute: '2-digit', hour12: false
+  });
   function updateClock() {
-    const now = new Date();
-    document.getElementById('clock').textContent =
-      now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) + ' CST';
+    document.getElementById('clock').textContent = clockFmt.format(new Date()) + ' PT';
   }
   updateClock();
   setInterval(updateClock, 1000);
 
+  // ── DESK DATE ──────────────────────────────────────────────────────────────
+  (function() {
+    const dd = document.getElementById('desk-date');
+    if (!dd) return;
+    const parts = new Intl.DateTimeFormat('en-US', {
+      month: 'short', day: 'numeric', weekday: 'long', year: 'numeric'
+    }).formatToParts(new Date());
+    const get = (t) => (parts.find(p => p.type === t) || {}).value || '';
+    dd.textContent = get('month') + ' ' + get('day') + ', ' + get('weekday') + ', ' + get('year');
+  })();
+
+  // ── HANDWRITING ANIMATION ──────────────────────────────────────────────────
   const phrases = [
     'I design interactions.',
     'I think in systems.',
     'I care about details.',
     'I make things feel right.',
   ];
-  const phraseColors = ['#BFE184', '#AFCFF0', '#F9D680', '#F9B4C6'];
-  const el  = document.getElementById('typed-text');
-  const cur = document.getElementById('cursor');
-  const typewriterLine = document.querySelector('.typewriter-line');
-  let phraseIdx = 0;
+  const markColors = [
+    'rgba(191,225,132,0.45)',
+    'rgba(175,207,240,0.45)',
+    'rgba(249,214,128,0.45)',
+    'rgba(249,180,198,0.45)',
+  ];
+  const hwText  = document.getElementById('hw-text');
+  const hwMark  = document.getElementById('hw-mark');
+  const hwPen   = document.getElementById('hw-pen');
+  let hwIdx = 0;
+  let hwTimer = null;
+  let hwRunning = false;
 
-  function applyColor(idx) {
-    const c = phraseColors[idx];
-    typewriterLine.style.color = c;
-    cur.style.background = c;
-  }
-
-  function typePhrase(phrase, cb) {
+  function hwWrite(phrase, color, onDone) {
+    hwMark.style.background = color;
+    hwPen.classList.add('writing');
     let i = 0;
-    const iv = setInterval(() => {
-      el.textContent = phrase.slice(0, ++i);
-      if (i === phrase.length) { clearInterval(iv); cb(); }
-    }, 55);
+    const CHAR_MS = 48;
+    function step() {
+      if (!hwRunning) return;
+      hwText.textContent = phrase.slice(0, ++i);
+      const w = hwText.offsetWidth;
+      hwMark.style.width = w + 'px';
+      if (i < phrase.length) {
+        hwTimer = setTimeout(step, CHAR_MS);
+      } else {
+        hwPen.classList.remove('writing');
+        onDone();
+      }
+    }
+    hwTimer = setTimeout(step, CHAR_MS);
   }
 
-  function erasePhrase(cb) {
-    const iv = setInterval(() => {
-      el.textContent = el.textContent.slice(0, -1);
-      if (!el.textContent) { clearInterval(iv); cb(); }
-    }, 30);
+  function hwErase(onDone) {
+    hwPen.classList.add('writing');
+    const ERASE_MS = 22;
+    function step() {
+      if (!hwRunning) return;
+      const t = hwText.textContent;
+      if (!t.length) {
+        hwMark.style.width = '0';
+        hwPen.classList.remove('writing');
+        onDone();
+        return;
+      }
+      hwText.textContent = t.slice(0, -1);
+      hwMark.style.width = hwText.offsetWidth + 'px';
+      hwTimer = setTimeout(step, ERASE_MS);
+    }
+    hwTimer = setTimeout(step, ERASE_MS);
   }
 
-  function loop() {
-    applyColor(phraseIdx);
-    typePhrase(phrases[phraseIdx], () => {
-      // pause, then erase — first phrase pauses longer
-      setTimeout(() => {
-        erasePhrase(() => {
-          phraseIdx = (phraseIdx + 1) % phrases.length;
-          setTimeout(loop, 300);
+  function hwLoop() {
+    if (!hwRunning) return;
+    hwWrite(phrases[hwIdx], markColors[hwIdx], () => {
+      hwTimer = setTimeout(() => {
+        hwErase(() => {
+          hwIdx = (hwIdx + 1) % phrases.length;
+          hwTimer = setTimeout(hwLoop, 280);
         });
-      }, phraseIdx === 0 ? 2800 : 1800);
+      }, hwIdx === 0 ? 2600 : 1700);
     });
   }
 
-  // cursor always blinks; start after brief delay
-  setTimeout(loop, 800);
+  function startHW() {
+    hwRunning = true;
+    hwText.textContent = '';
+    hwMark.style.width = '0';
+    hwTimer = setTimeout(hwLoop, 700);
+  }
+
+  function stopHW() {
+    hwRunning = false;
+    clearTimeout(hwTimer);
+    hwPen.classList.remove('writing');
+  }
+
+  startHW();
 
   // ── NAV CLICKS ──────────────────────────────────────────────────────────────
-  const projectsOuter  = document.getElementById('projects-outer');
-  const projectsSticky = document.querySelector('.projects-sticky');
+  const workSection    = document.getElementById('work');
   const navIndex       = document.getElementById('nav-index');
   const navWork        = document.getElementById('nav-work');
   const navSubWork     = document.getElementById('nav-sub-work');
@@ -1064,8 +1136,8 @@
 
   navWork.addEventListener('click', e => {
     e.preventDefault();
-    const outerTop = projectsOuter.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: outerTop, behavior: 'smooth' });
+    const top = workSection.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top, behavior: 'smooth' });
   });
 
   navAbout.addEventListener('click', e => {
@@ -1074,25 +1146,9 @@
     window.scrollTo({ top, behavior: 'smooth' });
   });
 
-  // ── SECTION LABEL: fades in the moment the section enters the viewport ───────
-  // (appears from below, well before it needs to stick — no surprise overlay)
-  const labelObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        projectsSticky.classList.add('label-visible');
-      } else if (entry.boundingClientRect.top > 0) {
-        // Section has scrolled back below the viewport — hide again
-        projectsSticky.classList.remove('label-visible');
-      }
-      // When section scrolls ABOVE viewport the label stays visible (it's sticky)
-    });
-  }, { threshold: 0 });
-  labelObserver.observe(projectsOuter);
-
-  // ── NAV ACTIVE STATE: switch when section crosses 50% down the viewport ──────
-  // (much earlier than waiting for section top to hit y=0)
+  // ── NAV ACTIVE STATE ──────────────────────────────────────────────────────
   function updateNavActive() {
-    const workRect   = projectsOuter.getBoundingClientRect();
+    const workRect   = workSection ? workSection.getBoundingClientRect() : { top: 9999, bottom: 0 };
     const playRect   = playSection.getBoundingClientRect();
     const aboutRect  = aboutSection.getBoundingClientRect();
     const nearBottom = window.scrollY + window.innerHeight >= document.body.scrollHeight - 80;
@@ -1108,40 +1164,269 @@
   }
   window.addEventListener('scroll', updateNavActive, { passive: true });
 
-  // ── PROJECT SLIDES: fade up as each one approaches the viewport ──────────────
-  const slideObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('slide-visible');
-        slideObserver.unobserve(entry.target); // fire once
-      }
-    });
-  }, {
-    threshold: 0.08,
-    rootMargin: '0px 0px -60px 0px'
-  });
-  document.querySelectorAll('.project-slide').forEach(slide => {
-    slideObserver.observe(slide);
-  });
+  // ── WORK CARDS: IntersectionObserver scale in/out ────────────────────────
+  if (window.innerWidth > 680) {
+    const card0 = document.getElementById('work-card-0');
+    let card0Intersecting = false;
 
-  // ── SUB-NAV ACTIVE: highlight project in nav as it enters view ───────────────
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.target === card0) {
+          card0Intersecting = entry.isIntersecting;
+          // card 0 only scales when the user has scrolled past the top
+          card0.classList.toggle('is-inview', entry.isIntersecting && window.scrollY > 8);
+        } else {
+          entry.target.classList.toggle('is-inview', entry.isIntersecting);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.work-card').forEach(card => cardObserver.observe(card));
+
+    // Scroll listener: manage card 0 scale based on top-of-page threshold
+    window.addEventListener('scroll', () => {
+      if (!card0) return;
+      if (window.scrollY <= 8) {
+        card0.classList.remove('is-inview');
+      } else if (card0Intersecting) {
+        card0.classList.add('is-inview');
+      }
+    }, { passive: true });
+  }
+
+  // ── SUB-NAV ACTIVE: highlight project in nav as card enters view ─────────
   const subNavItems = document.querySelectorAll('.nav-sub-item');
   const subNavObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const idx = entry.target.id.split('-')[1]; // "slide-0" → "0"
+        const idx = entry.target.id.split('-')[2]; // "work-card-0" → "0"
         subNavItems.forEach(a => {
           a.classList.toggle('active', a.dataset.slide === idx);
         });
       }
     });
-  }, {
-    rootMargin: '-10% 0px -60% 0px',
-    threshold: 0
-  });
-  document.querySelectorAll('.project-slide').forEach(slide => {
-    subNavObserver.observe(slide);
-  });
+  }, { rootMargin: '-10% 0px -60% 0px', threshold: 0 });
+  document.querySelectorAll('.work-card').forEach(card => subNavObserver.observe(card));
+
+  // ── CAT DRAWING ───────────────────────────────────────────────────────────
+  const deskCat  = document.querySelector('.desk-cat');
+  const catPenEl = document.getElementById('cat-pen');
+  const pencilBtn = document.getElementById('desk-pencil');
+
+  // Cubic-bezier(.45,0,.25,1) solver
+  const catEase = (() => {
+    const [x1,y1,x2,y2] = [0.45,0,0.25,1];
+    const bx = t => 3*(1-t)*(1-t)*t*x1 + 3*(1-t)*t*t*x2 + t*t*t;
+    const by = t => 3*(1-t)*(1-t)*t*y1 + 3*(1-t)*t*t*y2 + t*t*t;
+    const dx = t => 3*(1-t)*(1-3*t)*x1 + 3*t*(2-3*t)*x2 + 3*t*t;
+    return x => {
+      if (x <= 0) return 0; if (x >= 1) return 1;
+      let t = x;
+      for (let i = 0; i < 8; i++) {
+        const err = bx(t) - x, d = dx(t);
+        if (Math.abs(d) < 1e-6) break;
+        t -= err / d; t = Math.max(0, Math.min(1, t));
+      }
+      return by(t);
+    };
+  })();
+
+  let catState = 'idle'; // 'idle' | 'drawing' | 'drawn' | 'erasing'
+  let catRaf   = null;
+  const TIP_X = 67, TIP_Y = 3;
+
+  function catCancel() { if (catRaf) { cancelAnimationFrame(catRaf); catRaf = null; } }
+
+  function catReset() {
+    if (!deskCat) return;
+    deskCat.querySelectorAll('.cat-line').forEach(p => {
+      const len = p.getTotalLength();
+      p.style.strokeDasharray  = len;
+      p.style.strokeDashoffset = len;
+    });
+    deskCat.querySelectorAll('.cat-dots > *').forEach(d => {
+      d.style.opacity = '0'; d.style.transform = '';
+    });
+    deskCat.style.clipPath = '';
+    if (catPenEl) { catPenEl.style.display = 'none'; catPenEl.style.opacity = '1'; }
+    if (pencilBtn) pencilBtn.style.opacity = '';
+  }
+
+  function catErase(done) {
+    if (!deskCat) { done && done(); return; }
+    catCancel();
+    catState = 'erasing';
+    if (pencilBtn) pencilBtn.style.opacity = '0.3';
+    const t0 = performance.now();
+    (function frame(now) {
+      const p = Math.min(1, (now - t0) / 700);
+      deskCat.style.clipPath = `inset(0 ${p * 100}% 0 0)`;
+      if (p < 1) {
+        catRaf = requestAnimationFrame(frame);
+      } else {
+        catReset();
+        catState = 'idle';
+        done && done();
+      }
+    })(t0);
+  }
+
+  function catDraw() {
+    if (!deskCat || !catPenEl) return;
+    catCancel();
+    catState = 'drawing';
+    if (pencilBtn) pencilBtn.style.opacity = '0.3';
+
+    const paths = Array.from(deskCat.querySelectorAll('.cat-line'))
+      .sort((a, b) => (+a.dataset.order) - (+b.dataset.order));
+    const dots  = Array.from(deskCat.querySelectorAll('.cat-dots > *'));
+    if (!paths.length) return;
+
+    const lens     = paths.map(p => p.getTotalLength());
+    const totalLen = lens.reduce((s, l) => s + l, 0);
+    const TOTAL_DRAW = 3800, LIFT_DUR = 120;
+
+    // Initialise: all strokes hidden, dots hidden, clip clear
+    paths.forEach((p, i) => {
+      p.style.strokeDasharray  = lens[i];
+      p.style.strokeDashoffset = lens[i];
+    });
+    dots.forEach(d => { d.style.opacity = '0'; d.style.transform = ''; });
+    deskCat.style.clipPath = '';
+
+    // Place pen at start of first path immediately
+    (function placeAtStart(pathEl) {
+      const pt    = pathEl.getPointAtLength(0);
+      const svgPt = pathEl.ownerSVGElement.createSVGPoint();
+      svgPt.x = pt.x; svgPt.y = pt.y;
+      const sp = svgPt.matrixTransform(pathEl.getScreenCTM());
+      catPenEl.style.left            = (sp.x - TIP_X) + 'px';
+      catPenEl.style.top             = (sp.y - TIP_Y) + 'px';
+      catPenEl.style.transformOrigin = TIP_X + 'px ' + TIP_Y + 'px';
+      catPenEl.style.transform       = 'rotate(150deg)';
+    })(paths[0]);
+    catPenEl.style.display = 'block';
+    catPenEl.style.opacity = '1';
+
+    let pathIdx = 0;
+    let phase   = 'stroke'; // 'stroke' | 'lift' | 'dots' | 'lift_final'
+    let t0      = performance.now();
+    let liftFrom = null;
+
+    function movePen(pathEl, len, frac, now) {
+      const pt    = pathEl.getPointAtLength(frac * len);
+      const svgPt = pathEl.ownerSVGElement.createSVGPoint();
+      svgPt.x = pt.x; svgPt.y = pt.y;
+      const sp    = svgPt.matrixTransform(pathEl.getScreenCTM());
+      const wobble = Math.sin(now * 0.004) * 1.5;
+      catPenEl.style.left            = (sp.x - TIP_X) + 'px';
+      catPenEl.style.top             = (sp.y - TIP_Y) + 'px';
+      catPenEl.style.transformOrigin = TIP_X + 'px ' + TIP_Y + 'px';
+      catPenEl.style.transform       = `rotate(${150 + wobble}deg)`;
+    }
+
+    function frame(now) {
+      if (phase === 'stroke') {
+        const pathDur = (lens[pathIdx] / totalLen) * TOTAL_DRAW;
+        const raw     = Math.min(1, (now - t0) / pathDur);
+        const prog    = catEase(raw);
+        paths[pathIdx].style.strokeDashoffset = lens[pathIdx] * (1 - prog);
+        movePen(paths[pathIdx], lens[pathIdx], prog, now);
+
+        if (raw >= 1) {
+          if (pathIdx < paths.length - 1) {
+            liftFrom = { l: parseFloat(catPenEl.style.left), t: parseFloat(catPenEl.style.top) };
+            phase = 'lift';
+            pathIdx++;
+            t0 = now;
+          } else {
+            phase = 'dots';
+            t0 = now;
+          }
+        }
+      } else if (phase === 'lift') {
+        const lp = Math.min(1, (now - t0) / LIFT_DUR);
+        if (lp < 0.5) {
+          const e = lp * 2;
+          catPenEl.style.opacity = (1 - e);
+          catPenEl.style.left    = (liftFrom.l + 6 * e) + 'px';
+          catPenEl.style.top     = (liftFrom.t - 6 * e) + 'px';
+        } else {
+          const e  = (lp - 0.5) * 2;
+          const pt = paths[pathIdx].getPointAtLength(0);
+          const sv = paths[pathIdx].ownerSVGElement.createSVGPoint();
+          sv.x = pt.x; sv.y = pt.y;
+          const sp = sv.matrixTransform(paths[pathIdx].getScreenCTM());
+          catPenEl.style.opacity         = e;
+          catPenEl.style.left            = (sp.x - TIP_X) + 'px';
+          catPenEl.style.top             = (sp.y - TIP_Y) + 'px';
+          catPenEl.style.transformOrigin = TIP_X + 'px ' + TIP_Y + 'px';
+          catPenEl.style.transform       = 'rotate(150deg)';
+        }
+        if (lp >= 1) { phase = 'stroke'; t0 = now; }
+      } else if (phase === 'dots') {
+        const elapsed     = now - t0;
+        const totalDotDur = (dots.length - 1) * 70 + 160;
+        dots.forEach((d, i) => {
+          const tLocal = Math.min(1, Math.max(0, (elapsed - i * 70) / 160));
+          if (tLocal > 0) {
+            d.style.opacity   = tLocal;
+            d.style.transform = `scale(${0.3 + 0.7 * tLocal})`;
+          }
+        });
+        if (elapsed >= totalDotDur) {
+          liftFrom = { l: parseFloat(catPenEl.style.left), t: parseFloat(catPenEl.style.top) };
+          phase = 'lift_final';
+          t0 = now;
+        }
+      } else if (phase === 'lift_final') {
+        const t    = Math.min(1, (now - t0) / 300);
+        const ease = t * t;
+        catPenEl.style.left    = (liftFrom.l + 12 * ease) + 'px';
+        catPenEl.style.top     = (liftFrom.t - 12 * ease) + 'px';
+        catPenEl.style.opacity = (1 - ease);
+        if (t >= 1) {
+          catPenEl.style.display = 'none';
+          catPenEl.style.opacity = '1';
+          if (pencilBtn) pencilBtn.style.opacity = '';
+          catState = 'drawn';
+          catRaf   = null;
+          return;
+        }
+      }
+      catRaf = requestAnimationFrame(frame);
+    }
+    catRaf = requestAnimationFrame(frame);
+  }
+
+  if (pencilBtn) {
+    pencilBtn.addEventListener('click', () => {
+      if (catState === 'drawing' || catState === 'erasing') return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (catState === 'drawn') {
+          catReset();
+          catState = 'idle';
+        } else {
+          deskCat && deskCat.querySelectorAll('.cat-line').forEach(p => {
+            const len = p.getTotalLength();
+            p.style.strokeDasharray  = len;
+            p.style.strokeDashoffset = '0';
+          });
+          deskCat && deskCat.querySelectorAll('.cat-dots > *').forEach(d => {
+            d.style.opacity = '1'; d.style.transform = 'none';
+          });
+          if (deskCat) deskCat.style.clipPath = '';
+          catState = 'drawn';
+        }
+        return;
+      }
+      if (catState === 'drawn') {
+        catErase(() => catDraw());
+      } else {
+        catDraw();
+      }
+    });
+  }
 
   // ── LIGHTBOX ──────────────────────────────────────────────────────────────
   const lightbox        = document.getElementById('lightbox');
@@ -1184,5 +1469,6 @@
 
   lightbox.addEventListener('click', () => closeLightbox());
 </script>
+
 </body>
 </html>
