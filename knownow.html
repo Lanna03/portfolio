@@ -452,6 +452,8 @@
     }
     .nav-links { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 0 var(--sp-2); }
     .nav-section-label { display: none; }
+    .section-links { display: contents; }
+    .section-links a { opacity: 1 !important; transform: none !important; transition: none !important; }
     main { grid-column: 1; padding: 0 0 80px; }
     .cs-hero { padding-top: 32px; }
     .cs-title { font-size: 24px; }
@@ -459,6 +461,33 @@
     .cs-decisions { grid-template-columns: 1fr; }
     .cs-persona { grid-template-columns: 1fr; }
     .cs-stat-cards { grid-template-columns: 1fr; }
+  }
+
+  /* ── NAV SECTION COLLAPSE ── */
+  .section-links {
+    overflow: hidden;
+    max-height: 0;
+    visibility: hidden;
+    transition: max-height 0.65s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.65s;
+  }
+  .nav-links.nav-expanded .section-links {
+    max-height: var(--sl-height, 320px);
+    visibility: visible;
+    transition: max-height 0.65s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s;
+  }
+  .section-links a {
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .nav-links.nav-expanded .section-links a {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .section-links, .section-links a { transition: none; }
+    .nav-links .section-links { max-height: var(--sl-height, 320px); visibility: visible; }
+    .nav-links .section-links a { opacity: 1; transform: none; }
   }
 </style>
 </head>
@@ -470,12 +499,14 @@
     <a class="nav-name" href="index.html">← Index</a>
     <div class="nav-links">
       <div class="nav-section-label">Sections</div>
-      <a href="#overview" class="active">Overview</a>
-      <a href="#the-problem">The Problem</a>
-      <a href="#research">Research</a>
-      <a href="#who-we-designed-for">Who We Designed For</a>
-      <a href="#prototype">Prototype</a>
-      <a href="#reflection">Reflection</a>
+      <div class="section-links">
+        <a href="#overview" class="active">Overview</a>
+        <a href="#the-problem">The Problem</a>
+        <a href="#research">Research</a>
+        <a href="#who-we-designed-for">Who We Designed For</a>
+        <a href="#prototype">Prototype</a>
+        <a href="#reflection">Reflection</a>
+      </div>
     </div>
   </nav>
 
@@ -787,6 +818,38 @@
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  // ── NAV SECTION COLLAPSE ─────────────────────────────────────────────────────
+  (function initNavCollapse() {
+    const navLinksEl = document.querySelector('.nav-links');
+    const slEl       = document.querySelector('.section-links');
+    if (!navLinksEl || !slEl) return;
+    const links = slEl.querySelectorAll('a');
+
+    function computeHeight() {
+      navLinksEl.style.setProperty('--sl-height', slEl.scrollHeight + 'px');
+    }
+    function expand() {
+      links.forEach((a, i) => { a.style.transitionDelay = (i * 48) + 'ms'; });
+      navLinksEl.classList.add('nav-expanded');
+    }
+    function collapse() {
+      links.forEach(a => { a.style.transitionDelay = '0ms'; });
+      navLinksEl.classList.remove('nav-expanded');
+    }
+
+    computeHeight();
+    if (window.scrollY > 80) expand();
+
+    let rafId = null;
+    window.addEventListener('scroll', () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        if (window.scrollY > 80) expand(); else collapse();
+      });
+    }, { passive: true });
+  })();
 </script>
 </body>
 </html>

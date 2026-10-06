@@ -129,43 +129,6 @@
     color: var(--ink-faint);
   }
 
-  /* Sub-nav: project list under Work, slides in when in work zone */
-  .nav-sub {
-    max-height: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: max-height 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .nav-sub.visible { max-height: 120px; }
-
-  .nav-sub .nav-sub-item {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    color: #7a7a74;
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    line-height: 2;
-    padding-left: calc(var(--sp-2) + 10px); /* second indent level */
-    display: block;
-    position: relative;
-    transition: color 0.2s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .nav-sub .nav-sub-item:hover { color: var(--ink-muted); }
-  .nav-sub .nav-sub-item.active {
-    color: var(--ink);
-  }
-  .nav-sub .nav-sub-item.active::before {
-    content: '—';
-    position: absolute;
-    left: var(--sp-2);   /* indented to the main-nav text level, not the dash column */
-    font-size: 12px;
-    color: var(--ink-faint);
-  }
 
   .nav-bottom {
     margin-top: auto;
@@ -317,11 +280,9 @@
   .work-card-img {
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 9;
     height: auto;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 0;
+    aspect-ratio: auto;
+    object-fit: contain;
   }
 
   .work-card-info {
@@ -416,17 +377,27 @@
     filter: drop-shadow(0 2px 4px rgba(0,0,0,.08));
   }
 
-  /* ── PLAY STRIP ── */
-  /* ── PLAY GALLERY ── */
-  .play-outer { margin-top: 200px; margin-bottom: 200px; }
-  .play-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--bg);
-    padding-top: 40px;
-    padding-bottom: 16px;
+  /* ── VIEWS ── */
+  .views { position: relative; }
+  .view[hidden] { display: none !important; }
+
+  /* Play / About first line top-aligns with hero h1 cap-top */
+  #view-play  > .m-grid > .m-content,
+  #view-about > .m-grid > .m-content {
+    padding-top: var(--hero-offset);
   }
+
+  /* ── PEEL STAGE ── */
+  #peel-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  #peel-stage > * { position: absolute; }
+
+  /* ── PLAY GALLERY ── */
   .play-gallery {
     columns: 3;
     column-gap: 16px;
@@ -777,7 +748,6 @@
     .nav-links, .nav-bottom { display: flex; flex-direction: row; flex-wrap: wrap; gap: 0 var(--sp-2); margin-top: 0; }
     .nav-links { margin-right: auto; }
     .nav-section-label, .nav-bottom-label { display: none; }
-    .nav-sub { display: none; }
 
     main {
       grid-column: 1;
@@ -810,15 +780,9 @@
     <div class="nav-name">Lanna Hu</div>
     <div class="nav-links">
       <div class="nav-section-label">Pages</div>
-      <a href="#" id="nav-index" class="active">Index</a>
-      <a href="#" id="nav-work">Work</a>
-      <div class="nav-sub" id="nav-sub-work">
-        <a href="#" class="nav-sub-item active" data-slide="0">Salud</a>
-        <a href="#" class="nav-sub-item" data-slide="1">KnowNow</a>
-        <a href="#" class="nav-sub-item" data-slide="2">Float OS</a>
-      </div>
-      <a href="#" id="nav-play">Play</a>
-      <a href="#" id="nav-about">About</a>
+      <a href="#" id="nav-index" class="active" aria-current="page">Index</a>
+      <a href="#play" id="nav-play">Play</a>
+      <a href="#about" id="nav-about">About</a>
     </div>
     <div class="nav-bottom">
       <div class="nav-bottom-label">Contact</div>
@@ -830,162 +794,183 @@
   <!-- cols 3–10: content -->
   <main>
 
-    <section class="hero">
-      <div class="m-grid">
-        <div class="m-content">
-          <h1>
-            Hi, I am Lanna Hu.<br>
-            <span class="hw-wrap">
-              <span class="hw-mark" id="hw-mark"></span>
-              <span class="hw-line" id="hw-text"></span><!--
-              --><svg class="hw-pen" id="hw-pen" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M14.5 2.5l3 3L6 17H3v-3L14.5 2.5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-                <path d="M12 5l3 3" stroke="currentColor" stroke-width="1.2"/>
+    <div class="views">
+
+      <!-- ── INDEX VIEW ── -->
+      <section class="view" id="view-index" data-view="index">
+
+        <section class="hero">
+          <div class="m-grid">
+            <div class="m-content">
+              <h1>
+                Hi, I am Lanna Hu.<br>
+                <span class="hw-wrap">
+                  <span class="hw-mark" id="hw-mark"></span>
+                  <span class="hw-line" id="hw-text"></span><!--
+                  --><svg class="hw-pen" id="hw-pen" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M14.5 2.5l3 3L6 17H3v-3L14.5 2.5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 5l3 3" stroke="currentColor" stroke-width="1.2"/>
+                  </svg>
+                </span>
+              </h1>
+              <p class="hero-bio">
+                I value empathy, structure, and care, turning complex research into
+                clear interactions grounded in real user needs.
+              </p>
+            </div>
+            <div class="m-aside">
+              <div class="desk-date" id="desk-date"></div>
+              <svg class="desk-ruler" width="177" height="34" viewBox="0 0 177 34" fill="none" aria-hidden="true"><rect x="1" y="0.5" width="175" height="33" rx="1.5" fill="#F1EFE8"/><rect x="1" y="0.5" width="175" height="33" rx="1.5" stroke="#CFCDC4"/><path d="M0.5 0V13M10.5 0V7M20.5 0V7M30.5 0V7M40.5 0V7M50.5 0V13M60.5 0V7M70.5 0V7M80.5 0V7M90.5 0V7M100.5 0V13M110.5 0V7M120.5 0V7M130.5 0V7M140.5 0V7M150.5 0V13M160.5 0V7" stroke="#3F3F3A" stroke-opacity="0.55"/></svg>
+              <svg class="desk-cat" width="100" height="109" viewBox="56 44 272 296" fill="none" aria-hidden="true">
+                <g class="cat-strokes" stroke="#1E1E1C" stroke-opacity=".85" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path class="cat-line" data-order="1" d="M72 118C68 134 64 150 64 168C65 204 96 238 128 238C158 238 188 208 188 170C188 150 184 134 178 118L158 144C146 150 112 150 92 144L72 118"/>
+                  <path class="cat-line" data-order="2" stroke-width="2.4" d="M118 211C121 216 126 216 128 210C130 216 135 216 138 211"/>
+                  <path class="cat-line" data-order="3" d="M185 191C215 188 256 188 291 186C290 152 292 102 295 64C297 52 306 52 307 66C311 106 317 152 318 196C321 242 316 286 311 326"/>
+                  <path class="cat-line" data-order="4" d="M174 242C198 236 236 238 252 243C262 262 272 290 283 326"/>
+                  <path class="cat-line" data-order="5" d="M297 262C300 285 297 308 292 324"/>
+                  <path class="cat-line" data-order="6" d="M114 252C113 280 119 300 124 321"/>
+                  <path class="cat-line" data-order="7" d="M150 238C146 270 140 300 150 331"/>
+                  <path class="cat-line" data-order="8" d="M133 262C132 278 134 288 134 297"/>
+                </g>
+                <g class="cat-dots" fill="#1E1E1C" fill-opacity=".85">
+                  <circle cx="100" cy="184" r="3"/><circle cx="152" cy="184" r="3"/>
+                  <path d="M122 198H134L128 205Z"/>
+                  <circle cx="124" cy="323" r="3"/><circle cx="150" cy="332" r="3"/><circle cx="284" cy="326" r="3"/><circle cx="310" cy="327" r="3"/>
+                </g>
               </svg>
-            </span>
-          </h1>
-          <p class="hero-bio">
-            I value empathy, structure, and care, turning complex research into
-            clear interactions grounded in real user needs.
-          </p>
-        </div>
-        <div class="m-aside">
-          <div class="desk-date" id="desk-date"></div>
-          <svg class="desk-ruler" width="177" height="34" viewBox="0 0 177 34" fill="none" aria-hidden="true"><rect x="1" y="0.5" width="175" height="33" rx="1.5" fill="#F1EFE8"/><rect x="1" y="0.5" width="175" height="33" rx="1.5" stroke="#CFCDC4"/><path d="M0.5 0V13M10.5 0V7M20.5 0V7M30.5 0V7M40.5 0V7M50.5 0V13M60.5 0V7M70.5 0V7M80.5 0V7M90.5 0V7M100.5 0V13M110.5 0V7M120.5 0V7M130.5 0V7M140.5 0V7M150.5 0V13M160.5 0V7" stroke="#3F3F3A" stroke-opacity="0.55"/></svg>
-          <svg class="desk-cat" width="100" height="109" viewBox="56 44 272 296" fill="none" aria-hidden="true">
-            <g class="cat-strokes" stroke="#1E1E1C" stroke-opacity=".85" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-              <path class="cat-line" data-order="1" d="M72 118C68 134 64 150 64 168C65 204 96 238 128 238C158 238 188 208 188 170C188 150 184 134 178 118L158 144C146 150 112 150 92 144L72 118"/>
-              <path class="cat-line" data-order="2" stroke-width="2.4" d="M118 211C121 216 126 216 128 210C130 216 135 216 138 211"/>
-              <path class="cat-line" data-order="3" d="M185 191C215 188 256 188 291 186C290 152 292 102 295 64C297 52 306 52 307 66C311 106 317 152 318 196C321 242 316 286 311 326"/>
-              <path class="cat-line" data-order="4" d="M174 242C198 236 236 238 252 243C262 262 272 290 283 326"/>
-              <path class="cat-line" data-order="5" d="M297 262C300 285 297 308 292 324"/>
-              <path class="cat-line" data-order="6" d="M114 252C113 280 119 300 124 321"/>
-              <path class="cat-line" data-order="7" d="M150 238C146 270 140 300 150 331"/>
-              <path class="cat-line" data-order="8" d="M133 262C132 278 134 288 134 297"/>
-            </g>
-            <g class="cat-dots" fill="#1E1E1C" fill-opacity=".85">
-              <circle cx="100" cy="184" r="3"/><circle cx="152" cy="184" r="3"/>
-              <path d="M122 198H134L128 205Z"/>
-              <circle cx="124" cy="323" r="3"/><circle cx="150" cy="332" r="3"/><circle cx="284" cy="326" r="3"/><circle cx="310" cy="327" r="3"/>
-            </g>
-          </svg>
-          <button class="desk-pencil" id="desk-pencil" type="button" aria-label="Draw a cat"><svg width="150" height="14" viewBox="0 0 150 14" fill="none" aria-hidden="true"><rect x="18" y="1" width="96" height="12" fill="#3F3F3A"/><path d="M0 4C0 2.34315 1.34315 1 3 1H18V13H3C1.34315 13 0 11.6569 0 10V4Z" fill="#F2B8B0"/><path d="M114 1L140 7L114 13V1Z" fill="#E9D3AE" stroke="black"/><path d="M132 4L140 7L132 10V4Z" fill="#1E1E1C" stroke="black"/></svg></button>
-        </div>
-      </div>
-    </section>
-
-    <section class="work m-grid" id="work">
-      <div class="m-content">
-      <div class="work-list">
-
-        <article class="work-card" id="work-card-0">
-          <svg class="start-here-arrow" width="92" height="32" viewBox="0 0 92 32" fill="none" aria-hidden="true"><path d="M90.8 4.92466C60.8 -5.07534 24.8 2.92466 0.8 30.9247M16.8 26.9247L0.8 30.9247L2.8 14.9247" stroke="#1E1E1C" stroke-opacity="0.75" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="start-here-note" aria-hidden="true">start here</span>
-          <a href="salud.html" class="work-card-link">
-            <img class="work-card-img" src="images/salud-hero.png" alt="Salud" width="1920" height="1080" decoding="async">
-            <div class="work-card-info">
-              <div class="work-card-left">
-                <span class="work-card-title">Salud</span>
-                <span class="project-year">2025</span>
-              </div>
-              <span class="work-card-tags-hw">user research / service design</span>
+              <button class="desk-pencil" id="desk-pencil" type="button" aria-label="Draw a cat"><svg width="150" height="14" viewBox="0 0 150 14" fill="none" aria-hidden="true"><rect x="18" y="1" width="96" height="12" fill="#3F3F3A"/><path d="M0 4C0 2.34315 1.34315 1 3 1H18V13H3C1.34315 13 0 11.6569 0 10V4Z" fill="#F2B8B0"/><path d="M114 1L140 7L114 13V1Z" fill="#E9D3AE" stroke="black"/><path d="M132 4L140 7L132 10V4Z" fill="#1E1E1C" stroke="black"/></svg></button>
             </div>
-          </a>
-        </article>
+          </div>
+        </section>
 
-        <article class="work-card" id="work-card-1">
-          <a href="knownow.html" class="work-card-link">
-            <picture>
-              <source srcset="images/Knownow_cover-2400.webp" type="image/webp">
-              <img class="work-card-img" src="images/Knownow_cover.png" alt="KnowNow" width="1600" height="900" decoding="async" loading="lazy">
-            </picture>
-            <div class="work-card-info">
-              <div class="work-card-left">
-                <span class="work-card-title">KnowNow</span>
-                <span class="project-year">2025</span>
+        <section class="work m-grid" id="work">
+          <div class="m-content">
+          <div class="work-list">
+
+            <article class="work-card" id="work-card-0">
+              <svg class="start-here-arrow" width="92" height="32" viewBox="0 0 92 32" fill="none" aria-hidden="true"><path d="M90.8 4.92466C60.8 -5.07534 24.8 2.92466 0.8 30.9247M16.8 26.9247L0.8 30.9247L2.8 14.9247" stroke="#1E1E1C" stroke-opacity="0.75" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="start-here-note" aria-hidden="true">start here</span>
+              <a href="salud.html" class="work-card-link">
+                <img class="work-card-img" src="images/salud-hero.png" alt="Salud" width="1920" height="1080" decoding="async">
+                <div class="work-card-info">
+                  <div class="work-card-left">
+                    <span class="work-card-title">Salud</span>
+                    <span class="project-year">2025</span>
+                  </div>
+                  <span class="work-card-tags-hw">user research / service design</span>
+                </div>
+              </a>
+            </article>
+
+            <article class="work-card" id="work-card-1">
+              <a href="knownow.html" class="work-card-link">
+                <picture>
+                  <source srcset="images/Knownow_cover-2400.webp" type="image/webp">
+                  <img class="work-card-img" src="images/Knownow_cover.png" alt="KnowNow" width="2400" height="1905" decoding="async" loading="lazy">
+                </picture>
+                <div class="work-card-info">
+                  <div class="work-card-left">
+                    <span class="work-card-title">KnowNow</span>
+                    <span class="project-year">2025</span>
+                  </div>
+                  <span class="work-card-tags-hw">mobile app / emergency UX</span>
+                </div>
+              </a>
+            </article>
+
+            <article class="work-card" id="work-card-2">
+              <a href="floatos.html" class="work-card-link">
+                <img class="work-card-img" src="images/floatos-cover.png" alt="Float OS" width="7680" height="4320" decoding="async" loading="lazy">
+                <div class="work-card-info">
+                  <div class="work-card-left">
+                    <span class="work-card-title">Float OS</span>
+                    <span class="project-year">2025</span>
+                  </div>
+                  <span class="work-card-tags-hw">interface design / mobile OS</span>
+                </div>
+              </a>
+            </article>
+
+          </div>
+          </div><!-- /.m-content -->
+          <div class="m-aside" aria-hidden="true"></div>
+        </section>
+
+      </section><!-- /#view-index -->
+
+      <!-- ── PLAY VIEW ── -->
+      <section class="view" id="view-play" data-view="play" hidden inert>
+        <div class="m-grid">
+          <div class="m-content">
+            <!-- PLAY: layout redesign comes later -->
+            <div class="play-gallery">
+
+              <div class="play-item"
+                   data-images="images/type-leefriendlander.jpg,images/type-leefriendlander2.jpg,images/type-leefriendlander3.jpg,images/type-leefriendlander4.jpg,images/type-leefriendlander5.jpg,images/type-leefriendlander6.jpg,images/type-leefriendlander7.jpg,images/type-leefriendlander8.jpg,images/type-leefriendlander9.jpg"
+                   data-caption="Brochure of Lee Friedlander">
+                <img src="images/type-leefriendlander.jpg" alt="Lee Friedlander Brochure">
               </div>
-              <span class="work-card-tags-hw">mobile app / emergency UX</span>
-            </div>
-          </a>
-        </article>
-
-        <article class="work-card" id="work-card-2">
-          <a href="floatos.html" class="work-card-link">
-            <img class="work-card-img" src="images/floatos-cover.png" alt="Float OS" width="1600" height="900" decoding="async" loading="lazy">
-            <div class="work-card-info">
-              <div class="work-card-left">
-                <span class="work-card-title">Float OS</span>
-                <span class="project-year">2025</span>
+              <div class="play-item"
+                   data-images="images/type-makeplay.jpg"
+                   data-caption="Magazine Cover Design">
+                <img src="images/type-makeplay.jpg" alt="Makeplay Magazine">
               </div>
-              <span class="work-card-tags-hw">interface design / mobile OS</span>
+              <div class="play-item"
+                   data-images="images/render.png"
+                   data-caption="From Earth to Sky — 3D modeling and rendering.">
+                <img src="images/render.png" alt="From Earth to Sky">
+              </div>
+              <div class="play-item"
+                   data-images="images/type-atthethreshold.jpg"
+                   data-caption="a Movie Series Poster">
+                <img src="images/type-atthethreshold.jpg" alt="At the Threshold">
+              </div>
+              <div class="play-item"
+                   data-images="images/type-helvetica.jpg,images/type-helvetica2.jpg,images/type-helvetica3.jpg,images/type-helvetica4.jpg,images/type-helvetica5.jpg,images/type-helvetica6.jpg,images/type-helvetica7.jpg,images/type-helvetica8.jpg,images/type-helvetica9.jpg,images/type-helvetica10.jpg,images/type-helvetica11.jpg,images/type-helvetica12.jpg,images/type-helvetica13.jpg"
+                   data-caption="Typography Specimen">
+                <img src="images/type-helvetica.jpg" alt="Helvetica Specimen">
+              </div>
+              <div class="play-item"
+                   data-images="images/type-type2poster.jpg"
+                   data-caption="Typography & Composition — ArtCenter Type 2, Spring 2025.">
+                <img src="images/type-type2poster.jpg" alt="Type 2 Poster">
+              </div>
+
             </div>
-          </a>
-        </article>
+          </div>
+          <div class="m-aside" data-slot="play-aside"></div>
+        </div>
+      </section><!-- /#view-play -->
 
-      </div>
-      </div><!-- /.m-content -->
-      <div class="m-aside" aria-hidden="true"></div>
-    </section>
+      <!-- ── ABOUT VIEW ── -->
+      <section class="view" id="view-about" data-view="about" hidden inert>
+        <div class="m-grid">
+          <div class="m-content">
+            <div class="annotation-strip">
+              <div class="annotation-item">
+                <div class="annotation-label">Currently reading</div>
+                <div class="annotation-text"><em>"The Design of Everyday Things"</em></div>
+              </div>
+              <div class="annotation-item">
+                <div class="annotation-label">Based in</div>
+                <div class="annotation-text">Los Angeles</div>
+              </div>
+              <div class="annotation-item">
+                <div class="annotation-label">Education</div>
+                <div class="annotation-text">ArtCenter College of Design, IxD '27</div>
+              </div>
+            </div>
+            <div data-slot="about-body"><!-- ABOUT: bio, photo and details go here --></div>
+          </div>
+          <div class="m-aside" data-slot="about-aside"></div>
+        </div>
+      </section><!-- /#view-about -->
 
-    <div class="play-outer" id="play-outer">
-      <div class="play-header">
-        <div id="play-section" class="section-label">Play</div>
-      </div>
-      <div class="play-gallery">
-
-        <div class="play-item"
-             data-images="images/type-leefriendlander.jpg,images/type-leefriendlander2.jpg,images/type-leefriendlander3.jpg,images/type-leefriendlander4.jpg,images/type-leefriendlander5.jpg,images/type-leefriendlander6.jpg,images/type-leefriendlander7.jpg,images/type-leefriendlander8.jpg,images/type-leefriendlander9.jpg"
-             data-caption="Brochure of Lee Friedlander">
-          <img src="images/type-leefriendlander.jpg" alt="Lee Friedlander Brochure">
-        </div>
-        <div class="play-item"
-             data-images="images/type-makeplay.jpg"
-             data-caption="Magazine Cover Design">
-          <img src="images/type-makeplay.jpg" alt="Makeplay Magazine">
-        </div>
-        <div class="play-item"
-             data-images="images/render.png"
-             data-caption="From Earth to Sky — 3D modeling and rendering.">
-          <img src="images/render.png" alt="From Earth to Sky">
-        </div>
-        <div class="play-item"
-             data-images="images/type-atthethreshold.jpg"
-             data-caption="a Movie Series Poster">
-          <img src="images/type-atthethreshold.jpg" alt="At the Threshold">
-        </div>
-        <div class="play-item"
-             data-images="images/type-helvetica.jpg,images/type-helvetica2.jpg,images/type-helvetica3.jpg,images/type-helvetica4.jpg,images/type-helvetica5.jpg,images/type-helvetica6.jpg,images/type-helvetica7.jpg,images/type-helvetica8.jpg,images/type-helvetica9.jpg,images/type-helvetica10.jpg,images/type-helvetica11.jpg,images/type-helvetica12.jpg,images/type-helvetica13.jpg"
-             data-caption="Typography Specimen">
-          <img src="images/type-helvetica.jpg" alt="Helvetica Specimen">
-        </div>
-        <div class="play-item"
-             data-images="images/type-type2poster.jpg"
-             data-caption="Typography & Composition — ArtCenter Type 2, Spring 2025.">
-          <img src="images/type-type2poster.jpg" alt="Type 2 Poster">
-        </div>
-
-      </div>
-    </div>
+    </div><!-- /.views -->
 
     <div class="lightbox" id="lightbox">
       <div class="lightbox-images" id="lightbox-images"></div>
       <p id="lightbox-caption"></p>
-    </div>
-
-    <div id="about-section" class="section-label" style="margin-top: 160px;">Now</div>
-    <div class="annotation-strip">
-      <div class="annotation-item">
-        <div class="annotation-label">Currently reading</div>
-        <div class="annotation-text"><em>"The Design of Everyday Things"</em></div>
-      </div>
-      <div class="annotation-item">
-        <div class="annotation-label">Based in</div>
-        <div class="annotation-text">Los Angeles</div>
-      </div>
-      <div class="annotation-item">
-        <div class="annotation-label">Education</div>
-        <div class="annotation-text">ArtCenter College of Design, IxD '27</div>
-      </div>
     </div>
 
     <div class="footer-line">
@@ -1117,52 +1102,10 @@
     hwPen.classList.remove('writing');
   }
 
-  startHW();
-
-  // ── NAV CLICKS ──────────────────────────────────────────────────────────────
-  const workSection    = document.getElementById('work');
-  const navIndex       = document.getElementById('nav-index');
-  const navWork        = document.getElementById('nav-work');
-  const navSubWork     = document.getElementById('nav-sub-work');
-  const navPlay        = document.getElementById('nav-play');
-  const playSection    = document.getElementById('play-section');
-  const navAbout       = document.getElementById('nav-about');
-  const aboutSection   = document.getElementById('about-section');
-
-  navIndex.addEventListener('click', e => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  navWork.addEventListener('click', e => {
-    e.preventDefault();
-    const top = workSection.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top, behavior: 'smooth' });
-  });
-
-  navAbout.addEventListener('click', e => {
-    e.preventDefault();
-    const top = aboutSection.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top, behavior: 'smooth' });
-  });
-
-  // ── NAV ACTIVE STATE ──────────────────────────────────────────────────────
-  function updateNavActive() {
-    const workRect   = workSection ? workSection.getBoundingClientRect() : { top: 9999, bottom: 0 };
-    const playRect   = playSection.getBoundingClientRect();
-    const aboutRect  = aboutSection.getBoundingClientRect();
-    const nearBottom = window.scrollY + window.innerHeight >= document.body.scrollHeight - 80;
-    const inAbout    = nearBottom || aboutRect.top < window.innerHeight * 0.5;
-    const inPlay     = !inAbout && playRect.top < window.innerHeight * 0.5;
-    const inWork     = !inAbout && !inPlay && workRect.top < window.innerHeight * 0.5 && workRect.bottom > 0;
-    const inIndex    = !inWork && !inPlay && !inAbout;
-    navIndex.classList.toggle('active', inIndex);
-    navWork.classList.toggle('active',  inWork);
-    navPlay.classList.toggle('active',  inPlay);
-    navAbout.classList.toggle('active', inAbout);
-    navSubWork.classList.toggle('visible', inWork);
-  }
-  window.addEventListener('scroll', updateNavActive, { passive: true });
+  // ── NAV REFERENCES ───────────────────────────────────────────────────────
+  const navIndex = document.getElementById('nav-index');
+  const navPlay  = document.getElementById('nav-play');
+  const navAbout = document.getElementById('nav-about');
 
   // ── WORK CARDS: IntersectionObserver scale in/out ────────────────────────
   if (window.innerWidth > 680) {
@@ -1193,20 +1136,6 @@
       }
     }, { passive: true });
   }
-
-  // ── SUB-NAV ACTIVE: highlight project in nav as card enters view ─────────
-  const subNavItems = document.querySelectorAll('.nav-sub-item');
-  const subNavObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const idx = entry.target.id.split('-')[2]; // "work-card-0" → "0"
-        subNavItems.forEach(a => {
-          a.classList.toggle('active', a.dataset.slide === idx);
-        });
-      }
-    });
-  }, { rootMargin: '-10% 0px -60% 0px', threshold: 0 });
-  document.querySelectorAll('.work-card').forEach(card => subNavObserver.observe(card));
 
   // ── CAT DRAWING ───────────────────────────────────────────────────────────
   const deskCat  = document.querySelector('.desk-cat');
@@ -1468,6 +1397,338 @@
   }
 
   lightbox.addEventListener('click', () => closeLightbox());
+
+  // ── VIEW ROUTING ─────────────────────────────────────────────────────────────
+  const VIEW_ORDER  = { index: 0, play: 1, about: 2 };
+  const VIEW_TITLES = {
+    index: 'Lanna Hu — Interaction Design',
+    play:  'Play — Lanna Hu',
+    about: 'About — Lanna Hu',
+  };
+  const SLOW_FLIP  = location.search.includes('slowflip');
+  const FLIP_DUR   = SLOW_FLIP ? 4400 : 1100;
+  let currentView  = null;
+  let peelStage    = null;
+
+  // Cubic-bezier(0.45,0,0.2,1) solver for peel easing
+  const peelEase = (() => {
+    const [x1,y1,x2,y2] = [0.45,0,0.2,1];
+    const bx = t => 3*(1-t)*(1-t)*t*x1 + 3*(1-t)*t*t*x2 + t*t*t;
+    const by = t => 3*(1-t)*(1-t)*t*y1 + 3*(1-t)*t*t*y2 + t*t*t;
+    const dx = t => 3*(1-t)*(1-3*t)*x1 + 3*t*(2-3*t)*x2 + 3*t*t;
+    return x => {
+      if (x <= 0) return 0; if (x >= 1) return 1;
+      let t = x;
+      for (let i = 0; i < 8; i++) {
+        const err = bx(t) - x, d = dx(t);
+        if (Math.abs(d) < 1e-6) break;
+        t -= err / d; t = Math.max(0, Math.min(1, t));
+      }
+      return by(t);
+    };
+  })();
+
+  // CC Page Turn corner peel — bottom-right corner lifts and sweeps toward upper-left.
+  // Geometry: C = bottom-right, U = normalize(-1,-0.5), M = C + U*(d/2), fold ⊥ U.
+  // clip-path on flapInner (clipped to C-side, then reflected over it) per spec.
+  function createPeel({ stage, oldNode, R }) {
+    const el = (css) => { const n = document.createElement('div'); n.style.cssText = 'position:absolute;' + (css||''); return n; };
+
+    // Layers: newShadow (shadow on revealed page), kept (flat old page), flapOuter (drop-shadow wrapper),
+    // flapInner (clip + reflection), flapPaper (white back), flapGhost (10% old-page), flapShade (curl)
+    const newShadow  = el('inset:0;pointer-events:none;');   stage.appendChild(newShadow);
+    const kept       = el('inset:0;');                       stage.appendChild(kept);
+    const flapOuter  = el('inset:0;');                       stage.appendChild(flapOuter);
+    const flapInner  = el('inset:0;will-change:transform;'); flapOuter.appendChild(flapInner);
+    const flapPaper  = el('inset:0;background:#fff;');       flapInner.appendChild(flapPaper);
+    const flapGhost  = oldNode.cloneNode(true);
+    flapGhost.style.cssText += ';opacity:.10;filter:none;';  flapInner.appendChild(flapGhost);
+    const flapShade  = el('pointer-events:none;');           flapInner.appendChild(flapShade);
+    const keptInner  = oldNode.cloneNode(true);              kept.appendChild(keptInner);
+    const shadowStrip = el('pointer-events:none;');          newShadow.appendChild(shadowStrip);
+
+    // Direction U = normalize(-1, -0.5) — from bottom-right toward upper-left
+    const _l  = Math.hypot(-1, -0.5);
+    const Ux  = -1 / _l, Uy = -0.5 / _l;           // ≈ (-0.894, -0.447)
+    const ang = Math.atan2(Uy, Ux) * 180 / Math.PI; // strip rotation angle
+    const Cx  = R.x + R.w, Cy = R.y + R.h;          // dragged corner (bottom-right)
+    const dFinal = 2*(R.w*Math.abs(Ux) + R.h*Math.abs(Uy)) + 160;
+    const RADIUS = 56;
+    // Reflection matrix components (constant for fixed U)
+    const mA = 1 - 2*Ux*Ux, mB = -2*Ux*Uy, mD = 1 - 2*Uy*Uy; // ≈ -0.6, 0.8, 0.6
+
+    const rectPts = [
+      [R.x,     R.y      ],
+      [R.x+R.w, R.y      ],
+      [R.x+R.w, R.y+R.h  ],
+      [R.x,     R.y+R.h  ],
+    ];
+
+    function clipHalf(Mx, My, sign) {
+      const out = [];
+      for (let i = 0; i < 4; i++) {
+        const a = rectPts[i], b = rectPts[(i+1)%4];
+        const sa = sign*((a[0]-Mx)*Ux + (a[1]-My)*Uy);
+        const sb = sign*((b[0]-Mx)*Ux + (b[1]-My)*Uy);
+        if (sa >= 0) out.push(a);
+        if ((sa >= 0) !== (sb >= 0)) {
+          const f = sa / (sa - sb);
+          out.push([a[0] + f*(b[0]-a[0]), a[1] + f*(b[1]-a[1])]);
+        }
+      }
+      return out;
+    }
+
+    function poly(pts) {
+      if (pts.length < 3) return 'polygon(0px 0px,0px 0px,0px 0px)';
+      return 'polygon(' + pts.map(p => p[0].toFixed(1) + 'px ' + p[1].toFixed(1) + 'px').join(',') + ')';
+    }
+
+    // Place a strip at M, rotated to fold direction, shifted by `from` along U
+    function strip(node, Mx, My, from, to, bg) {
+      node.style.cssText = 'position:absolute;left:' + Mx + 'px;top:' + My + 'px;width:' + (to-from) + 'px;height:' + (R.w+R.h)*2 + 'px;margin-top:' + (-(R.w+R.h)) + 'px;transform-origin:0 50%;transform:rotate(' + ang + 'deg) translateX(' + from + 'px);background:' + bg + ';pointer-events:none';
+    }
+
+    return {
+      set(t) {
+        const d  = t * dFinal;
+        const Mx = Cx + Ux * d/2, My = Cy + Uy * d/2;
+        const keptPts = clipHalf(Mx, My, +1);  // s >= 0: flat old page (far from C)
+        const flapPts = clipHalf(Mx, My, -1);  // s <= 0: folded flap (C-side)
+
+        // Flat old page, clipped to keptPts
+        kept.style.clipPath = poly(keptPts);
+
+        // Shadow on the revealed new page (clipped to flapPts, no transform)
+        newShadow.style.clipPath = poly(flapPts);
+        strip(shadowStrip, Mx, My, -90, 0, 'linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,.20))');
+
+        // Folded flap: clip flapInner to flapPts first, then apply reflection —
+        // the clipped white/ghost visual reflects over the fold onto the keptPts side.
+        flapInner.style.clipPath = poly(flapPts);
+        const k = 2*(Mx*Ux + My*Uy);
+        flapInner.style.transform = 'matrix(' + mA + ',' + mB + ',' + mB + ',' + mD + ',' + (k*Ux) + ',' + (k*Uy) + ')';
+
+        // Curl shading inside flap (pre-reflection, toward C = negative-U side of M)
+        strip(flapShade, Mx, My, -RADIUS*2, 0, 'linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(255,255,255,.55) 38%,rgba(0,0,0,.10) 72%,rgba(0,0,0,.34) 100%)');
+
+        // Drop-shadow on the whole reflected flap (no clip on flapOuter)
+        flapOuter.style.filter = d > 4 ? 'drop-shadow(-10px 10px 14px rgba(0,0,0,.22))' : 'none';
+      }
+    };
+  }
+
+  function makeOldNode(viewId, scrollOffsetY) {
+    const viewEl  = getViewEl(viewId);
+    const main    = document.querySelector('main');
+    const mainRect = main.getBoundingClientRect();
+    const node = document.createElement('div');
+    node.style.cssText = 'position:absolute;left:' + mainRect.left + 'px;top:0;width:' + mainRect.width + 'px;height:' + window.innerHeight + 'px;overflow:hidden;background:var(--bg)';
+    // Reproduce dot pattern offset by scrollY
+    const dots = document.createElement('div');
+    dots.style.cssText = 'position:absolute;top:' + (-scrollOffsetY) + 'px;left:0;right:0;height:900px;background-image:radial-gradient(circle,rgba(30,30,28,.20) 1px,transparent 1.2px);background-size:24px 24px;mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.6) 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.6) 45%,transparent 100%);pointer-events:none;z-index:0';
+    node.appendChild(dots);
+    const clone = viewEl.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.removeAttribute('hidden');
+    clone.setAttribute('aria-hidden', 'true');
+    clone.setAttribute('inert', '');
+    clone.style.cssText = 'position:absolute;inset:0;overflow:hidden;transform:translateY(' + (-scrollOffsetY) + 'px);z-index:1';
+    clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+    clone.querySelectorAll('button').forEach(b => { b.tabIndex = -1; b.disabled = true; });
+    clone.querySelectorAll('a').forEach(a => { a.tabIndex = -1; });
+    clone.querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
+    clone.querySelectorAll('video').forEach(v => v.pause && v.pause());
+    // Freeze CSS animations: anything with opacity:0 initial state (e.g. main { opacity:0; animation:fadeIn })
+    clone.querySelectorAll('main, .m-content, .m-grid').forEach(el => {
+      el.style.animation = 'none';
+      el.style.opacity = '1';
+    });
+    node.appendChild(clone);
+    return node;
+  }
+
+  function doPeel(from, to, forward, oldScrollY, onDone) {
+    const main     = document.querySelector('main');
+    const mainRect = main.getBoundingClientRect();
+    // Content rect in viewport coords (top=0 so the stage covers full vh)
+    const R = { x: mainRect.left, y: 0, w: mainRect.width, h: window.innerHeight };
+
+    peelStage = document.createElement('div');
+    peelStage.id = 'peel-stage';
+    document.body.appendChild(peelStage);
+
+    const oldNode = makeOldNode(forward ? from : to, forward ? oldScrollY : 0);
+    const peel    = createPeel({ stage: peelStage, oldNode, R });
+
+    // Start at correct t: forward 0→1, back 1→0
+    peel.set(forward ? 0 : 1);
+
+    let t0 = null;
+    function frame(now) {
+      if (!peelStage) return;
+      if (t0 === null) t0 = now;
+      const rawT   = Math.min(1, (now - t0) / FLIP_DUR);
+      const easedT = peelEase(rawT);
+      peel.set(forward ? easedT : 1 - easedT);
+      if (rawT < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        if (onDone) onDone();
+        if (peelStage) { peelStage.remove(); peelStage = null; }
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function getViewEl(id) { return document.getElementById('view-' + id); }
+
+  function setViewDOM(id) {
+    ['index', 'play', 'about'].forEach(v => {
+      const el = getViewEl(v);
+      if (!el) return;
+      if (v === id) { el.removeAttribute('hidden'); el.removeAttribute('inert'); }
+      else          { el.setAttribute('hidden', ''); el.setAttribute('inert', ''); }
+    });
+  }
+
+  function applyNavState(id) {
+    [navIndex, navPlay, navAbout].forEach(a => {
+      a.classList.remove('active');
+      a.removeAttribute('aria-current');
+    });
+    if (id === 'index') {
+      navIndex.classList.add('active');
+      navIndex.setAttribute('aria-current', 'page');
+    } else if (id === 'play') {
+      navPlay.classList.add('active');
+      navPlay.setAttribute('aria-current', 'page');
+    } else if (id === 'about') {
+      navAbout.classList.add('active');
+      navAbout.setAttribute('aria-current', 'page');
+    }
+  }
+
+  function hashToView(hash) {
+    if (hash === '#play')  return 'play';
+    if (hash === '#about') return 'about';
+    return 'index';
+  }
+
+  function navigate(target, { push = true } = {}) {
+    if (target === currentView) {
+      if (target === 'index') window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    const from     = currentView;
+    const forward  = VIEW_ORDER[target] > VIEW_ORDER[from];
+    const oldScrollY = window.scrollY;
+
+    // Stop HW and cancel cat when leaving Index
+    if (from === 'index') {
+      stopHW();
+      if (typeof catState !== 'undefined' && (catState === 'drawing' || catState === 'erasing')) {
+        catCancel(); catState = 'idle'; catReset();
+      }
+    }
+
+    // Abort any running peel
+    if (peelStage) { peelStage.remove(); peelStage = null; }
+
+    const rm      = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const narrow  = window.innerWidth <= 680;
+
+    if (rm || narrow) {
+      setViewDOM(target);
+      window.scrollTo(0, 0);
+      currentView = target;
+      document.title = VIEW_TITLES[target] || 'Lanna Hu';
+      applyNavState(target);
+      if (push) {
+        const hash   = target === 'index' ? '' : '#' + target;
+        history.pushState({ view: target }, '', location.pathname + (SLOW_FLIP ? '?slowflip' : '') + hash);
+      }
+      if (narrow && !rm) {
+        const main = document.querySelector('main');
+        if (main) main.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'ease' });
+      }
+      postNavSetup(target);
+      return;
+    }
+
+    // FORWARD: swap DOM now, peel old page away
+    if (forward) {
+      setViewDOM(target);
+      window.scrollTo(0, 0);
+    }
+    // BACK: DOM stays on current view; swap happens in onDone
+    currentView = target;
+    document.title = VIEW_TITLES[target] || 'Lanna Hu';
+    applyNavState(target);
+    if (push) {
+      const hash = target === 'index' ? '' : '#' + target;
+      history.pushState({ view: target }, '', location.pathname + (SLOW_FLIP ? '?slowflip' : '') + hash);
+    }
+    if (forward) postNavSetup(target);
+
+    const onDone = forward ? null : () => {
+      setViewDOM(target);
+      window.scrollTo(0, 0);
+      postNavSetup(target);
+    };
+
+    try { doPeel(from, target, forward, oldScrollY, onDone); }
+    catch(e) { console.error('peel:', e); if (peelStage) { peelStage.remove(); peelStage = null; } if (onDone) onDone(); }
+  }
+
+  function postNavSetup(target) {
+    if (target === 'index') {
+      const ht = document.getElementById('hw-text');
+      const hm = document.getElementById('hw-mark');
+      if (ht) { ht.textContent = phrases[0]; }
+      if (hm && ht) { hm.style.background = markColors[0]; hm.style.width = ht.offsetWidth + 'px'; }
+      const c0 = document.getElementById('work-card-0');
+      if (c0) c0.classList.remove('is-inview');
+    }
+    requestAnimationFrame(() => {
+      const el = getViewEl(target);
+      if (!el) return;
+      const h = el.querySelector('h1, h2, h3') || el;
+      if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1');
+      h.focus({ preventScroll: true });
+    });
+  }
+
+  // ── NAV CLICK HANDLERS ────────────────────────────────────────────────────
+  navIndex.addEventListener('click', e => { e.preventDefault(); navigate('index'); });
+  navPlay.addEventListener('click',  e => { e.preventDefault(); navigate('play'); });
+  navAbout.addEventListener('click', e => { e.preventDefault(); navigate('about'); });
+
+  // ── POPSTATE ─────────────────────────────────────────────────────────────
+  window.addEventListener('popstate', e => {
+    const view = (e.state && e.state.view) || hashToView(location.hash);
+    navigate(view, { push: false });
+  });
+
+  // ── INITIAL LOAD ─────────────────────────────────────────────────────────
+  (function initView() {
+    const view = hashToView(location.hash);
+    setViewDOM(view);
+    currentView = view;
+    document.title = VIEW_TITLES[view] || 'Lanna Hu';
+    applyNavState(view);
+    history.replaceState({ view }, '', location.href);
+
+    if (view === 'index') {
+      startHW();
+    } else {
+      const ht = document.getElementById('hw-text');
+      const hm = document.getElementById('hw-mark');
+      if (ht) { ht.textContent = phrases[0]; }
+      if (hm && ht) { hm.style.background = markColors[0]; hm.style.width = ht.offsetWidth + 'px'; }
+    }
+  })();
 </script>
 
 </body>
