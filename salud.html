@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Salud — Lanna Hu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
@@ -46,15 +46,21 @@
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
   }
-  body { overflow-x: hidden; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { min-width: 320px; }
+  .page-frame { container-type: inline-size; } /* cqw = full page width, scrollbar excluded */
 
   /* ── PAGE GRID — 10-column, 1728px base ── */
   .page {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     column-gap: var(--gap);
-    padding: 0 var(--gutter);
+    padding: 80px var(--gutter) 0;
     min-height: 100vh;
+    width: 100%;
+    max-width: 1728px; /* widescreen cap: = 16-inch MacBook width the layout was designed at */
+    margin-inline: auto;
+    box-sizing: border-box;
   }
   .page > * { min-width: 0; }
 
@@ -62,21 +68,30 @@
   nav {
     grid-column: 1;
     position: sticky;
-    top: 0;
-    height: 100vh;
+    top: 40px;
+    height: calc(100vh - 40px);
     display: flex;
     flex-direction: column;
-    padding: 40px 0 40px;
+    padding: 0 0 40px;
   }
 
+  /* widescreen cap: the page grid is capped at 1728px, so pull the nav back to the viewport's left edge */
+  @media (min-width: 1729px) {
+    nav {
+      justify-self: start;
+      width: min(100%, calc((1728px - 2 * var(--gutter) - 9 * var(--gap)) / 10));
+      margin-left: calc(-1 * (100cqw - 1728px) / 2);
+    }
+  }
   .nav-name {
     font-family: var(--mono);
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.02em;
     color: var(--ink);
     text-decoration: none;
     transition: color 0.2s;
+    line-height: 1.4;
   }
   .nav-name:hover { color: var(--ink-muted); }
 
@@ -124,7 +139,7 @@
   main {
     grid-column: 3 / span 6;
     min-width: 0;
-    padding: 40px 0 120px;
+    padding: 0 0 max(120px, calc(100vh - 240px));
     opacity: 0;
     animation: fadeIn 0.7s ease 0.1s forwards;
   }
@@ -132,9 +147,9 @@
 
   /* ── CASE STUDY HERO ── */
   .cs-hero {
-    padding-top: var(--hero-offset);
+    padding-top: 0;
     border-bottom: 0.5px solid var(--rule);
-    margin-bottom: 80px;
+    margin-bottom: 0;
   }
 
   .cs-meta {
@@ -186,7 +201,6 @@
   }
 
   .cs-hero-image {
-    margin-top: var(--sp-8);
     border-radius: 4px;
     overflow: hidden;
     aspect-ratio: 16 / 9;
@@ -198,32 +212,166 @@
     object-fit: cover;
     display: block;
   }
+  .cs-hero-image.cs-hero-video {
+    position: relative;
+    aspect-ratio: 1600 / 1112;
+    width: 100%;
+    margin: 40px 0 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #FEEFEB;
+  }
+  .cs-hero-video .cs-hero-poster { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+  .cs-hero-player { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; pointer-events: none; }
+
+  /* ── HEADER CARDS ── */
+  .cs-head-cards { container-type: inline-size; margin-top: 56px; padding-bottom: 56px; position: relative; }
+  .cs-head-cards::before {
+    content: "";
+    position: absolute;
+    left: -40px; right: -40px; top: -24px; bottom: -48px;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(30,30,28,.16) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, rgba(0,0,0,.7) 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, rgba(0,0,0,.7) 60%, transparent 100%);
+  }
+  .cs-title.cs-head-title {
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .cs-section p.cs-head-subtitle {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 8px 0 0;
+    max-width: 560px;
+  }
+  .cs-head-grid {
+    display: grid;
+    grid-template-columns: 660fr 318fr;
+    column-gap: 0;
+    align-items: start;
+  }
+  .cs-head-left { position: relative; z-index: 1; }
+  .cs-head-right {
+    position: relative;
+    z-index: 2;
+    margin-left: -32px;
+    width: calc(100% + 32px);
+    align-self: end;
+    margin-bottom: -56px;
+  }
+  .cs-head-card {
+    position: relative;
+    box-sizing: border-box;
+    background: #FAFAF8;
+    border: 1px solid rgba(30,30,28,.09);
+    border-radius: 12px;
+  }
+  .cs-head-left .cs-head-card {
+    padding: 36px 48px 36px 36px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 4px 12px rgba(30,30,28,.04), 0 12px 32px rgba(30,30,28,.05);
+  }
+  .cs-head-right .cs-head-card {
+    padding: 36px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.05), 0 6px 16px rgba(30,30,28,.06), 0 20px 48px rgba(30,30,28,.08);
+  }
+  .cs-head-cards .cs-head-label,
+  .cs-head-info dt {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #7A7A74;
+  }
+  .cs-head-cards .cs-head-label { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; }
+  .cs-head-dot { width: 6px; height: 6px; border-radius: 50%; background: #E8833A; flex: none; }
+  .cs-head-tab { position: absolute; top: 36px; left: -1px; width: 4px; height: 16px; background: #E8833A; border-radius: 0 2px 2px 0; }
+  .cs-head-bar { position: absolute; top: 0; left: 28px; width: 40px; height: 4px; background: #E8833A; border-radius: 0 0 3px 3px; }
+  .cs-head-info dt { margin: 0 0 4px; }
+  .cs-head-cards .cs-head-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 0;
+  }
+  .cs-head-info dd {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 0;
+  }
+  .cs-head-cards .cs-head-text { text-wrap: pretty; }
+  .cs-head-cards .cs-head-text.has-gap { margin-bottom: 32px; }
+  .cs-head-info { margin: 0; }
+  .cs-head-group + .cs-head-group {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(30,30,28,.28);
+  }
+  @container (max-width: 859.98px) {
+    .cs-head-grid { grid-template-columns: 640fr 338fr; }
+    .cs-head-left .cs-head-card { padding: 28px 40px 28px 28px; }
+    .cs-head-right .cs-head-card { padding: 28px; }
+  }
+  @container (max-width: 639.98px) {
+    .cs-head-grid { grid-template-columns: 1fr; }
+    .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 28px; }
+    .cs-head-right { margin: 16px 0 0; width: 100%; align-self: auto; }
+    .cs-head-cards { padding-bottom: 0; }
+  }
+  @media (max-width: 900px) {
+    .cs-head-grid { grid-template-columns: 1fr; }
+    .cs-head-cards { padding-bottom: 0; }
+    .cs-head-cards::before { left: -16px; right: -16px; }
+    .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 28px; }
+    .cs-head-right { margin: 16px 0 0; width: 100%; align-self: auto; }
+  }
 
   /* ── SECTION LABEL ── */
   .section-label {
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.1em;
+    color: #7a7a74;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+    line-height: 1.4;
     margin-bottom: var(--sp-3);
-    display: flex;
-    align-items: center;
-    gap: var(--sp-2);
   }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 0.5px;
-    background: var(--rule);
+  .cs-section h2.section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    font-weight: 400;
+    color: #7a7a74;
+    text-transform: uppercase;
+    margin: 0 0 var(--sp-3);
+    max-width: none;
   }
 
   /* ── CASE STUDY SECTIONS ── */
   .cs-section {
-    margin-bottom: 100px;
-    scroll-margin-top: 80px;
+    margin-bottom: 0;
+    scroll-margin-top: 40px;
   }
+  .cs-section + .cs-section { margin-top: 80px; }
 
   .cs-section h2 {
     font-family: var(--sans);
@@ -243,6 +391,7 @@
     color: var(--ink);
     line-height: 1.8;
     margin-bottom: var(--sp-3);
+    letter-spacing: 0;
   }
   .cs-section p:last-child { margin-bottom: 0; }
 
@@ -333,6 +482,7 @@
     font-weight: 400;
     color: var(--ink-muted);
     line-height: 1.75;
+    letter-spacing: 0;
   }
   .cs-insight-text em {
     font-style: italic;
@@ -471,6 +621,7 @@
     font-weight: 400;
     color: var(--ink-muted);
     line-height: 1.65;
+    letter-spacing: 0;
   }
   .cs-persona-bio {
     font-family: var(--sans);
@@ -479,6 +630,7 @@
     color: var(--ink-muted);
     line-height: 1.75;
     margin-bottom: var(--sp-4);
+    letter-spacing: 0;
   }
   .cs-traits { display: flex; flex-direction: column; gap: var(--sp-2); }
   .cs-trait-row { display: flex; flex-direction: column; gap: 6px; }
@@ -542,6 +694,7 @@
     line-height: 1.8;
     padding-left: var(--sp-3);
     list-style: none;
+    letter-spacing: 0;
   }
   .cs-split-list li::before { content: '—'; margin-right: 8px; color: var(--rule); }
 
@@ -551,6 +704,10 @@
     grid-template-columns: repeat(3, 1fr);
     gap: var(--sp-3);
     margin: var(--sp-5) 0;
+  }
+  .cs-decisions.cs-decisions-two {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: var(--sp-5);
   }
   .cs-decision-heading {
     font-family: var(--sans);
@@ -590,7 +747,7 @@
     letter-spacing: -0.01em;
     color: var(--ink);
     max-width: 100%;
-    margin-bottom: var(--sp-5);
+    margin-bottom: var(--sp-3);
   }
   .cs-preview-statement strong {
     color: var(--ink);
@@ -742,6 +899,7 @@
     font-weight: 400;
     color: var(--ink-muted);
     line-height: 1.7;
+    letter-spacing: 0;
   }
   .cs-survey-grid {
     display: grid;
@@ -798,6 +956,7 @@
   .privacy-grid-card-text .cs-decision-body {
     font-size: 16px;
     line-height: 1.5;
+    letter-spacing: 0;
   }
 
   .cs-decision-row {
@@ -832,6 +991,7 @@
     color: var(--ink-muted);
     line-height: 1.8;
     margin-bottom: 0 !important;
+    letter-spacing: 0;
   }
   .cs-decision-image {
     border-radius: 3px;
@@ -948,6 +1108,7 @@
     font-weight: 400;
     color: var(--ink);
     line-height: 1.8;
+    letter-spacing: 0;
   }
 
   /* ── FIGURE GRID (final service screens) ── */
@@ -968,34 +1129,40 @@
     main { grid-column: 3 / span 8; }
   }
   /* ── NAV SECTION COLLAPSE ── */
-  .section-links {
+  .nav-links.nav-js .section-links {
     overflow: hidden;
     max-height: 0;
     visibility: hidden;
     transition: max-height 0.65s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.65s;
   }
-  .nav-links.nav-expanded .section-links {
-    max-height: var(--sl-height, 320px);
+  .nav-links.nav-js.nav-expanded .section-links {
+    max-height: var(--sl-height, 400px);
     visibility: visible;
     transition: max-height 0.65s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s;
   }
-  .section-links a {
+  .nav-links.nav-js .section-links > * {
     opacity: 0;
     transform: translateY(-4px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s;
   }
-  .nav-links.nav-expanded .section-links a {
+  .nav-links.nav-js.nav-expanded .section-links > * {
     opacity: 1;
     transform: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    .section-links, .section-links a { transition: none; }
-    .nav-links .section-links { max-height: var(--sl-height, 320px); visibility: visible; }
-    .nav-links .section-links a { opacity: 1; transform: none; }
+    .cs-hero-player { display: none; }
+    .nav-links.nav-js .section-links,
+    .nav-links.nav-js .section-links > * { transition: none; }
+    .nav-links.nav-js .section-links { max-height: none; visibility: visible; }
+    .nav-links.nav-js .section-links > * { opacity: 1; transform: none; }
+  }
+  @media (max-width: 900px) {
+    .nav-links.nav-js .section-links { max-height: none; overflow: visible; visibility: visible; }
+    .nav-links.nav-js .section-links > * { opacity: 1; transform: none; transition: none; }
   }
 
-  @media (max-width: 680px) {
-    .page { grid-template-columns: 1fr; padding: 0 16px; }
+  @media (max-width: 900px) {
+    .page { grid-template-columns: 1fr; padding: 48px 32px 0; }
     nav {
       grid-column: 1;
       position: static;
@@ -1003,39 +1170,80 @@
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      padding: 20px 0 12px;
+      padding: 0 0 12px;
       gap: 0 var(--sp-3);
     }
     .nav-links { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 0 var(--sp-2); }
     .nav-section-label { display: none; }
     .section-links { display: contents; }
     .section-links a { opacity: 1 !important; transform: none !important; transition: none !important; }
-    main { grid-column: 1; padding: 0 0 80px; }
+    main { grid-column: 1; padding: 0 0 max(80px, calc(100vh - 240px)); }
     .cs-hero { padding-top: 32px; }
+    .cs-section + .cs-section { margin-top: 56px; }
     .cs-title { font-size: 24px; }
     .cs-stats { grid-template-columns: 1fr 1fr; }
     .cs-insights { grid-template-columns: 1fr; }
     .cs-insight-row { grid-template-columns: 1fr; }
-    .cs-decisions { grid-template-columns: 1fr; }
+    .cs-decisions, .cs-decisions.cs-decisions-two { grid-template-columns: 1fr; }
     .cs-step { grid-template-columns: 1fr; gap: var(--sp-1); }
     .cs-figure-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── SMALL SCREENS: single column at <= 680px, phone type scale ── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    nav { padding-bottom: 0; }
+    main { width: 100%; max-width: 680px; margin-inline: auto; overflow-wrap: break-word; }
+    main img, main video { max-width: 100%; }
+    main img { height: auto; }
+    main [style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: var(--sp-4) !important; }
+    .cs-ai-rules, .cs-survey-grid, .privacy-grid, .cs-decision-row, .cs-persona, .cs-split, .cs-data-row, .cs-stats, .cs-stat-cards, .cs-insight-row, .cs-insights, .cs-decisions, .cs-decisions.cs-decisions-two, .cs-primary-split, .cs-survey-split, .cs-figure-grid { grid-template-columns: 1fr; }
+    .cs-primary-text, .cs-primary-image, .cs-survey-video, .cs-survey-text { grid-column: 1; }
+    .cs-title { font-size: 24px; line-height: 1.3; }
+    .cs-preview-statement, .cs-insight-stat, .cs-hmw-text { font-size: 18px; line-height: 1.5; }
+    .cs-decision-title, .cs-ai-boundary-title { font-size: 17px; line-height: 1.4; }
+    .cs-quote p { font-size: 17px; }
+    .cs-section p,
+    .cs-insight-text,
+    .cs-decision-body,
+    .cs-step-text,
+    .cs-split-list,
+    .cs-ai-rule-text,
+    .cs-persona-value,
+    .cs-persona-bio,
+    .cs-head-cards .cs-head-text,
+    .cs-head-info dd { line-height: 1.7; }
+    .cs-section p.cs-subtitle { line-height: 1.7; }
+  }
+  @media (max-width: 900px) {
+    .cs-title.cs-head-title { font-size: 24px; }
+    .cs-section p.cs-head-subtitle { font-size: 16px; }
+  }
+  @media (max-width: 480px) {
+    .page { padding: 48px 20px 0; }
+    .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 20px; }
+  }
+  @media (max-width: 359px) {
+    .cs-title { font-size: 22px; }
   }
 </style>
 </head>
 <body>
 
+<div class="page-frame">
 <div class="page">
 
   <nav>
     <a class="nav-name" href="index.html">← Index</a>
     <div class="nav-links">
-      <div class="nav-section-label">Sections</div>
       <div class="section-links">
+        <div class="nav-section-label">Sections</div>
         <a href="#overview" class="active">Overview</a>
         <a href="#context">Context</a>
         <a href="#pivot">Pivot</a>
         <a href="#final-service">Final Service</a>
         <a href="#design-decisions">Design Decisions</a>
+        <a href="#outcome">Outcome</a>
         <a href="#reflection">Reflection</a>
       </div>
     </div>
@@ -1044,67 +1252,60 @@
   <main>
 
     <!-- ── HERO / OVERVIEW ── -->
-    <div class="cs-hero cs-section" id="overview" style="border-bottom: none; margin-bottom: 100px;">
-      <p style="font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: var(--sp-2);">Salud × Cedars-Sinai</p>
-      <h1 class="cs-title">From Risk Assessment to Trusted Next Steps</h1>
-      <p class="cs-subtitle" style="max-width: 100%;">
-        Salud is an AI-supported cancer screening navigation and community outreach
-        experience designed with Cedars-Sinai for Latinx communities in Antelope Valley.
-        Situated in a grocery-store setting, the service uses a guided kiosk survey,
-        personalized takeaways, and on-site promotoras to turn screening questions into
-        approachable next steps.
-      </p>
-      <div class="cs-hero-image">
-        <picture>
-          <source type="image/webp" srcset="images/salud-hero-2400.webp">
-          <img src="images/salud-hero.png" width="1920" height="1080" alt="Salud — AI Salud Station welcome screen with tote bag and kiosk">
-        </picture>
+    <div class="cs-hero cs-section" id="overview" style="border-bottom: none;">
+      <h1 class="cs-title cs-head-title">Salud</h1>
+      <p class="cs-head-subtitle">From Risk Assessment to Trusted Next Steps</p>
+      <div class="cs-hero-image cs-hero-video">
+        <img class="cs-hero-poster" src="images/salud-cover-poster.webp" width="1600" height="1112" fetchpriority="high" decoding="async" alt="Screen recording of the Salud kiosk survey: the contact screen, the scrolling summary ticket, the printing screen, and the final screen.">
+        <video class="cs-hero-player" src="images/salud-cover.mp4" poster="images/salud-cover-poster.webp" width="1600" height="1112" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
+      </div>
+      <div class="cs-head-cards">
+        <div class="cs-head-grid">
+          <div class="cs-head-left">
+            <div class="cs-head-card" role="group" aria-label="Overview and contribution">
+              <div class="cs-head-tab" aria-hidden="true"></div>
+              <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>overview</div>
+              <p class="cs-head-text has-gap">Salud is a colorectal cancer screening service concept designed with Cedars-Sinai for Latinx communities in Antelope Valley. It explores how AI can support community health workers (CHWs) rather than replace them. Designed for a grocery-store setting, the service combines a guided kiosk survey, a tailored takeaway, and on-site CHW support to turn screening questions into approachable next steps.</p>
+              <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>my contribution</div>
+              <p class="cs-head-text">I owned the kiosk’s end-to-end interaction and visual design, including every screen, per-question feedback, privacy interactions, the proposed AI boundaries, and the physical enclosure. The research and the ten survey questions were developed collaboratively by the team.</p>
+            </div>
+          </div>
+          <div class="cs-head-right">
+            <div class="cs-head-card" role="group" aria-label="Project info">
+              <div class="cs-head-bar" aria-hidden="true"></div>
+              <dl class="cs-head-info">
+                <div class="cs-head-group"><dt>Role</dt><dd>Interaction &amp; Service Designer</dd></div>
+                <div class="cs-head-group"><dt>Team</dt><dd>Balinda Bai<br>Sabrina Chen<br>Max Wang</dd></div>
+                <div class="cs-head-group"><dt>Timeline</dt><dd>Sep - Dec, 2025</dd></div>
+                <div class="cs-head-group"><dt>Partner</dt><dd>Cedars-Sinai</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ── CONTEXT ── -->
     <section class="cs-section" id="context">
-      <div class="section-label">Context</div>
-      <h2>Access was not the only barrier. Trust mattered too.</h2>
-      <p>
-        Our project focused on Latinx adults in Antelope Valley, one of the communities
-        already reached through Cedars-Sinai’s outreach work. Cost concerns, distrust of
-        healthcare systems, and the belief that screening is unnecessary without
-        symptoms can make colorectal cancer screening feel distant. Through secondary
-        research and conversations with promotoras, Cedars-Sinai’s community health
-        workers, we learned how they bridge this gap through shared language, cultural
-        understanding, and trusted relationships.
-      </p>
-      <div class="cs-insight-stat">
-        Technology could extend access to information, but it needed to support the
-        human relationships that make people willing to engage.
-      </div>
+      <h2 class="section-label">Context</h2>
+      <div class="cs-preview-statement">Access was not the only barrier. Trust mattered too.</div>
+      <p>Cedars-Sinai’s brief asked how AI could help underserved communities connect with cancer-screening resources. We focused on colorectal cancer (CRC) screening for Latinx adults aged 45–80 in Antelope Valley, an area already reached through Cedars-Sinai’s community outreach. Cost concerns, distrust of healthcare systems, and the belief that screening is unnecessary without symptoms can make screening feel distant. Through secondary research and conversations with Cedars-Sinai’s community health workers, known in Spanish-speaking communities as promotoras, we learned how they bridge this gap through shared language, cultural understanding, and trusted relationships.</p>
 
       <div class="cs-insight-row">
         <div class="cs-insight-card">
-          <div class="cs-research-label">Research 1</div>
-          <div class="cs-decision-title">Screening access is not equal</div>
-          <div class="cs-insight-text">
-            Research on immigrant communities showed a gap in colorectal cancer
-            screening compared with U.S.-born communities.
-          </div>
+          <div class="cs-decision-title">Screening access is not equal.</div>
+          <div class="cs-insight-text">Research found lower CRC screening participation among immigrant adults than among U.S.-born adults: 52% compared with 73% (Rosowicz &amp; Hewitt, 2025).</div>
           <div class="cs-card-stats">
-            <div>
-              <div class="cs-data-number">52%</div>
-              <div class="cs-data-sub">Immigrant communities</div>
-            </div>
-            <div>
-              <div class="cs-data-number">73%</div>
-              <div class="cs-data-sub">U.S.-born communities</div>
-            </div>
+            <div class="cs-data-number">52%</div>
+            <div class="cs-data-number">73%</div>
           </div>
         </div>
         <div class="cs-insight-card">
-          <div class="cs-research-label">Research 2</div>
-          <div class="cs-decision-title">Cultural relevance supports participation</div>
-          <div class="cs-insight-text">
-            Culturally tailored education and community-based navigation have been
-            associated with stronger screening participation.
+          <div class="cs-decision-title">Cultural relevance supports participation.</div>
+          <div class="cs-insight-text">In one culturally tailored, community-based intervention, CRC screening completion increased from 18% to 55% (Aragones et al., 2010).</div>
+          <div class="cs-card-stats">
+            <div class="cs-data-number">18%</div>
+            <div class="cs-data-number">55%</div>
           </div>
         </div>
       </div>
@@ -1112,58 +1313,41 @@
 
     <!-- ── PIVOT ── -->
     <section class="cs-section" id="pivot">
-      <div class="section-label">Pivot</div>
-      <h2>Risk prediction created the wrong relationship.</h2>
-      <p>
-        Our early concepts used grocery purchases or self-reported dietary habits to
-        estimate colorectal cancer risk. Voluntary input gave users more control over what
-        they shared, but it did not resolve the larger issue. In a public setting,
-        personalized risk scoring could expose sensitive information, create a sense of
-        judgment, and position AI as a medical authority. The problem was not only how
-        the data was collected. It was the assumption that this system should draw
-        cancer-risk conclusions about a person at all.
-      </p>
-      <div class="cs-insight-stat">
-        We deliberately limited AI’s role: it would support informed next steps, not
-        evaluate personal cancer risk.
-      </div>
+      <h2 class="section-label">Pivot</h2>
+      <div class="cs-preview-statement">Risk prediction created the wrong relationship.</div>
+      <p>Our early concepts used grocery purchases or self-reported dietary habits to estimate CRC risk. Voluntary input gave users more control over what they shared, but it did not resolve the larger issue. In a public setting, personalized risk scoring could expose sensitive information, create a sense of judgment, and position AI as a medical authority. The problem was not only how the data was collected. It was the assumption that this system should draw cancer-risk conclusions about a person at all.</p>
+      <p>We deliberately limited AI’s role: it would support informed next steps, not evaluate personal cancer risk.</p>
     </section>
 
     <!-- ── FINAL SERVICE ── -->
     <section class="cs-section" id="final-service">
-      <div class="section-label">Final Service</div>
-      <h2>Bringing screening support into everyday life</h2>
-      <p>
-        We designed Salud as a promotora-supported service concept for a Ralphs
-        grocery store, a familiar place residents may already visit each week. Rather than
-        requiring people to enter the healthcare system to seek information, the service
-        created a low-pressure starting point within a daily routine. The kiosk extended
-        the reach of Cedars-Sinai’s outreach work, while an on-site promotora remained
-        available for questions and personal guidance.
-      </p>
+      <h2 class="section-label">Final Service</h2>
+      <div class="cs-preview-statement">Bringing screening support into everyday life</div>
+      <p>Why Ralphs? We looked for a familiar, nonclinical touchpoint in Antelope Valley, where Cedars-Sinai already conducts outreach. A Ralphs grocery store offered a place residents might already visit regularly, allowing screening information and human support to enter an everyday routine. Its public setting also shaped our boundaries: no personal risk scoring, no risk results on screen, and no data retention without opt-in.</p>
+      <p>Rather than requiring people to enter the healthcare system to seek information, the service offers a low-pressure starting point within a daily routine. The kiosk extends the reach of Cedars-Sinai’s outreach, while an on-site CHW remains available for questions and personal guidance.</p>
 
-      <div class="cs-steps">
-        <div class="cs-step">
-          <div class="cs-step-label">1. Discover</div>
-          <div class="cs-step-text">A “Free Tote Bag” prompt and nearby signage offer a low-pressure reason to approach the kiosk, with an on-site promotora available to introduce the experience.</div>
-        </div>
-        <div class="cs-step">
-          <div class="cs-step-label">2. Share</div>
-          <div class="cs-step-text">Users complete a 10-question survey about their screening awareness, concerns, and preferences.</div>
-        </div>
-        <div class="cs-step">
-          <div class="cs-step-label">3. Learn</div>
-          <div class="cs-step-text">Each response is followed by short, relevant feedback rather than a score or risk result.</div>
-        </div>
-        <div class="cs-step">
-          <div class="cs-step-label">4. Take away</div>
-          <div class="cs-step-text">After completing the survey, users receive a tote bag and a personalized summary with a suggested next step, screening information, and a Cedars-Sinai resource.</div>
-        </div>
-        <div class="cs-step">
-          <div class="cs-step-label">5. Connect</div>
-          <div class="cs-step-text">The experience ends with an invitation to speak with the on-site promotora and an optional choice to receive future follow-up from Cedars-Sinai.</div>
-        </div>
-      </div>
+      <ol class="cs-steps" style="list-style: none;">
+        <li class="cs-step">
+          <span class="cs-step-label">1. Discover</span>
+          <span class="cs-step-text">A “Free Tote Bag” prompt and nearby signage offer a low-pressure reason to approach the kiosk, with an on-site CHW available to introduce the experience.</span>
+        </li>
+        <li class="cs-step">
+          <span class="cs-step-label">2. Share</span>
+          <span class="cs-step-text">Users complete a 10-question survey about their screening awareness, concerns, and preferences.</span>
+        </li>
+        <li class="cs-step">
+          <span class="cs-step-label">3. Learn</span>
+          <span class="cs-step-text">Each response is followed by short, relevant feedback rather than a score or risk result.</span>
+        </li>
+        <li class="cs-step">
+          <span class="cs-step-label">4. Take away</span>
+          <span class="cs-step-text">After completing the survey, users receive a tote bag and a tailored summary with a suggested next step, screening information, and a Cedars-Sinai resource.</span>
+        </li>
+        <li class="cs-step">
+          <span class="cs-step-label">5. Connect</span>
+          <span class="cs-step-text">The experience ends with an invitation to speak with the on-site CHW and an optional choice to receive future follow-up from Cedars-Sinai.</span>
+        </li>
+      </ol>
 
       <div class="cs-image" style="margin-top: var(--sp-5);">
         <picture>
@@ -1177,11 +1361,9 @@
           <div class="cs-image">
             <video src="images/salud-question-screen.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block;"></video>
           </div>
-          <p class="cs-caption">Survey screens — Questions 1–10</p>
         </div>
         <div>
           <div class="cs-image cs-image-placeholder" style="aspect-ratio: 4 / 3;">Per-question feedback screen — image to add</div>
-          <p class="cs-caption">Per-question feedback screen</p>
         </div>
         <div>
           <div class="cs-image">
@@ -1190,7 +1372,6 @@
               <img src="images/salud-summary-ticket.png" width="1600" height="2400" alt="Printed summary ticket" style="width: 100%; height: auto; display: block;" loading="lazy">
             </picture>
           </div>
-          <p class="cs-caption">Printed summary ticket</p>
         </div>
         <div>
           <div class="cs-image">
@@ -1199,42 +1380,46 @@
               <img src="images/salud-cta.png" width="2400" height="1738" alt="Promotora call-to-action screen" style="width: 100%; height: auto; display: block;" loading="lazy">
             </picture>
           </div>
-          <p class="cs-caption">Promotora CTA screen</p>
         </div>
       </div>
     </section>
 
     <!-- ── DESIGN DECISIONS ── -->
     <section class="cs-section" id="design-decisions">
-      <div class="section-label">Design Decisions</div>
-      <h2>Designing for support, not assessment</h2>
+      <h2 class="section-label">Design Decisions</h2>
+      <div class="cs-preview-statement">Designing for support, not assessment</div>
 
-      <div class="cs-decisions">
+      <div class="cs-decisions cs-decisions-two">
         <div>
           <div class="cs-decision-title">Respond without scoring</div>
           <div class="cs-decision-body">Each answer receives relevant information without assigning a score or risk level, keeping the experience responsive without judging the user.</div>
         </div>
         <div>
           <div class="cs-decision-title">Limit personalization to guidance</div>
-          <div class="cs-decision-body">Survey responses shape the information and next steps users receive, but the system does not diagnose or predict cancer risk.</div>
+          <div class="cs-decision-body">Survey responses shape the information and next steps users receive, but the system does not diagnose or predict cancer risk. The AI’s proposed role is limited to organizing a session’s answers into a tailored summary and suggested next step; we did not select, build, or validate a model.</div>
         </div>
         <div>
           <div class="cs-decision-title">Lead toward human support</div>
-          <div class="cs-decision-body">The closing screen and summary connect users with an on-site promotora for questions and personal guidance.</div>
+          <div class="cs-decision-body">The closing screen and summary connect users with an on-site CHW for questions and personal guidance.</div>
+        </div>
+        <div>
+          <div class="cs-decision-title">Data and consent</div>
+          <div class="cs-decision-body">The proposed flow uses responses only to generate feedback and a takeaway, then discards them when the session ends. Contact details and survey answers would be retained only if a user explicitly opted into follow-up from Cedars-Sinai. Retention periods, consent withdrawal, and deletion rules were not defined in the prototype and would need to be resolved before implementation.</div>
         </div>
       </div>
     </section>
 
+    <!-- ── OUTCOME ── -->
+    <section class="cs-section" id="outcome">
+      <h2 class="section-label">Outcome and Next Validation</h2>
+      <p>Delivered: an end-to-end clickable kiosk prototype with simulated printing, a physical enclosure, a summary ticket, and a souvenir system. In final stakeholder feedback, Cedars-Sinai responded positively to the CHW integration, grocery-store setting, and printed takeaway. The concept was designed for a Ralphs setting; it was not deployed or tested with residents.</p>
+      <p>Next, I would evaluate whether the grocery-store environment allows people to participate comfortably and validate the experience directly with residents. I would also prototype the printing workflow, localize the experience in Spanish, and define the AI and data-retention rules with clinical and privacy stakeholders. The name field would move to the opt-in screen, so identity enters the system only when someone requests follow-up.</p>
+    </section>
+
     <!-- ── REFLECTION ── -->
     <section class="cs-section" id="reflection">
-      <div class="section-label">Reflection</div>
-      <p>
-        This project challenged my assumption that a more capable AI would
-        automatically create a stronger product. In sensitive contexts, more capability can
-        create distance rather than value when a system takes on more authority than
-        people can reasonably trust it to hold. Designing responsible AI is not only about
-        expanding what it can do. It is also about deciding what it should not do.
-      </p>
+      <h2 class="section-label">Reflection</h2>
+      <p>This project challenged my assumption that a more capable AI would automatically create a stronger product. In sensitive contexts, more capability can create distance rather than value when a system takes on more authority than people can reasonably trust it to hold. Designing responsible AI is not only about expanding what it can do. It is also about deciding what it should not do.</p>
     </section>
 
     <div class="footer-line">
@@ -1245,20 +1430,22 @@
   </main>
 
 </div>
+</div>
 
 <script>
   // ── SCROLL SPY ──────────────────────────────────────────────────────────────
   const sections = document.querySelectorAll('.cs-section');
   const navLinks = document.querySelectorAll('.nav-links a');
 
+  const visible = new Set();
   const spy = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        navLinks.forEach(a => {
-          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
-        });
-      }
+      if (entry.isIntersecting) visible.add(entry.target); else visible.delete(entry.target);
+    });
+    const current = Array.from(sections).find(s => visible.has(s));
+    if (!current) return;
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
     });
   }, {
     rootMargin: '-15% 0px -65% 0px',
@@ -1276,22 +1463,35 @@
     });
   });
 
+  // ── REDUCED MOTION: keep the cover video paused, show the poster ──
+  (function () {
+    const v = document.querySelector('.cs-hero-player');
+    if (v && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.pause();
+      v.removeAttribute('autoplay');
+      v.preload = 'none';
+    }
+  })();
+
   // ── NAV SECTION COLLAPSE ─────────────────────────────────────────────────────
   (function initNavCollapse() {
     const navLinksEl = document.querySelector('.nav-links');
     const slEl       = document.querySelector('.section-links');
     if (!navLinksEl || !slEl) return;
-    const links = slEl.querySelectorAll('a');
+    const items = Array.from(slEl.children); // "Sections" label first, then the links
+
+    navLinksEl.classList.add('nav-js');
 
     function computeHeight() {
       navLinksEl.style.setProperty('--sl-height', slEl.scrollHeight + 'px');
     }
     function expand() {
-      links.forEach((a, i) => { a.style.transitionDelay = (i * 48) + 'ms'; });
+      computeHeight();
+      items.forEach((el, i) => { el.style.transitionDelay = (i * 48) + 'ms'; });
       navLinksEl.classList.add('nav-expanded');
     }
     function collapse() {
-      links.forEach(a => { a.style.transitionDelay = '0ms'; });
+      items.forEach(el => { el.style.transitionDelay = '0ms'; });
       navLinksEl.classList.remove('nav-expanded');
     }
 
