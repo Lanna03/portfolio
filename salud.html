@@ -477,16 +477,17 @@
     .fs-texts, .fs-line { margin-left: 0; margin-right: 0; }
     .fs-pin { position: static; height: auto; padding: 0; display: block; }
     .fs-frame, .fs-line, .fs-texts { display: none; }
-    .fs-mstep { margin-bottom: 80px; }
+    .fs-mstep { margin-bottom: 80px; display: flex; flex-direction: column; }
     .fs-mstep:last-child { margin-bottom: 0; }
     .fs-mstep .fs-ph { width: 220px; height: 165px; }
-    .fs-mstep > .fs-shot { position: relative; inset: auto; opacity: 1; width: 100%; height: auto; box-sizing: border-box; overflow: hidden; background: #F3F2EC; border: 1px solid rgba(30,30,28,.08); border-radius: 12px; box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 6px 20px rgba(30,30,28,.05); }
+    .fs-mstep > .fs-shot { position: relative; inset: auto; opacity: 1; width: 100%; height: auto; box-sizing: border-box; overflow: hidden; background: #F3F2EC; border: 1px solid rgba(30,30,28,.08); border-radius: 12px; box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 6px 20px rgba(30,30,28,.05); order: 3; margin-top: 24px; }
     .fs-mstep > .fs-shot picture, .fs-mstep > .fs-shot img, .fs-mstep > .fs-shot video { height: 100%; }
-    .fs-mhead { display: flex; align-items: center; gap: 12px; margin: 28px 0 0; }
+    .fs-mhead { display: flex; align-items: center; gap: 12px; margin: 0; order: 1; }
     .fs-mnode { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #E8833A; color: #1e1e1c; font-family: var(--mono); font-size: 12px; line-height: 28px; text-align: center; }
     .fs-mlabel { font-family: 'Caveat', cursive; font-size: 26px; line-height: 1; color: #1e1e1c; }
-    .fs-mstep .fs-tp, .fs-mstep .fs-tp.is-active { display: block; opacity: 1; visibility: visible; transform: none; transition: none; margin-top: 16px; }
-    .fs-mstep .fs-right, .fs-mstep .fs-right.is-empty { display: block; margin-top: 28px; padding: 24px 0 0; border-left: 0; border-top: 1px dashed rgba(30,30,28,.28); }
+    .fs-mstep .fs-tp, .fs-mstep .fs-tp.is-active { display: contents; opacity: 1; visibility: visible; transform: none; transition: none; }
+    .fs-mstep .fs-left { order: 2; margin-top: 16px; }
+    .fs-mstep .fs-right, .fs-mstep .fs-right.is-empty { display: block; order: 4; margin-top: 24px; padding: 24px 0 0; border-left: 0; border-top: 1px dashed rgba(30,30,28,.28); }
     .fs-mstep .fs-right.is-empty { display: none; }
   }
 
@@ -1433,7 +1434,7 @@
     main { grid-column: 1; padding: 0 0 40px; }
     .cs-hero { padding-top: 32px; }
     .cs-section + .cs-section { margin-top: 48px; }
-    .fs-mstep { margin-bottom: 56px; }
+    .fs-mstep { margin-bottom: 64px; }
     .fs-mstep:last-child { margin-bottom: 0; }
     .cs-title { font-size: 24px; }
     .cs-stats { grid-template-columns: 1fr 1fr; }
@@ -1651,7 +1652,7 @@
     <!-- ── OUTCOME ── -->
     <section class="cs-section" id="outcome">
       <h2 class="section-label">Outcome and Next Validation</h2>
-      <p>Delivered: an end-to-end clickable kiosk prototype with simulated printing, a physical enclosure, a summary ticket, and a souvenir system. In final stakeholder feedback, Cedars-Sinai responded positively to the CHW integration, grocery-store setting, and printed takeaway. The concept was designed for a Ralphs setting; it was not deployed or tested with residents.</p>
+      <p>Cedars-Sinai responded positively to the CHW integration, grocery-store setting, and printed takeaway. The concept was designed for a Ralphs setting; it was not deployed or tested with residents.</p>
       <p>Next, I would evaluate whether the grocery-store environment allows people to participate comfortably and validate the experience directly with residents. I would also prototype the printing workflow, localize the experience in Spanish, and define the AI and data-retention rules with clinical and privacy stakeholders. The name field would move to the opt-in screen, so identity enters the system only when someone requests follow-up.</p>
     </section>
 
