@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KnowNow — Lanna Hu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400&family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  video { border: none; outline: none; display: block; }
 
   :root {
     --gutter:       40px;
@@ -28,7 +29,7 @@
 
     --bg:        #FFFFFD;
     --ink:       #1e1e1c;
-    --ink-muted: #3f3f3a;
+    --ink-muted: #1e1e1c;
     --ink-faint: #3f3f3a;
     --rule:      #d6d5ce;
 
@@ -49,7 +50,7 @@
   body { min-width: 320px; }
   .page-frame { container-type: inline-size; } /* cqw = full page width, scrollbar excluded */
 
-  /* ── PAGE GRID ── */
+  /* ── PAGE GRID — 10-column, 1728px base ── */
   .page {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -63,9 +64,9 @@
   }
   .page > * { min-width: 0; }
 
-  /* ── NAV ── */
+  /* ── NAV — exact same CSS as index.html ── */
   nav {
-    grid-column: 1;
+    grid-column: 1 / span 2;
     position: sticky;
     top: 40px;
     height: calc(100vh - 40px);
@@ -73,6 +74,7 @@
     flex-direction: column;
     padding: 0 0 40px;
   }
+
   /* widescreen cap: the page grid is capped at 1728px, so pull the nav back to the viewport's left edge */
   @media (min-width: 1729px) {
     nav {
@@ -92,11 +94,13 @@
     line-height: 1.4;
   }
   .nav-name:hover { color: var(--ink-muted); }
+
   .nav-links {
     margin-top: var(--nav-offset);
     display: flex;
     flex-direction: column;
   }
+
   .nav-section-label {
     font-family: var(--mono);
     font-size: 12px;
@@ -106,7 +110,9 @@
     text-transform: uppercase;
     line-height: 2;
   }
+
   .nav-links a {
+    white-space: nowrap;
     font-family: var(--mono);
     font-size: 13px;
     font-weight: 400;
@@ -134,19 +140,22 @@
   main {
     grid-column: 3 / span 6;
     min-width: 0;
-    padding: 0 0 64px;
+    padding: 0 0 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     opacity: 0;
     animation: fadeIn 0.7s ease 0.1s forwards;
   }
   @keyframes fadeIn { to { opacity: 1; } }
 
-  /* ── HERO ── */
+  /* ── CASE STUDY HERO ── */
   .cs-hero {
     padding-top: 0;
-    padding-bottom: 0;
     border-bottom: 0.5px solid var(--rule);
     margin-bottom: 0;
   }
+
   .cs-meta {
     display: flex;
     gap: var(--sp-2);
@@ -154,6 +163,7 @@
     margin-bottom: var(--sp-3);
     flex-wrap: wrap;
   }
+
   .cs-tag {
     font-family: var(--mono);
     font-size: 12px;
@@ -165,6 +175,7 @@
     padding: 2px 8px;
     border-radius: 2px;
   }
+
   .cs-year {
     font-family: var(--mono);
     font-size: 12px;
@@ -172,6 +183,7 @@
     color: var(--ink-faint);
     letter-spacing: 0.04em;
   }
+
   .cs-title {
     font-family: var(--sans);
     font-size: 28px;
@@ -181,6 +193,7 @@
     letter-spacing: -0.01em;
     margin-bottom: var(--sp-3);
   }
+
   .cs-subtitle {
     font-family: var(--sans);
     font-size: 18px;
@@ -190,12 +203,164 @@
     letter-spacing: 0;
     max-width: 560px;
   }
+
   .cs-hero-image {
-    margin-top: var(--sp-8);
     border-radius: 4px;
     overflow: hidden;
     aspect-ratio: 16 / 9;
-    background: #E8E8E4;
+    background: var(--rule);
+  }
+  .cs-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* ── HEADER CARDS ── */
+  .cs-head-cards { container-type: inline-size; margin-top: 56px; padding-bottom: 56px; position: relative; }
+  .cs-head-cards::before {
+    content: "";
+    position: absolute;
+    left: -40px; right: -40px; top: -24px; bottom: -48px;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(30,30,28,.16) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, rgba(0,0,0,.7) 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, rgba(0,0,0,.7) 60%, transparent 100%);
+  }
+  .cs-title.cs-head-title {
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .cs-section p.cs-head-subtitle {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 8px 0 0;
+    max-width: 560px;
+  }
+  .cs-head-grid {
+    display: grid;
+    grid-template-columns: 660fr 318fr;
+    column-gap: 0;
+    align-items: start;
+  }
+  .cs-head-left { position: relative; z-index: 1; }
+  .cs-head-right {
+    position: relative;
+    z-index: 2;
+    margin-left: -32px;
+    width: calc(100% + 32px);
+    align-self: end;
+    margin-bottom: -56px;
+  }
+  .cs-head-card {
+    position: relative;
+    box-sizing: border-box;
+    background: #FAFAF8;
+    border: 1px solid rgba(30,30,28,.09);
+    border-radius: 12px;
+  }
+  .cs-head-left .cs-head-card {
+    padding: 36px 48px 36px 36px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 4px 12px rgba(30,30,28,.04), 0 12px 32px rgba(30,30,28,.05);
+  }
+  .cs-head-right .cs-head-card {
+    padding: 36px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.05), 0 6px 16px rgba(30,30,28,.06), 0 20px 48px rgba(30,30,28,.08);
+  }
+  .cs-head-cards .cs-head-label,
+  .cs-head-info dt {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #7A7A74;
+  }
+  .cs-head-cards .cs-head-label { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; }
+  .cs-head-dot { width: 6px; height: 6px; border-radius: 50%; background: #E8833A; flex: none; }
+  .cs-head-bar { position: absolute; top: 0; left: 28px; width: 40px; height: 4px; background: #E8833A; border-radius: 0 0 2px 2px; }
+  .cs-head-info dt { margin: 0 0 4px; }
+  .cs-head-cards .cs-head-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 0;
+  }
+  .cs-head-info dd {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 0;
+  }
+  .cs-head-cards .cs-head-text { text-wrap: pretty; }
+  .cs-head-cards .cs-head-text.has-gap { margin-bottom: 32px; }
+  .cs-head-info { margin: 0; }
+  .cs-head-group + .cs-head-group {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(30,30,28,.28);
+  }
+  @container (max-width: 859.98px) {
+    .cs-head-grid { grid-template-columns: 640fr 338fr; }
+    .cs-head-left .cs-head-card { padding: 28px 40px 28px 28px; }
+    .cs-head-right .cs-head-card { padding: 28px; }
+  }
+  @container (max-width: 639.98px) {
+    .cs-head-grid { grid-template-columns: 1fr; }
+    .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 28px; }
+    .cs-head-right { margin: 16px 0 0; width: 100%; align-self: auto; }
+    .cs-head-cards { padding-bottom: 0; }
+  }
+  @media (max-width: 960px) {
+    .cs-head-grid { grid-template-columns: 1fr; }
+    .cs-head-cards { padding-bottom: 0; }
+    .cs-head-cards::before { left: -16px; right: -16px; }
+    .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 28px; }
+    .cs-head-right { margin: 16px 0 0; width: 100%; align-self: auto; }
+  }
+
+  /* ── CONTEXT DATA CARDS ── */
+  .cs-data-cards + p { margin-top: 40px; }
+  .cs-data-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: stretch;
+    margin: 40px 0 0;
+  }
+  .cs-data-card {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background: #FAFAF8;
+    border: 1px solid rgba(30,30,28,.09);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 4px 12px rgba(30,30,28,.04), 0 12px 32px rgba(30,30,28,.05);
+  }
+  .cs-data-title { font-family: var(--sans); font-size: 18px; font-weight: 400; line-height: 1.3; color: #1e1e1c; }
+  @media (max-width: 1100px) {
+    .cs-data-cards { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 960px) {
+    .cs-data-cards + p { margin-top: 32px; }
+    .cs-data-cards { gap: 12px; }
   }
 
   /* ── SECTION LABEL ── */
@@ -209,13 +374,26 @@
     line-height: 1.4;
     margin-bottom: var(--sp-3);
   }
+  .cs-section h2.section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    font-weight: 400;
+    color: #7a7a74;
+    text-transform: uppercase;
+    margin: 0 0 var(--sp-3);
+    max-width: none;
+  }
 
-  /* ── SECTIONS ── */
+  /* ── CASE STUDY SECTIONS ── */
   .cs-section {
     margin-bottom: 0;
     scroll-margin-top: 40px;
   }
-  .cs-section + .cs-section { margin-top: 80px; }
+  .cs-section + .cs-section { margin-top: 100px; }
+  main > .cs-section:last-of-type { margin-bottom: 64px; }
+
   .cs-section h2 {
     font-family: var(--sans);
     font-size: 24px;
@@ -226,6 +404,7 @@
     letter-spacing: -0.01em;
     max-width: 640px;
   }
+
   .cs-section p {
     font-family: var(--sans);
     font-size: 16px;
@@ -235,10 +414,39 @@
     margin-bottom: var(--sp-3);
     letter-spacing: 0;
   }
-  .cs-section p.cs-subtitle { font-size: 16px; line-height: 1.8; }
   .cs-section p:last-child { margin-bottom: 0; }
 
-  /* ── METADATA GRID ── */
+  /* ── STATS GRID (outcome section) ── */
+  .cs-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: var(--sp-6) 0;
+    border-top: 0.5px solid var(--rule);
+    border-left: 0.5px solid var(--rule);
+  }
+  .cs-stat {
+    padding: var(--sp-4);
+    border-right: 0.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .cs-stat-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+  }
+  .cs-stat-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* ── METADATA GRID (overview section) ── */
   .cs-meta-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -250,8 +458,8 @@
     border-right: 0.5px solid var(--rule);
     border-bottom: 0.5px solid var(--rule);
   }
-  .cs-meta-cell:nth-child(3n)         { border-right: none; }
-  .cs-meta-cell:nth-last-child(-n+3)  { border-bottom: none; }
+  .cs-meta-cell:nth-child(3n)   { border-right: none; }
+  .cs-meta-cell:nth-last-child(-n+3) { border-bottom: none; }
   .cs-meta-cell-label {
     font-family: var(--mono);
     font-size: 11px;
@@ -269,6 +477,192 @@
     line-height: 1.65;
   }
 
+  /* ── INSIGHT CARDS ── */
+  .cs-insights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+    margin: var(--sp-5) 0;
+  }
+  .cs-insight-card {
+    border: 0.5px solid var(--rule);
+    border-radius: 3px;
+    padding: var(--sp-4);
+  }
+  .cs-insight-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--sp-2);
+  }
+  .cs-insight-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.75;
+    letter-spacing: 0;
+  }
+  .cs-insight-text em {
+    font-style: italic;
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  /* ── IMAGE BLOCK ── */
+  .cs-image {
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--rule);
+    margin: var(--sp-5) 0 0;
+  }
+  .cs-image img,
+  .cs-image video { width: 100%; height: auto; display: block; }
+  /* ── EVIDENCE BLOCK (quote + stat on dotted panel) ── */
+  .cs-evidence {
+    position: relative;
+    margin: 56px 0 0;
+    padding: 56px 0 40px;
+    background: none;
+    border-radius: 0;
+  }
+  .cs-evidence::before {
+    content: '';
+    position: absolute;
+    inset: 0 -32px;
+    z-index: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(30,30,28,.20) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 28%, #000 72%, transparent 100%);
+  }
+  .cs-evidence > * { position: relative; z-index: 1; }
+  @media (max-width: 960px) { .cs-evidence::before { inset: 0 -16px; } }
+  .cs-evidence-quote {
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 30px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    border: 0;
+    padding: 0;
+  }
+  .cs-evidence-quote mark {
+    background: linear-gradient(transparent 58%, rgba(232,131,58,.4) 58%);
+    color: inherit;
+  }
+  .cs-evidence-rule {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(30,30,28,.18);
+    display: grid;
+    gap: 8px;
+  }
+  .cs-section .cs-evidence-stat {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-muted);
+    max-width: none;
+  }
+  .cs-evidence-stat b {
+    font-family: var(--mono);
+    font-weight: 400;
+    color: var(--ink);
+    background: linear-gradient(transparent 62%, rgba(232,131,58,.35) 62%);
+    padding: 0 3px;
+  }
+  .cs-section .cs-evidence-src {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    color: var(--ink-faint);
+    max-width: none;
+  }
+  @media (max-width: 560px) {
+    .cs-evidence { padding: 40px 0 28px; }
+    .cs-evidence::before { inset: 0; }
+    .cs-evidence-quote { font-size: 24px; }
+  }
+
+  .cs-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+  }
+  .cs-caption,
+  .cs-section p.cs-caption {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    max-width: none;
+    margin-top: 6px;
+    margin-bottom: var(--sp-5);
+  }
+
+  /* ── PULL QUOTE ── */
+  .cs-quote {
+    border-left: 2px solid var(--ink-muted);
+    padding: var(--sp-3) var(--sp-5);
+    margin: var(--sp-5) 0;
+  }
+  .cs-quote p {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.65;
+    letter-spacing: 0;
+    color: var(--ink);
+    max-width: 100%;
+    margin: 0;
+  }
+  .cs-quote cite {
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    font-style: normal;
+    margin-top: var(--sp-2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FOOTER ── */
+  .footer-line {
+    margin-top: auto;
+    padding-top: var(--sp-3);
+    border-top: 0.5px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-line span,
+  .footer-line a {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-line a:hover { color: var(--ink); }
+
   /* ── STAT CARDS WITH NUMBER ── */
   .cs-stat-cards {
     display: grid;
@@ -282,15 +676,6 @@
     border-right: 0.5px solid var(--rule);
     border-bottom: 0.5px solid var(--rule);
   }
-  .cs-stat-label {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: var(--sp-1);
-  }
   .cs-stat-number {
     font-family: var(--sans);
     font-size: 28px;
@@ -299,46 +684,6 @@
     line-height: 1.2;
     letter-spacing: -0.01em;
     margin-bottom: 4px;
-  }
-  .cs-stat-value {
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--ink-muted);
-    line-height: 1.6;
-  }
-
-  /* ── IMAGE BLOCK ── */
-  .cs-image {
-    border-radius: 3px;
-    overflow: hidden;
-    margin: var(--sp-5) 0 0;
-  }
-  .cs-image img,
-  .cs-image video { width: 100%; height: auto; display: block; }
-  .cs-image-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #E8E8E4;
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.06em;
-    border-radius: 3px;
-  }
-  .cs-caption,
-  .cs-section p.cs-caption {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.04em;
-    line-height: 1.5;
-    max-width: none;
-    margin-top: 6px;
-    margin-bottom: var(--sp-5);
   }
 
   /* ── PERSONA CARD ── */
@@ -364,13 +709,57 @@
   }
   .cs-persona-value {
     font-family: var(--sans);
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     color: var(--ink-muted);
     line-height: 1.65;
+    letter-spacing: 0;
+  }
+  .cs-persona-bio {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.75;
+    margin-bottom: var(--sp-4);
+    letter-spacing: 0;
+  }
+  .cs-traits { display: flex; flex-direction: column; gap: var(--sp-2); }
+  .cs-trait-row { display: flex; flex-direction: column; gap: 6px; }
+  .cs-trait-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: #7a7a74;
+    letter-spacing: 0.08em;
+  }
+  .cs-trait-bar { background: var(--rule); height: 3px; border-radius: 2px; width: 100%; }
+  .cs-trait-fill { height: 3px; border-radius: 2px; background: var(--ink-muted); }
+
+  /* ── HMW CALLOUT ── */
+  .cs-hmw {
+    padding: 0 0 80px;
+  }
+  .cs-hmw-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .cs-hmw-text {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    max-width: 640px;
+    margin-top: var(--sp-2);
   }
 
-  /* ── SPLIT ── */
+  /* ── PROCESS SPLIT ── */
   .cs-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -378,102 +767,455 @@
     margin: var(--sp-5) 0;
     align-items: start;
   }
-
-  /* ── INSIGHT CARDS ── */
-  .cs-insight-card {
-    border: 0.5px solid var(--rule);
-    border-radius: 3px;
-    padding: var(--sp-4);
-  }
-  .cs-insight-num {
+  .cs-split-sublabel {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.06em;
-    margin-bottom: var(--sp-2);
-  }
-  .cs-insight-heading {
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--ink);
+    color: #7a7a74;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     margin-bottom: var(--sp-1);
+    margin-top: var(--sp-4);
   }
-  .cs-insight-text {
+  .cs-split-sublabel:first-child { margin-top: 0; }
+  .cs-split-list {
     font-family: var(--sans);
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     color: var(--ink-muted);
-    line-height: 1.75;
+    line-height: 1.8;
+    padding-left: var(--sp-3);
+    list-style: none;
+    letter-spacing: 0;
   }
+  .cs-split-list li::before { content: '—'; margin-right: 8px; color: var(--rule); }
 
-  /* ── DECISIONS / FEATURE CARDS ROW ── */
+  /* ── DESIGN DECISIONS ── */
   .cs-decisions {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--sp-3);
     margin: var(--sp-5) 0;
   }
-
-  /* ── FOOTER ── */
-  .footer-line {
-    margin-top: 80px;
-    padding-top: var(--sp-3);
-    border-top: 0.5px solid var(--rule);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .cs-decisions.cs-decisions-two {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: var(--sp-5);
   }
-  .footer-line span,
-  .footer-line a {
+  .cs-decision-heading {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: var(--sp-1);
+  }
+
+  /* ── SOLUTION PREVIEW ── */
+  .cs-solution-preview {
+    margin-bottom: 100px;
+    scroll-margin-top: 80px;
+  }
+  .cs-preview-tags {
+    display: flex;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--sp-4);
+  }
+  .cs-preview-tag {
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 400;
     color: var(--ink-faint);
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    transition: color 0.2s;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--rule);
+    padding: 4px 12px;
+    border-radius: 2px;
   }
-  .footer-line a:hover { color: var(--ink); }
+  .cs-preview-statement {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    max-width: 100%;
+    margin-bottom: var(--sp-3);
+  }
+  .cs-preview-statement strong {
+    color: var(--ink);
+    font-weight: 400;
+    border-bottom: 1.5px solid var(--ink);
+    padding-bottom: 1px;
+  }
+
+  /* ── RESEARCH BLOCK ── */
+  .cs-research-block {
+    margin: 0;
+    padding: var(--sp-3) 0;
+  }
+  #context .cs-research-block {
+    padding: 40px 0;
+  }
+  #context > p {
+    margin-bottom: 40px;
+  }
+  #solution h2 {
+    max-width: 100%;
+  }
+  .cs-insight-callout {
+    padding: 60px 0 80px;
+  }
+  .cs-insight-stat {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    max-width: 100%;
+    margin-top: var(--sp-4);
+  }
+  .cs-research-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-3);
+  }
+  .cs-data-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 0.5px solid var(--rule);
+    border-left: 0.5px solid var(--rule);
+    margin: var(--sp-4) 0;
+  }
+  .cs-data-cell {
+    padding: var(--sp-4);
+    border-right: 0.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .cs-data-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+  }
+  .cs-data-number {
+    font-family: var(--sans);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .cs-data-sub {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+  .cs-insight-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+    margin: var(--sp-5) 0;
+  }
+  .cs-section p strong {
+    color: var(--ink);
+    font-weight: 400;
+    border-bottom: 1px solid var(--ink-muted);
+    padding-bottom: 1px;
+  }
+  .cs-section h2 strong {
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  /* ── AI BOUNDARY ── */
+  .cs-ai-boundary {
+    margin: var(--sp-6) 0;
+    padding: var(--sp-5);
+    border: 0.5px solid var(--rule);
+    border-radius: 3px;
+  }
+  .cs-ai-boundary-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-3);
+  }
+  .cs-ai-boundary-title {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--sp-3);
+    max-width: 100%;
+  }
+  .cs-ai-rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+    margin-top: var(--sp-4);
+  }
+  .cs-ai-rule {
+    padding: var(--sp-3) var(--sp-4);
+    border: 0.5px solid var(--rule);
+    border-radius: 3px;
+  }
+  .cs-ai-rule-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+  }
+  .cs-ai-rule-label.no { color: #a33; }
+  .cs-ai-rule-label.yes { color: #3a6; }
+  .cs-ai-rule-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    letter-spacing: 0;
+  }
+  .cs-survey-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-3);
+    margin: var(--sp-5) 0;
+  }
+  .cs-survey-q {
+    border: 0.5px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .cs-survey-q img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .cs-survey-q-placeholder {
+    aspect-ratio: 3/4;
+    background: var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    padding: var(--sp-2);
+    text-align: center;
+  }
+
+  /* ── DESIGN DECISION ROWS ── */
+  .privacy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6rem 3rem;
+    margin-top: var(--sp-4);
+  }
+  .privacy-grid-card img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: contain;
+    object-position: center;
+    background: #ffffff;
+    display: block;
+    border-radius: 3px;
+  }
+  .privacy-grid-card-text {
+    margin-top: var(--sp-3);
+  }
+  .privacy-grid-card-text .cs-decision-title {
+    margin-bottom: 0.3rem;
+  }
+  .privacy-grid-card-text .cs-decision-body {
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  .cs-decision-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-6);
+    align-items: start;
+    padding: var(--sp-5) 0;
+  }
+  .cs-decision-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-1);
+  }
+  .cs-decision-title {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--sp-3);
+  }
+  .cs-decision-body {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    margin-bottom: 0 !important;
+    letter-spacing: 0;
+  }
+  .cs-decision-image {
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .cs-decision-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── PRIMARY RESEARCH SPLIT ── */
+  .cs-primary-split {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--gap);
+    margin: var(--sp-4) 0;
+    align-items: start;
+  }
+  .cs-primary-text { grid-column: 5 / span 4; }
+  .cs-primary-image { grid-column: 1 / span 4; }
+
+  /* ── SURVEY CAROUSEL ── */
+  .cs-survey-split {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: var(--gap);
+    margin: var(--sp-5) 0;
+    align-items: start;
+  }
+  .cs-survey-video { grid-column: 1 / span 5; align-self: start; }
+  .cs-survey-text { grid-column: 6 / span 5; align-self: start; }
+  .cs-carousel-container {
+    position: relative;
+    border: 0.5px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .cs-carousel-placeholder {
+    aspect-ratio: 3/4;
+    background: var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .cs-carousel-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-2) var(--sp-3);
+    border-top: 0.5px solid var(--rule);
+  }
+  .cs-carousel-btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    background: none;
+    border: 0.5px solid var(--rule);
+    border-radius: 2px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .cs-carousel-btn:hover { color: var(--ink); border-color: var(--ink-muted); }
+  .cs-carousel-counter {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
 
   ::-webkit-scrollbar { width: 2px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #1e1e1c; border-radius: 0; }
   ::-webkit-scrollbar-thumb:hover { background: #7a7a74; }
 
+  /* ── CARD STATS (research cards) ── */
+  .cs-card-stats {
+    display: flex;
+    gap: var(--sp-5);
+    margin-top: var(--sp-4);
+    flex-wrap: wrap;
+  }
+
+  /* ── NUMBERED SERVICE STEPS ── */
+  .cs-steps {
+    margin: var(--sp-5) 0;
+    border-top: 0.5px solid var(--rule);
+  }
+  .cs-step {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: var(--gap);
+    padding: var(--sp-3) 0;
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .cs-step-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 4px;
+  }
+  .cs-step-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.8;
+    letter-spacing: 0;
+  }
+
+  /* ── FIGURE GRID (final service screens) ── */
+  .cs-figure-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-5) var(--sp-3);
+    margin: var(--sp-5) 0 0;
+    align-items: start;
+  }
+  .cs-figure-grid .cs-image { margin: 0; }
+  .cs-figure-grid .cs-caption { margin-bottom: 0; }
+
+  /* ── RESPONSIVE ── */
   html { scrollbar-gutter: stable; }
-
-  @media (max-width: 960px) {
-    :root { --gutter: 24px; --gap: 16px; }
-    main { grid-column: 3 / span 8; }
-  }
-  @media (max-width: 900px) {
-    .page { grid-template-columns: 1fr; padding: 48px 32px 0; }
-    nav {
-      grid-column: 1;
-      position: static;
-      height: auto;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      padding: 0 0 12px;
-      gap: 0 var(--sp-3);
-    }
-    .nav-links { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 0 var(--sp-2); }
-    .nav-section-label { display: none; }
-    .section-links { display: contents; }
-    .section-links a { opacity: 1 !important; transform: none !important; transition: none !important; }
-    main { grid-column: 1; padding: 0 0 64px; }
-    .cs-hero { padding-top: 32px; }
-    .cs-section + .cs-section { margin-top: 56px; }
-    .cs-title { font-size: 24px; }
-    .cs-split { grid-template-columns: 1fr; }
-    .cs-decisions { grid-template-columns: 1fr; }
-    .cs-persona { grid-template-columns: 1fr; }
-    .cs-stat-cards { grid-template-columns: 1fr; }
-  }
-
   /* ── NAV SECTION COLLAPSE ── */
   .nav-links.nav-js .section-links {
     overflow: hidden;
@@ -501,22 +1243,46 @@
     .nav-links.nav-js .section-links { max-height: none; visibility: visible; }
     .nav-links.nav-js .section-links > * { opacity: 1; transform: none; }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .nav-links.nav-js .section-links { max-height: none; overflow: visible; visibility: visible; }
     .nav-links.nav-js .section-links > * { opacity: 1; transform: none; transition: none; }
   }
 
+  @media (max-width: 960px) {
+    .page { grid-template-columns: 1fr; padding: 48px 32px 0; }
+    nav {
+      grid-column: 1;
+      position: static;
+      height: auto;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 0 0 12px;
+      gap: 0 var(--sp-3);
+    }
+    .nav-links { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 0 var(--sp-2); }
+    .nav-section-label { display: none; }
+    .section-links { display: contents; }
+    .section-links a { opacity: 1 !important; transform: none !important; transition: none !important; }
+    main { grid-column: 1; padding: 0 0 40px; }
+    .cs-hero { padding-top: 32px; }
+    .cs-section + .cs-section { margin-top: 48px; }
+    .cs-title { font-size: 24px; }
+    .cs-stats { grid-template-columns: 1fr 1fr; }
+    .cs-insights { grid-template-columns: 1fr; }
+    .cs-insight-row { grid-template-columns: 1fr; }
+    .cs-decisions, .cs-decisions.cs-decisions-two { grid-template-columns: 1fr; }
+    .cs-step { grid-template-columns: 1fr; gap: var(--sp-1); }
+    .cs-figure-grid { grid-template-columns: 1fr; }
+  }
+
   /* ── SMALL SCREENS: single column at <= 680px, phone type scale ── */
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .nav-links { display: none; }
     nav { padding-bottom: 0; }
     main { width: 100%; max-width: 680px; margin-inline: auto; overflow-wrap: break-word; }
     main img, main video { max-width: 100%; }
     main img { height: auto; }
-    .cs-meta-grid { grid-template-columns: 1fr 1fr; }
-    .cs-meta-cell, .cs-meta-cell:nth-child(3n) { border-right: 0.5px solid var(--rule); border-bottom: 0.5px solid var(--rule); }
-    .cs-meta-cell:nth-child(2n) { border-right: none; }
-    .cs-meta-cell:nth-last-child(-n+2) { border-bottom: none; }
     main [style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: var(--sp-4) !important; }
     .cs-ai-rules, .cs-survey-grid, .privacy-grid, .cs-decision-row, .cs-persona, .cs-split, .cs-data-row, .cs-stats, .cs-stat-cards, .cs-insight-row, .cs-insights, .cs-decisions, .cs-decisions.cs-decisions-two, .cs-primary-split, .cs-survey-split, .cs-figure-grid { grid-template-columns: 1fr; }
     .cs-primary-text, .cs-primary-image, .cs-survey-video, .cs-survey-text { grid-column: 1; }
@@ -524,21 +1290,74 @@
     .cs-preview-statement, .cs-insight-stat, .cs-hmw-text { font-size: 18px; line-height: 1.5; }
     .cs-decision-title, .cs-ai-boundary-title { font-size: 17px; line-height: 1.4; }
     .cs-quote p { font-size: 17px; }
-    .cs-section p { line-height: 1.7; }
+    .cs-section p,
+    .cs-insight-text,
+    .cs-decision-body,
+    .cs-step-text,
+    .cs-split-list,
+    .cs-ai-rule-text,
+    .cs-persona-value,
+    .cs-persona-bio,
+    .cs-head-cards .cs-head-text,
+    .cs-head-info dd { line-height: 1.7; }
     .cs-section p.cs-subtitle { line-height: 1.7; }
-    .cs-head-cards .cs-head-label { font-size: 22px; }
-    .cs-head-info dt { font-size: 20px; }
+  }
+  @media (max-width: 960px) {
+    .cs-title.cs-head-title { font-size: 24px; }
+    .cs-section p.cs-head-subtitle { font-size: 16px; }
   }
   @media (max-width: 480px) {
-    .cs-meta-grid { grid-template-columns: 1fr; }
-    .cs-meta-cell, .cs-meta-cell:nth-child(2n) { border-right: none; }
-    .cs-meta-cell:nth-last-child(-n+2) { border-bottom: 0.5px solid var(--rule); }
-    .cs-meta-cell:last-child { border-bottom: none; }
     .page { padding: 48px 20px 0; }
     .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 20px; }
   }
   @media (max-width: 359px) {
     .cs-title { font-size: 22px; }
+  }
+
+  /* ── KNOWNOW ADDITIONS ── */
+  #context > p:last-child { margin-bottom: 0; }
+  .cs-hero-image.kn-hero { aspect-ratio: 2400 / 1905; margin: 40px 0 0; border-radius: 8px; }
+  .cs-section p mark {
+    background: linear-gradient(transparent 62%, rgba(232,131,58,.35) 62%);
+    color: inherit;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .kn-label {
+    display: flex; align-items: center; gap: 8px; margin: 0 0 12px;
+    font-family: var(--mono); font-size: 12px; font-weight: 400; line-height: 1.4;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74;
+  }
+  .kn-hmw-text { font-family: var(--sans); font-size: 18px; font-weight: 400; line-height: 1.5; letter-spacing: -0.01em; color: var(--ink); }
+  .kn-hmw-card { position: relative; }
+  .kn-beats { display: grid; gap: 80px; margin-top: 64px; }
+  .cs-section .kn-beat .cs-decision-title { margin-bottom: 8px; }
+  .cs-section .kn-beat p { margin-bottom: 0; }
+  .kn-frame {
+    display: flex; align-items: center; justify-content: center;
+    box-sizing: border-box; width: 100%; aspect-ratio: 1600 / 1112; margin-top: 32px; overflow: hidden;
+    background: #F3F2EC; border: 1px solid rgba(30,30,28,.08); border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 6px 20px rgba(30,30,28,.05);
+  }
+  .kn-ph {
+    box-sizing: border-box; width: min(72%, 320px); padding: 24px 16px; text-align: center;
+    border: 1.5px dashed rgba(30,30,28,.3); border-radius: 12px;
+    font-family: var(--mono); font-size: 12px; font-weight: 400; line-height: 1.4;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74;
+  }
+  .kn-states { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+  .kn-state .kn-frame { aspect-ratio: 390 / 844; margin-top: 0; }
+  .kn-state-name { margin-top: 16px; font-family: var(--mono); font-size: 12px; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74; }
+  .kn-state-action { margin-top: 4px; font-family: 'Caveat', cursive; font-size: 24px; line-height: 1.2; color: var(--ink); }
+  @media (max-width: 960px) {
+    .kn-beats { gap: 64px; margin-top: 48px; }
+    .cs-section .kn-beat p { line-height: 1.7; }
+  }
+  @media (max-width: 560px) {
+    .kn-states { gap: 12px; }
+    .kn-state-name { font-size: 11px; letter-spacing: 0.04em; }
+    .kn-state-action { font-size: 20px; }
+    .kn-state .kn-ph { width: 84%; padding: 12px 4px; font-size: 11px; letter-spacing: 0.02em; }
   }
 </style>
 </head>
@@ -553,10 +1372,10 @@
       <div class="section-links">
         <div class="nav-section-label">Sections</div>
         <a href="#overview" class="active">Overview</a>
-        <a href="#the-problem">The Problem</a>
+        <a href="#context">Context</a>
         <a href="#research">Research</a>
-        <a href="#who-we-designed-for">Who We Designed For</a>
-        <a href="#prototype">Prototype</a>
+        <a href="#reframing">Reframing</a>
+        <a href="#final-design">Final Design</a>
         <a href="#reflection">Reflection</a>
       </div>
     </div>
@@ -564,301 +1383,143 @@
 
   <main>
 
-    <!-- ── SECTION 1: HERO / OVERVIEW ── -->
+    <!-- ── HERO / OVERVIEW ── -->
     <div class="cs-hero cs-section" id="overview" style="border-bottom: none;">
-      <p style="font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: var(--sp-2);">Interaction Design 3 — Spring 2025</p>
-      <h1 class="cs-title">KnowNow</h1>
-      <div class="cs-meta">
-        <span class="cs-tag">Mobile App</span>
-        <span class="cs-tag">Emergency UX</span>
-        <span class="cs-year">2025</span>
+      <h1 class="cs-title cs-head-title">KnowNow</h1>
+      <p class="cs-head-subtitle">Closing the gap between alert and action</p>
+      <div class="cs-hero-image kn-hero">
+        <picture>
+          <source srcset="images/Knownow_cover-2400.webp" type="image/webp">
+          <img src="images/Knownow_cover.png" width="2400" height="1905" fetchpriority="high" decoding="async" alt="A phone lying on orange tile shows the KnowNow map screen, with the user’s location, a nearby threat, and a “You are safe” status.">
+        </picture>
       </div>
-      <p class="cs-subtitle">When time matters, language shouldn't be a barrier. A mobile app designed to help non-English speaking communities access emergency alerts, shelter information, and evacuation guidance in their native language.</p>
-      <div class="cs-meta-grid">
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Role</div>
-          <div class="cs-meta-cell-value">Interaction Design, User Research</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Team</div>
-          <div class="cs-meta-cell-value">Lanna, Silvia, Schteffen</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Duration</div>
-          <div class="cs-meta-cell-value">14 weeks, Spring 2025</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Tools</div>
-          <div class="cs-meta-cell-value">Figma, Paper Prototyping</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Methods</div>
-          <div class="cs-meta-cell-value">Field Research, User Testing</div>
-        </div>
-        <div class="cs-meta-cell">
-          <div class="cs-meta-cell-label">Course</div>
-          <div class="cs-meta-cell-value">Interaction Design 3</div>
+      <div class="cs-head-cards">
+        <div class="cs-head-grid">
+          <div class="cs-head-left">
+            <div class="cs-head-card" role="group" aria-label="Overview and role">
+              <div class="cs-head-bar" aria-hidden="true"></div>
+              <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>overview</div>
+              <p class="cs-head-text has-gap">A multilingual, map-based emergency response app that helps people understand how a nearby threat affects them, find a safe destination, and take the next step quickly.</p>
+              <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>my role</div>
+              <p class="cs-head-text">Primary Research, Product Strategy, Information Architecture, Interaction Design, Prototyping</p>
+            </div>
+          </div>
+          <div class="cs-head-right">
+            <div class="cs-head-card" role="group" aria-label="Project info">
+              <div class="cs-head-bar" aria-hidden="true"></div>
+              <dl class="cs-head-info">
+                <div class="cs-head-group"><dt>Duration</dt><dd>14 weeks + independent redesign</dd></div>
+                <div class="cs-head-group"><dt>Team</dt><dd>Silvia<br>Schteffen</dd></div>
+                <div class="cs-head-group"><dt>Course</dt><dd>Interaction Design 3</dd></div>
+              </dl>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- ── SECTION 2: THE PROBLEM ── -->
-    <section class="cs-section" id="the-problem">
-      <div class="section-label">The Problem</div>
-      <h2>Emergency alerts were built for English speakers</h2>
-      <p style="max-width: 640px;">During the 2025 LA wildfires, over 12,000 of 50,000 Asian residents in four evacuation zones needed language assistance — yet alerts arrived in English and Spanish only. For non-English speaking communities, a language barrier in an emergency isn't an inconvenience. It's a life-safety failure.</p>
-
-      <div class="cs-stat-cards">
-        <div class="cs-stat">
-          <div class="cs-stat-label">Language access plans</div>
-          <div class="cs-stat-number">67%</div>
-          <div class="cs-stat-value">of U.S. counties recognize language access in emergency plans</div>
-        </div>
-        <div class="cs-stat">
-          <div class="cs-stat-label">LEP households impacted</div>
-          <div class="cs-stat-number">4,178</div>
-          <div class="cs-stat-value">LEP households impacted in Eaton fire zone alone</div>
-        </div>
-        <div class="cs-stat">
-          <div class="cs-stat-label">English literacy gap</div>
-          <div class="cs-stat-number">30M+</div>
-          <div class="cs-stat-value">adults in the U.S. who cannot read or write in English</div>
-        </div>
-      </div>
-
-      <div class="cs-image">
-        <picture>
-          <source type="image/webp" srcset="images/knownow-secondary-finding-2400.webp">
-          <img src="images/knownow-secondary-finding.png?v=3" width="2400" height="1039" alt="Secondary research findings — language gaps in emergency infrastructure">
-        </picture>
-      </div>
-      <p class="cs-caption">Secondary research findings — language gaps in emergency infrastructure</p>
+    <!-- ── CONTEXT ── -->
+    <section class="cs-section" id="context">
+      <h2 class="section-label">Context</h2>
+      <div class="cs-preview-statement">A crisis close to home</div>
+      <p>The 2025 Los Angeles wildfires did not feel like a distant disaster. They affected the community around me, including classmates and faculty at ArtCenter. Beyond the visible destruction, I became interested in a less visible crisis: critical emergency information was not equally accessible across languages. Some non-English speakers could receive an alert yet still struggle to understand the danger, decide whether it affected them, or find help.</p>
+      <p>This led us to ask how emergency communication could become more accessible. But as the project developed, we discovered that <mark>translation was only one part of the gap between receiving an alert and knowing what to do next.</mark></p>
     </section>
 
-    <!-- ── SECTION 3: RESEARCH ── -->
+    <!-- ── RESEARCH ── -->
     <section class="cs-section" id="research">
-      <div class="section-label">Research</div>
-      <h2>We went to where the crisis actually was</h2>
-      <p style="max-width: 640px;">We visited an active Red Cross emergency shelter, recruited participants through social media and physical posters in the community, and reached out via text to first responders, bilingual volunteers, and emergency workers across LA. What we found shaped everything.</p>
-
+      <h2 class="section-label">Research</h2>
+      <div class="cs-preview-statement">The people the system never sees</div>
+      <p>We interviewed multilingual volunteers, an interpreter, emergency responders, and people affected by the fires, and visited a Red Cross shelter. Inside, support appeared to work well. But that view only included people who had already understood the emergency and reached help. Others relied on family or community members to interpret alerts, while some felt uncomfortable asking for translation. The people facing the greatest language barriers could disappear before the formal support system ever saw them.</p>
       <div class="cs-image">
         <picture>
-          <source type="image/webp" srcset="images/knownow-shelter-2400.webp">
-          <img src="images/knownow-shelter.png?v=2" width="2400" height="1350" alt="Field visit — Red Cross emergency shelter, Los Angeles, January 2025" loading="lazy">
+          <source srcset="images/knownow-shelter-2400.webp" type="image/webp">
+          <img src="images/knownow-shelter.png?v=2" width="2400" height="1350" alt="Field visit photos from a Red Cross emergency shelter in Los Angeles, January 2025." loading="lazy">
         </picture>
       </div>
       <p class="cs-caption">Field visit — Red Cross emergency shelter, Los Angeles, January 2025</p>
-
-
-      <!-- Insight Block 1 -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); align-items: start;">
-        <p style="font-family: var(--sans); font-size: 24px; font-weight: 400; line-height: 1.35; letter-spacing: -0.01em; color: var(--ink); max-width: none; margin-bottom: 0;">12,000 of 50,000 Asian residents in the evacuation zones needed language assistance — alerts came only in English and Spanish.</p>
-        <div>
-          <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">"Most of the alerts came through our phones eventually, but they were in English, and understanding them was hard for me... I ended up calling a friend from the cultural association to help translate."</p>
-          <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— HUA LI</span>
-        </div>
-      </div>
-
-      <!-- Insight Block 2 -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); align-items: start;">
-        <p style="font-family: var(--sans); font-size: 24px; font-weight: 400; line-height: 1.35; letter-spacing: -0.01em; color: var(--ink); max-width: none; margin-bottom: 0;">6,387 non-English speaking residents in the Eaton Fire struggled to verify information accuracy due to language barriers.</p>
-        <div>
-          <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">"I didn't get any official information right away... when I do watch TV, it's usually in Spanish because my English is still hard for me sometimes."</p>
-          <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— MARIA LOPEZ (synthetic user)</span>
-        </div>
-      </div>
-
-      <!-- Insight Block 3 -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 0.5px solid var(--rule); border-bottom: 0.5px solid var(--rule); align-items: start;">
-        <p style="font-family: var(--sans); font-size: 24px; font-weight: 400; line-height: 1.35; letter-spacing: -0.01em; color: var(--ink); max-width: none; margin-bottom: 0;">26.6% of California's population are LEP. Most LA fire alerts were purely in English text.</p>
-        <div>
-          <p style="font-family: var(--sans); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink-muted); line-height: 1.75; max-width: none; margin-bottom: var(--sp-2);">"Everything seemed designed for people who already had more resources or who spoke the language perfectly."</p>
-          <span style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em;">— MARIA LOPEZ (synthetic user)</span>
-        </div>
-      </div>
+      <figure class="cs-evidence">
+        <div class="kn-label"><span class="cs-head-dot" aria-hidden="true"></span>Key insight</div>
+        <blockquote class="cs-evidence-quote">A system can appear effective while excluding the people who <mark>never make it through its first point of entry.</mark></blockquote>
+      </figure>
     </section>
 
-    <!-- ── SECTION 4: WHO WE DESIGNED FOR ── -->
-    <section class="cs-section" id="who-we-designed-for">
-      <div class="section-label">Who We Designed For</div>
-      <h2>The most vulnerable user: a recent immigrant</h2>
-      <div class="cs-split">
-        <div>
-          <p>Our user type matrix mapped four user types across two axes — English proficiency and disaster readiness. We focused on the highest-risk quadrant: limited English, no disaster training. That led us to Li Xiao.</p>
+    <!-- ── REFRAMING THE PROBLEM ── -->
+    <section class="cs-section" id="reframing">
+      <h2 class="section-label">Reframing the Problem</h2>
+      <div class="cs-preview-statement">From universal access to personal action</div>
+      <p>By the end of the team project, we had expanded the challenge from helping non-English speakers seek support to creating universally accessible emergency communication. However, this framing was broader than the mobile experience we had designed. When I revisited the project independently, I narrowed the problem around a more immediate question: what does someone need to understand and do after receiving an alert?</p>
+      <div class="cs-data-cards">
+        <div class="cs-data-card kn-hmw-card">
+          <div class="kn-label">Team’s final HMW</div>
+          <div class="kn-hmw-text">How might we design and implement universally accessible communication systems to overcome linguistic barriers during emergency response operations?</div>
         </div>
-        <div>
-          <div class="cs-image" style="margin-top: 0;">
-            <picture>
-              <source type="image/webp" srcset="images/knownow-matrix-2400.webp">
-              <img src="images/knownow-matrix.png?v=3" width="2400" height="2352" alt="User type matrix — English proficiency × disaster readiness" style="width: 100%; height: auto; display: block;" loading="lazy">
-            </picture>
-          </div>
-          <p class="cs-caption">User type matrix — English proficiency × disaster readiness</p>
+        <div class="cs-data-card kn-hmw-card">
+          <div class="cs-head-bar" aria-hidden="true"></div>
+          <div class="kn-label"><span class="cs-head-dot" aria-hidden="true"></span>My reframed HMW</div>
+          <div class="kn-hmw-text">How might we help people understand how an emergency affects them and take the next safe action?</div>
         </div>
       </div>
+      <figure class="cs-evidence">
+        <div class="kn-label"><span class="cs-head-dot" aria-hidden="true"></span>Core shift</div>
+        <blockquote class="cs-evidence-quote">From designing universal communication systems to <mark>guiding individual action</mark> during an emergency.</blockquote>
+      </figure>
+    </section>
 
-      <div class="cs-persona">
-        <div>
-          <div class="cs-persona-block">
-            <div class="cs-persona-sublabel">Profile</div>
-            <div class="cs-persona-value">
-              42 years old, Cantonese-speaking, from Guangzhou<br>
-              Arrived 4 months ago on a family reunification visa<br>
-              Low-income household, small apartment in LA's Cantonese community<br>
-              No prior wildfire or earthquake experience
+    <!-- ── FINAL DESIGN ── -->
+    <section class="cs-section" id="final-design">
+      <h2 class="section-label">Final Design</h2>
+      <div class="cs-preview-statement">From universal access to personal action</div>
+      <p>I redesigned KnowNow as a map-based experience that connects each alert to the user’s location, current emergency state, available destinations, and next action.</p>
+
+      <!-- Dashed .kn-ph frames are placeholders: swap each for the redesign screens -->
+      <div class="kn-beats">
+        <div class="kn-beat">
+          <h3 class="cs-decision-title">A map-centered system</h3>
+          <p>The map brings location, risk areas, and nearby shelters into one decision surface.</p>
+          <div class="kn-frame"><div class="kn-ph">New structure, map home, location relationship</div></div>
+        </div>
+
+        <div class="kn-beat">
+          <h3 class="cs-decision-title">Adapting to changing conditions</h3>
+          <p>As risk changes, the interface adjusts its message hierarchy and primary action, moving from awareness to preparation and evacuation.</p>
+          <div class="kn-states">
+            <div class="kn-state">
+              <div class="kn-frame"><div class="kn-ph">Screen</div></div>
+              <div class="kn-state-name">Outside affected area</div>
+              <div class="kn-state-action">Stay informed</div>
+            </div>
+            <div class="kn-state">
+              <div class="kn-frame"><div class="kn-ph">Screen</div></div>
+              <div class="kn-state-name">Risk approaching</div>
+              <div class="kn-state-action">Prepare</div>
+            </div>
+            <div class="kn-state">
+              <div class="kn-frame"><div class="kn-ph">Screen</div></div>
+              <div class="kn-state-name">Inside evacuation zone</div>
+              <div class="kn-state-action">Find shelter</div>
             </div>
           </div>
         </div>
-        <div>
-          <div class="cs-persona-block">
-            <div class="cs-persona-sublabel">Motivations</div>
-            <div class="cs-persona-value">
-              Finding emergency information in his language<br>
-              Getting reliable help without fear<br>
-              Keeping his family safe<br>
-              Learning how to prepare before the next disaster
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Storyboard split -->
-      <div class="cs-split">
-        <div>
-          <p>Li Xiao gets an English-only wildfire alert at work. His wife texts him in panic from their apartment — she can see smoke. He can't tell if they need to evacuate. He opens KnowNow, which translates the alert into Cantonese, shows fire zones visually, and sends his wife a simple message in Cantonese: "Start getting ready, pack important items."</p>
-        </div>
-        <div>
-          <div class="cs-image" style="margin-top: 0;">
-            <picture>
-              <source type="image/webp" srcset="images/knownow-storyboard-2400.webp">
-              <img src="images/knownow-storyboard.png" width="2400" height="2375" alt="Storyboard — Li Xiao receives the alert" style="width: auto; max-width: 100%; height: auto; display: block;" loading="lazy">
-            </picture>
-          </div>
-          <p class="cs-caption">Storyboard — Li Xiao receives the alert</p>
-        </div>
-      </div>
-
-      <!-- Feature cards -->
-      <div class="cs-decisions">
-        <div class="cs-insight-card">
-          <div class="cs-insight-num">Feature</div>
-          <div class="cs-insight-heading">Multilingual Alerts</div>
-          <div class="cs-insight-text">Real-time alerts translated to your preferred language</div>
-        </div>
-        <div class="cs-insight-card">
-          <div class="cs-insight-num">Feature</div>
-          <div class="cs-insight-heading">Shelter Finder</div>
-          <div class="cs-insight-text">Nearest shelters with accessibility and pet filters</div>
-        </div>
-        <div class="cs-insight-card">
-          <div class="cs-insight-num">Feature</div>
-          <div class="cs-insight-heading">Packing List</div>
-          <div class="cs-insight-text">Disaster-type packing lists with swipe micro-interactions</div>
+        <div class="kn-beat">
+          <h3 class="cs-decision-title">From alert to action</h3>
+          <p>One connected flow helps users understand the alert, assess their situation, choose a destination, and begin a safe route.</p>
+          <div class="kn-frame"><div class="kn-ph">Screen flow, notification to navigation</div></div>
         </div>
       </div>
     </section>
 
-    <!-- ── SECTION 5: PROTOTYPE ── -->
-    <section class="cs-section" id="prototype">
-      <div class="section-label">Prototype</div>
-      <h2>Paper to pixels, shaped by testing</h2>
-      <p style="max-width: 640px;">We started with a paper prototype and tested it with 4 participants — product design students and a faculty member. Three key findings from testing directly drove our revisions into a low-fidelity digital prototype.</p>
-
-      <!-- Paper prototype: image left, findings right -->
-      <div class="cs-split" style="margin-top: var(--sp-5);">
-        <div>
-          <div class="cs-image" style="margin-top: 0;">
-            <picture>
-              <source type="image/webp" srcset="images/knownow-paperprototype-2400.webp">
-              <img src="images/knownow-paperprototype.png" width="2400" height="1350" alt="Paper prototype — language selection, alerts, shelter map, packing list" loading="lazy">
-            </picture>
-          </div>
-          <p class="cs-caption">Paper prototype — language selection, alerts, shelter map, packing list</p>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: var(--sp-3);">
-          <div class="cs-insight-card">
-            <div class="cs-insight-num">Finding 01</div>
-            <div class="cs-insight-heading">Packing list interactions</div>
-            <div class="cs-insight-text">3 of 4 users didn't see the edit button and tapped directly on list items instead of using swipe to delete.</div>
-          </div>
-          <div class="cs-insight-card">
-            <div class="cs-insight-num">Finding 02</div>
-            <div class="cs-insight-heading">Alert icon visibility</div>
-            <div class="cs-insight-text">2 of 4 users clicked homepage news first and took time to locate the alert icon in the top corner.</div>
-          </div>
-          <div class="cs-insight-card">
-            <div class="cs-insight-num">Finding 03</div>
-            <div class="cs-insight-heading">Shelter filter</div>
-            <div class="cs-insight-text">2 of 4 users tapped directly on the map instead of using the filter menu, finding it confusing.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Low-fi divider -->
-      <div style="margin-top: var(--sp-8); padding-top: var(--sp-4); border-top: 0.5px solid var(--rule);">
-        <p style="font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--sp-3);">Low-fidelity prototype</p>
-        <p style="max-width: 640px;">Based on these findings, we moved into a low-fidelity digital prototype with three targeted revisions.</p>
-      </div>
-
-      <!-- Low-fi: images left, revisions right -->
-      <div class="cs-split" style="margin-top: var(--sp-5);">
-        <div>
-          <div class="cs-image" style="margin-top: 0;">
-            <picture>
-              <source type="image/webp" srcset="images/knownow-lowfi-2400.webp">
-              <img src="images/knownow-lowfi.png" width="2400" height="2280" alt="Low-fidelity prototype screens" loading="lazy">
-            </picture>
-          </div>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: var(--sp-3);">
-          <div class="cs-insight-card">
-            <div class="cs-insight-num">Revision 01</div>
-            <div class="cs-insight-heading">Packing list interactions</div>
-            <div class="cs-insight-text">Updated to left-swipe = delete, right-swipe = complete, tap = edit. Added disaster-type filter tabs at the top.</div>
-          </div>
-          <div class="cs-insight-card">
-            <div class="cs-insight-num">Revision 02</div>
-            <div class="cs-insight-heading">Alert navigation</div>
-            <div class="cs-insight-text">Moved the alert button to the center of bottom nav and scaled up the active disaster display.</div>
-          </div>
-          <div class="cs-insight-card">
-            <div class="cs-insight-num">Revision 03</div>
-            <div class="cs-insight-heading">Shelter filter</div>
-            <div class="cs-insight-text">Replaced the confusing filter menu with a Sort By dropdown and set current location as the default.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── SECTION 6: REFLECTION ── -->
+    <!-- ── REFLECTION ── -->
     <section class="cs-section" id="reflection">
-      <div class="section-label">Reflection</div>
-      <h2>What we'd still want to know</h2>
-      <p style="max-width: 640px;">KnowNow reached paper prototype stage. The process surfaced questions we didn't get to answer — and that feels like the honest place to end.</p>
-
-      <div class="cs-decisions">
-        <div class="cs-insight-card">
-          <div class="cs-insight-num">Open Question</div>
-          <div class="cs-insight-heading">Real emergency use</div>
-          <div class="cs-insight-text">How would people actually use this under genuine crisis conditions?</div>
-        </div>
-        <div class="cs-insight-card">
-          <div class="cs-insight-num">Open Question</div>
-          <div class="cs-insight-heading">Expert feedback</div>
-          <div class="cs-insight-text">What would people with real emergency experience critique or change?</div>
-        </div>
-        <div class="cs-insight-card">
-          <div class="cs-insight-num">Open Question</div>
-          <div class="cs-insight-heading">Universal language</div>
-          <div class="cs-insight-text">How can iconography and visual language transcend linguistic backgrounds entirely?</div>
-        </div>
-      </div>
-
-      <div class="footer-line">
-        <a href="salud.html" aria-label="Previous project: Salud">← Salud</a>
-        <a href="floatos.html" aria-label="Next project: Float OS">Float OS →</a>
-      </div>
+      <h2 class="section-label">Reflection</h2>
+      <p>The redesign transformed KnowNow from a collection of emergency tools into a connected path from alert to action. The next step would be to validate its language, emergency states, and action guidance with multilingual residents and emergency-response professionals.</p>
     </section>
+
+    <div class="footer-line">
+      <a href="salud.html" aria-label="Previous project: Salud">← Salud</a>
+      <a href="floatos.html" aria-label="Next project: Float OS">Float OS →</a>
+    </div>
 
   </main>
 
@@ -866,6 +1527,7 @@
 </div>
 
 <script>
+  // ── SCROLL SPY ──────────────────────────────────────────────────────────────
   const sections = document.querySelectorAll('.cs-section');
   const navLinks = document.querySelectorAll('.nav-links a');
 
@@ -893,6 +1555,7 @@
     navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + last.id));
   }, { passive: true });
 
+  // ── SMOOTH SCROLL ───────────────────────────────────────────────────────────
   navLinks.forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
