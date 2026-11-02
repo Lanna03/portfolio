@@ -134,7 +134,7 @@
   main {
     grid-column: 3 / span 6;
     min-width: 0;
-    padding: 0 0 max(120px, calc(100vh - 240px));
+    padding: 0 0 64px;
     opacity: 0;
     animation: fadeIn 0.7s ease 0.1s forwards;
   }
@@ -464,7 +464,7 @@
     .nav-section-label { display: none; }
     .section-links { display: contents; }
     .section-links a { opacity: 1 !important; transform: none !important; transition: none !important; }
-    main { grid-column: 1; padding: 0 0 max(80px, calc(100vh - 240px)); }
+    main { grid-column: 1; padding: 0 0 64px; }
     .cs-hero { padding-top: 32px; }
     .cs-section + .cs-section { margin-top: 56px; }
     .cs-title { font-size: 24px; }
@@ -885,6 +885,13 @@
   });
 
   sections.forEach(s => spy.observe(s));
+
+  // short last section never reaches the spy band, so highlight it once the page is scrolled to the end
+  window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY < document.documentElement.scrollHeight - 4) return;
+    const last = sections[sections.length - 1];
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + last.id));
+  }, { passive: true });
 
   navLinks.forEach(link => {
     link.addEventListener('click', e => {
