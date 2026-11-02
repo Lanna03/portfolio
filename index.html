@@ -77,6 +77,8 @@
     padding: 40px 0 40px;
   }
 
+  .nav-toggle { display: none; }
+
   .nav-name {
     font-family: var(--mono);
     font-size: 14px;
@@ -112,6 +114,7 @@
     letter-spacing: 0.04em;
     line-height: 2;
     padding-left: var(--sp-2);
+    white-space: nowrap;
     display: block;
     position: relative;
     transition: color 0.2s;
@@ -777,6 +780,12 @@
   }
 
   /* Medium — tighter margins */
+  @media (min-width: 681px) and (max-width: 1100px) {
+    .nav-links a, .nav-bottom a { padding-left: 12px; letter-spacing: 0.02em; }
+  }
+  @media (min-width: 681px) and (max-width: 960px) {
+    .nav-links a, .nav-bottom a { padding-left: 10px; font-size: 11px; }
+  }
   @media (max-width: 960px) {
     :root { --gutter: 24px; --gap: 16px; }
   }
@@ -791,15 +800,74 @@
       grid-column: 1;
       position: static;
       height: auto;
-      padding: 20px 0 12px;
-      flex-direction: row;
+      padding: 20px 0 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "name toggle" "pages pages" "contact contact";
       align-items: center;
-      flex-wrap: wrap;
-      gap: 0 var(--sp-3);
     }
-    .nav-name { margin-right: auto; }
-    .nav-links, .nav-bottom { display: flex; flex-direction: row; flex-wrap: wrap; gap: 0 var(--sp-2); margin-top: 0; }
-    .nav-links { margin-right: auto; }
+    .nav-name { grid-area: name; margin: 0; }
+    .nav-toggle {
+      grid-area: toggle;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 6px;
+      width: 40px;
+      height: 40px;
+      margin: -10px 0;
+      padding: 0;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-toggle span {
+      display: block;
+      height: 1px;
+      width: 22px;
+      background: var(--ink);
+    }
+    /* open: bars slide together, touch, then rotate into an X; close plays it backwards */
+    nav.open .nav-toggle span:first-child { animation: bar-top-open 0.4s ease forwards; }
+    nav.open .nav-toggle span:last-child { animation: bar-bot-open 0.4s ease forwards; }
+    nav.was-open:not(.open) .nav-toggle span:first-child { animation: bar-top-close 0.4s ease forwards; }
+    nav.was-open:not(.open) .nav-toggle span:last-child { animation: bar-bot-close 0.4s ease forwards; }
+    @keyframes bar-top-open {
+      0%   { transform: translateY(0) rotate(0); }
+      50%  { transform: translateY(3.5px) rotate(0); }
+      100% { transform: translateY(3.5px) rotate(45deg); }
+    }
+    @keyframes bar-bot-open {
+      0%   { transform: translateY(0) rotate(0); }
+      50%  { transform: translateY(-3.5px) rotate(0); }
+      100% { transform: translateY(-3.5px) rotate(-45deg); }
+    }
+    @keyframes bar-top-close {
+      0%   { transform: translateY(3.5px) rotate(45deg); }
+      50%  { transform: translateY(3.5px) rotate(0); }
+      100% { transform: translateY(0) rotate(0); }
+    }
+    @keyframes bar-bot-close {
+      0%   { transform: translateY(-3.5px) rotate(-45deg); }
+      50%  { transform: translateY(-3.5px) rotate(0); }
+      100% { transform: translateY(0) rotate(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      nav.open .nav-toggle span, nav.was-open:not(.open) .nav-toggle span { animation-duration: 0.01s; }
+    }
+    .nav-toggle:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
+    .nav-links, .nav-bottom { display: none; margin: 0; }
+    nav.open .nav-links { grid-area: pages; display: flex; flex-direction: column; padding-top: 16px; }
+    nav.open .nav-bottom {
+      grid-area: contact;
+      display: flex;
+      flex-direction: column;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 0.5px solid var(--rule);
+    }
     .nav-section-label, .nav-bottom-label { display: none; }
 
     main {
@@ -831,7 +899,8 @@
   <!-- col 1: nav -->
   <nav>
     <div class="nav-name">Lanna Hu</div>
-    <div class="nav-links">
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu"><span></span><span></span></button>
+    <div class="nav-links" id="nav-menu">
       <div class="nav-section-label">Pages</div>
       <a href="#" id="nav-index" class="active" aria-current="page">Index</a>
       <a href="#play" id="nav-play">Play</a>
@@ -1180,6 +1249,21 @@
   const navIndex = document.getElementById('nav-index');
   const navPlay  = document.getElementById('nav-play');
   const navAbout = document.getElementById('nav-about');
+
+  // ── MOBILE MENU TOGGLE ──
+  (function () {
+    const nav = document.querySelector('nav');
+    const btn = nav.querySelector('.nav-toggle');
+    const setOpen = (o) => {
+      if (o) nav.classList.add('was-open');
+      nav.classList.toggle('open', o);
+      btn.setAttribute('aria-expanded', o);
+    };
+    btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+    nav.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    window.matchMedia('(min-width: 681px)').addEventListener('change', () => setOpen(false));
+  })();
 
   // ── SALUD CARD COVER VIDEO: reduced motion keeps the poster; otherwise play only while in view ──
   (function () {

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Salud — Lanna Hu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400&family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   video { border: none; outline: none; display: block; }
@@ -66,7 +66,7 @@
 
   /* ── NAV — exact same CSS as index.html ── */
   nav {
-    grid-column: 1;
+    grid-column: 1 / span 2;
     position: sticky;
     top: 40px;
     height: calc(100vh - 40px);
@@ -112,6 +112,7 @@
   }
 
   .nav-links a {
+    white-space: nowrap;
     font-family: var(--mono);
     font-size: 13px;
     font-weight: 400;
@@ -139,7 +140,10 @@
   main {
     grid-column: 3 / span 6;
     min-width: 0;
-    padding: 0 0 max(120px, calc(100vh - 240px));
+    padding: 0 0 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     opacity: 0;
     animation: fadeIn 0.7s ease 0.1s forwards;
   }
@@ -295,8 +299,7 @@
   }
   .cs-head-cards .cs-head-label { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; }
   .cs-head-dot { width: 6px; height: 6px; border-radius: 50%; background: #E8833A; flex: none; }
-  .cs-head-tab { position: absolute; top: 36px; left: -1px; width: 4px; height: 16px; background: #E8833A; border-radius: 0 2px 2px 0; }
-  .cs-head-bar { position: absolute; top: 0; left: 28px; width: 40px; height: 4px; background: #E8833A; border-radius: 0 0 3px 3px; }
+  .cs-head-bar { position: absolute; top: 0; left: 28px; width: 40px; height: 4px; background: #E8833A; border-radius: 0 0 2px 2px; }
   .cs-head-info dt { margin: 0 0 4px; }
   .cs-head-cards .cs-head-text {
     font-family: var(--sans);
@@ -335,13 +338,180 @@
     .cs-head-right { margin: 16px 0 0; width: 100%; align-self: auto; }
     .cs-head-cards { padding-bottom: 0; }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .cs-head-grid { grid-template-columns: 1fr; }
     .cs-head-cards { padding-bottom: 0; }
     .cs-head-cards::before { left: -16px; right: -16px; }
     .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 28px; }
     .cs-head-right { margin: 16px 0 0; width: 100%; align-self: auto; }
   }
+
+  /* ── CONTEXT DATA CARDS ── */
+  .cs-data-cards + p { margin-top: 40px; }
+  .cs-data-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: stretch;
+    margin: 40px 0 0;
+  }
+  .cs-data-card {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background: #FAFAF8;
+    border: 1px solid rgba(30,30,28,.09);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 4px 12px rgba(30,30,28,.04), 0 12px 32px rgba(30,30,28,.05);
+  }
+  .cs-data-title { font-family: var(--sans); font-size: 18px; font-weight: 400; line-height: 1.3; color: #1e1e1c; }
+  .cs-data-graphic { position: relative; height: 150px; margin: 20px 0 24px; flex: none; }
+  .cs-data-desc { font-family: var(--sans); font-size: 14px; font-weight: 400; line-height: 1.65; letter-spacing: 0; color: #3f3f3a; margin: 0; }
+  .cs-data-tile { position: absolute; transform: scaleY(.6) rotate(45deg); }
+  .cs-data-tile.is-back {
+    width: 90px; height: 90px; border-radius: 10px;
+    left: calc(70% - 45px); top: 53px;
+    background: linear-gradient(135deg, #FDEBDD, #F6CFB0);
+    box-shadow: 0 12px 18px rgba(232,131,58,.18);
+  }
+  .cs-data-tile.is-front {
+    width: 64px; height: 64px; border-radius: 9px;
+    left: calc(70% - 32px); top: 33px;
+    background: linear-gradient(135deg, #F59A5A, #E8833A);
+    box-shadow: 0 9px 14px rgba(232,131,58,.3);
+  }
+  .cs-data-label { position: absolute; left: 0; font-family: var(--mono); font-weight: 400; }
+  .cs-data-label .k { display: block; font-size: 11px; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74; }
+  .cs-data-label .n { display: block; font-size: 24px; line-height: 1.1; letter-spacing: -0.02em; }
+  .cs-data-label.is-imm { top: 44px; }
+  .cs-data-label.is-imm .n { color: #E8833A; }
+  .cs-data-label.is-us { top: 88px; }
+  .cs-data-label.is-us .n { color: #1e1e1c; }
+  .cs-data-line { position: absolute; height: 1px; left: 122px; }
+  .cs-data-line.is-imm { top: 65px; width: calc(70% - 45px - 122px); background: rgba(232,131,58,.5); }
+  .cs-data-line.is-us { top: 98px; width: calc(70% - 64px - 122px); background: rgba(30,30,28,.28); }
+  @container (max-width: 312px) {
+    .cs-data-tile { scale: .8; }
+    .cs-data-line.is-imm { width: calc(70% - 36px - 122px); }
+    .cs-data-line.is-us { width: calc(70% - 51px - 122px); }
+  }
+  .cs-data-blocks { display: flex; align-items: flex-end; gap: 8px; height: 100%; }
+  .cs-data-block { flex: 1; box-sizing: border-box; border-radius: 10px; padding: 12px; display: flex; font-family: var(--mono); font-weight: 400; }
+  .cs-data-block .k { font-size: 11px; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; }
+  .cs-data-block.is-before { height: 48px; flex-direction: row; justify-content: space-between; align-items: flex-end; background: linear-gradient(135deg, #FDEBDD, #F6CFB0); }
+  .cs-data-block.is-before .k { color: #3f3f3a; }
+  .cs-data-block.is-before .n { font-size: 24px; line-height: 1; color: #1e1e1c; }
+  .cs-data-block.is-after { height: 114px; flex-direction: column; justify-content: space-between; background: linear-gradient(135deg, #F59A5A, #E8833A); box-shadow: 0 9px 14px rgba(232,131,58,.25); }
+  .cs-data-block.is-after .k { color: #1e1e1c; }
+  .cs-data-block.is-after .n { align-self: flex-end; font-size: 36px; line-height: 1; letter-spacing: -0.03em; color: #1e1e1c; }
+  @media (max-width: 1100px) {
+    .cs-data-cards { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 960px) {
+    .cs-data-cards + p { margin-top: 32px; }
+    .cs-data-cards { gap: 12px; }
+  }
+
+  /* ── FINAL SERVICE: IMAGE ON TOP + STEP LINE + TEXT ROW (pinned) ── */
+  .fs-scroll {
+    --fs-col-start: 4;
+    --fs-col-end: 7;
+    --fs-main-start: 3;
+    --fs-main-end: 8;
+    --fs-p: calc(min(100cqw, 1728px) - 2 * var(--gutter));          /* page content width */
+    --fs-col: calc((var(--fs-p) - 9 * var(--gap)) / 10);            /* one page column */
+    height: calc(var(--fs-pin-h, 100vh) + 5 * 70vh); margin-top: 96px;
+  }
+  .fs-pin { position: sticky; top: max(24px, calc((100vh - var(--fs-pin-h, 0px)) / 2)); padding-top: 0; }
+  .fs-viewer {
+    min-width: 0;
+    margin-left: calc((var(--fs-col-start) - 3) * (var(--fs-col) + var(--gap)));      /* main starts at column 3 */
+    width: calc((var(--fs-col-end) - var(--fs-col-start) + 1) * var(--fs-col) + (var(--fs-col-end) - var(--fs-col-start)) * var(--gap));
+  }
+  .fs-frame {
+    position: relative; z-index: 1; width: 100%; aspect-ratio: 1600 / 1112; box-sizing: border-box; overflow: hidden;
+    background: #F3F2EC; border: 1px solid rgba(30,30,28,.08); border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 6px 20px rgba(30,30,28,.05);
+  }
+  .fs-shot { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s ease; }
+  .fs-shot.is-active { opacity: 1; }
+  .fs-shot picture { display: block; width: 100%; height: 100%; }
+  .fs-shot img, .fs-shot video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .fs-tag { position: absolute; left: 12px; bottom: 12px; z-index: 2; font-family: var(--mono); font-size: 11px; letter-spacing: .04em; line-height: 1; color: #1e1e1c; background: rgba(255,255,253,.45); -webkit-backdrop-filter: blur(8px) saturate(1.1); backdrop-filter: blur(8px) saturate(1.1); padding: 6px 8px; border-radius: 6px; pointer-events: none; }
+  .fs-ph {
+    box-sizing: border-box; width: 220px; height: 153px; border: 1.5px dashed rgba(30,30,28,.3); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; padding: 12px; text-align: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74;
+  }
+  .fs-line {
+    position: relative; margin-top: 48px;
+    margin-left: calc(-1 * (var(--fs-col-start) - var(--fs-main-start)) * (var(--fs-col) + var(--gap)));
+    margin-right: calc(-1 * (var(--fs-main-end) - var(--fs-col-end)) * (var(--fs-col) + var(--gap)));
+  }
+  .fs-svg { display: block; overflow: visible; }
+  .fs-num { font-family: var(--mono); font-weight: 400; fill: #1e1e1c; }
+  .fs-lab { font-family: 'Caveat', cursive; font-weight: 400; }
+  .fs-hit { position: absolute; transform: translateX(-50%); width: 72px; min-width: 44px; min-height: 44px; height: 48px; padding: 0; margin: 0; border: 0; background: transparent; cursor: pointer; border-radius: 8px; }
+  .fs-hit.is-first { transform: none; }
+  .fs-hit.is-last { transform: translateX(-100%); }
+  .fs-hit:focus-visible { outline: 2px solid #E8833A; outline-offset: 2px; }
+  .fs-texts {
+    display: grid; margin-top: 20px; align-items: start;
+    margin-left: calc(-1 * (var(--fs-col-start) - var(--fs-main-start)) * (var(--fs-col) + var(--gap)));
+    margin-right: calc(-1 * (var(--fs-main-end) - var(--fs-col-end)) * (var(--fs-col) + var(--gap)));
+  }
+  .fs-tp { grid-area: 1 / 1; align-self: start; display: grid; grid-template-columns: 1fr 1fr; column-gap: 56px; align-items: start; opacity: 0; visibility: hidden; transform: translateX(24px); transition: opacity .35s ease, transform .35s ease, visibility 0s linear .35s; }
+  .fs-tp.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity .35s ease, transform .35s ease; }
+  .fs-viewer .fs-tlabel { font-family: var(--mono); font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74; margin: 0; }
+  .fs-viewer .fs-copy { font-family: var(--sans); font-size: 15px; font-weight: 400; line-height: 1.75; letter-spacing: 0; color: #3f3f3a; margin: 10px 0 0; }
+  .fs-right { align-self: start; padding-left: 28px; border-left: 1px dashed rgba(30,30,28,.28); }
+  .fs-right.is-empty { border-left: 0; padding-left: 0; }
+  .fs-viewer .fs-decision { font-family: var(--sans); font-size: 14px; font-weight: 400; line-height: 1.65; letter-spacing: 0; color: #3f3f3a; margin: 10px 0 0; }
+  .fs-viewer .fs-decision + .fs-decision { margin-top: 16px; }
+  @media (prefers-reduced-motion: reduce) { .fs-shot, .fs-tp, .fs-tp.is-active { transition: none; } }
+  @media (max-width: 1099px), (max-height: 699px) {
+    .fs-scroll { height: auto; margin-top: 56px; }
+    .fs-viewer { width: 100%; margin-left: 0; }
+    .fs-texts, .fs-line { margin-left: 0; margin-right: 0; }
+    .fs-pin { position: static; height: auto; padding: 0; display: block; }
+    .fs-frame, .fs-line, .fs-texts { display: none; }
+    .fs-mstep { margin-bottom: 80px; }
+    .fs-mstep:last-child { margin-bottom: 0; }
+    .fs-mstep .fs-ph { width: 220px; height: 165px; }
+    .fs-mstep > .fs-shot { position: relative; inset: auto; opacity: 1; width: 100%; height: auto; box-sizing: border-box; overflow: hidden; background: #F3F2EC; border: 1px solid rgba(30,30,28,.08); border-radius: 12px; box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 6px 20px rgba(30,30,28,.05); }
+    .fs-mstep > .fs-shot picture, .fs-mstep > .fs-shot img, .fs-mstep > .fs-shot video { height: 100%; }
+    .fs-mhead { display: flex; align-items: center; gap: 12px; margin: 28px 0 0; }
+    .fs-mnode { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #E8833A; color: #1e1e1c; font-family: var(--mono); font-size: 12px; line-height: 28px; text-align: center; }
+    .fs-mlabel { font-family: 'Caveat', cursive; font-size: 26px; line-height: 1; color: #1e1e1c; }
+    .fs-mstep .fs-tp, .fs-mstep .fs-tp.is-active { display: block; opacity: 1; visibility: visible; transform: none; transition: none; margin-top: 16px; }
+    .fs-mstep .fs-right, .fs-mstep .fs-right.is-empty { display: block; margin-top: 28px; padding: 24px 0 0; border-left: 0; border-top: 1px dashed rgba(30,30,28,.28); }
+    .fs-mstep .fs-right.is-empty { display: none; }
+  }
+
+
+  /* ── MARGIN NOTES (handwritten, reusable) ── */
+  #context { position: relative; }
+  .cs-note {
+    --fs-note-col: calc((min(100cqw, 1728px) - 2 * var(--gutter) - 9 * var(--gap)) / 10);
+    position: absolute; top: 0;
+    left: calc(100% + var(--gap));
+    width: calc(2 * var(--fs-note-col) + var(--gap)); max-width: calc(2 * var(--fs-note-col) + var(--gap));
+    display: flex; align-items: flex-start; gap: 6px;
+    font-family: 'Caveat', cursive; font-size: 21px; font-weight: 400; line-height: 1.25; color: #5b5b55;
+    transform: rotate(-1.5deg); transform-origin: left top; box-sizing: border-box; margin: 0;
+  }
+  .cs-note-arrow { flex: none; width: 36px; height: 20px; margin-top: 3px; }
+  .cs-note-text { min-width: 0; overflow-wrap: break-word; }
+  @media (max-width: 1100px) {
+    .cs-section p:has(+ .cs-note) { margin-bottom: 0; }
+    #context > p:has(+ .cs-note) { margin-bottom: 0; }
+    .cs-note { position: static; width: auto; max-width: none; transform: none; margin: 8px 0 40px; font-size: 20px; }
+    .cs-note-arrow { transform: rotate(90deg); }
+    .cs-note:not(.cs-note--keep) { display: none; }
+  }
+  @media print { .cs-note { display: none !important; } }
 
   /* ── SECTION LABEL ── */
   .section-label {
@@ -371,7 +541,8 @@
     margin-bottom: 0;
     scroll-margin-top: 40px;
   }
-  .cs-section + .cs-section { margin-top: 80px; }
+  .cs-section + .cs-section { margin-top: 100px; }
+  main > .cs-section:last-of-type { margin-bottom: 64px; }
 
   .cs-section h2 {
     font-family: var(--sans);
@@ -499,6 +670,92 @@
   }
   .cs-image img,
   .cs-image video { width: 100%; height: auto; display: block; }
+  /* ── EVIDENCE BLOCK (quote + stat on dotted panel) ── */
+  .cs-evidence {
+    position: relative;
+    margin: 56px 0 0;
+    padding: 56px 0 40px;
+    background: none;
+    border-radius: 0;
+  }
+  .cs-evidence::before {
+    content: '';
+    position: absolute;
+    inset: 0 -32px;
+    z-index: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(30,30,28,.20) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 28%, #000 72%, transparent 100%);
+  }
+  .cs-evidence > * { position: relative; z-index: 1; }
+  @media (max-width: 960px) { .cs-evidence::before { inset: 0 -16px; } }
+  .cs-evidence-quote {
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 30px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    border: 0;
+    padding: 0;
+  }
+  .cs-evidence-quote mark {
+    background: linear-gradient(transparent 58%, rgba(232,131,58,.4) 58%);
+    color: inherit;
+  }
+  .cs-evidence-rule {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(30,30,28,.18);
+    display: grid;
+    gap: 8px;
+  }
+  .cs-section .cs-evidence-stat {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-muted);
+    max-width: none;
+  }
+  .cs-evidence-stat b {
+    font-family: var(--mono);
+    font-weight: 400;
+    color: var(--ink);
+    background: linear-gradient(transparent 62%, rgba(232,131,58,.35) 62%);
+    padding: 0 3px;
+  }
+  .cs-section .cs-evidence-src {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    color: var(--ink-faint);
+    max-width: none;
+  }
+  @media (max-width: 560px) {
+    .cs-evidence { padding: 40px 0 28px; }
+    .cs-evidence::before { inset: 0; }
+    .cs-evidence-quote { font-size: 24px; }
+  }
+
+  /* source PNG has a white margin baked in (266/262px of 5008x3793); crop it so the drawing meets the text edges */
+  .cs-image--frame {
+    border-radius: 0;
+    background: transparent;
+    margin: 40px 0 0;
+    aspect-ratio: 4476 / 3263;
+  }
+  .cs-image--frame img {
+    width: 111.886%;
+    max-width: none;
+    margin-left: -5.943%;
+    margin-top: -5.853%;
+  }
+  .cs-image--frame + .cs-caption,
+  .cs-section .cs-image--frame + p.cs-caption { margin-top: 12px; }
   .cs-image-placeholder {
     display: flex;
     align-items: center;
@@ -552,7 +809,7 @@
 
   /* ── FOOTER ── */
   .footer-line {
-    margin-top: 80px;
+    margin-top: auto;
     padding-top: var(--sp-3);
     border-top: 0.5px solid var(--rule);
     display: flex;
@@ -1124,10 +1381,6 @@
 
   /* ── RESPONSIVE ── */
   html { scrollbar-gutter: stable; }
-  @media (max-width: 960px) {
-    :root { --gutter: 24px; --gap: 16px; }
-    main { grid-column: 3 / span 8; }
-  }
   /* ── NAV SECTION COLLAPSE ── */
   .nav-links.nav-js .section-links {
     overflow: hidden;
@@ -1156,12 +1409,12 @@
     .nav-links.nav-js .section-links { max-height: none; visibility: visible; }
     .nav-links.nav-js .section-links > * { opacity: 1; transform: none; }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .nav-links.nav-js .section-links { max-height: none; overflow: visible; visibility: visible; }
     .nav-links.nav-js .section-links > * { opacity: 1; transform: none; transition: none; }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .page { grid-template-columns: 1fr; padding: 48px 32px 0; }
     nav {
       grid-column: 1;
@@ -1177,9 +1430,11 @@
     .nav-section-label { display: none; }
     .section-links { display: contents; }
     .section-links a { opacity: 1 !important; transform: none !important; transition: none !important; }
-    main { grid-column: 1; padding: 0 0 max(80px, calc(100vh - 240px)); }
+    main { grid-column: 1; padding: 0 0 40px; }
     .cs-hero { padding-top: 32px; }
-    .cs-section + .cs-section { margin-top: 56px; }
+    .cs-section + .cs-section { margin-top: 48px; }
+    .fs-mstep { margin-bottom: 56px; }
+    .fs-mstep:last-child { margin-bottom: 0; }
     .cs-title { font-size: 24px; }
     .cs-stats { grid-template-columns: 1fr 1fr; }
     .cs-insights { grid-template-columns: 1fr; }
@@ -1190,7 +1445,7 @@
   }
 
   /* ── SMALL SCREENS: single column at <= 680px, phone type scale ── */
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .nav-links { display: none; }
     nav { padding-bottom: 0; }
     main { width: 100%; max-width: 680px; margin-inline: auto; overflow-wrap: break-word; }
@@ -1215,7 +1470,7 @@
     .cs-head-info dd { line-height: 1.7; }
     .cs-section p.cs-subtitle { line-height: 1.7; }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .cs-title.cs-head-title { font-size: 24px; }
     .cs-section p.cs-head-subtitle { font-size: 16px; }
   }
@@ -1242,7 +1497,6 @@
         <a href="#context">Context</a>
         <a href="#pivot">Pivot</a>
         <a href="#final-service">Final Service</a>
-        <a href="#design-decisions">Design Decisions</a>
         <a href="#outcome">Outcome</a>
         <a href="#reflection">Reflection</a>
       </div>
@@ -1263,11 +1517,11 @@
         <div class="cs-head-grid">
           <div class="cs-head-left">
             <div class="cs-head-card" role="group" aria-label="Overview and contribution">
-              <div class="cs-head-tab" aria-hidden="true"></div>
+              <div class="cs-head-bar" aria-hidden="true"></div>
               <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>overview</div>
-              <p class="cs-head-text has-gap">Salud is a colorectal cancer screening service concept designed with Cedars-Sinai for Latinx communities in Antelope Valley. It explores how AI can support community health workers (CHWs) rather than replace them. Designed for a grocery-store setting, the service combines a guided kiosk survey, a tailored takeaway, and on-site CHW support to turn screening questions into approachable next steps.</p>
+              <p class="cs-head-text has-gap">Salud is a colorectal cancer (CRC) screening service concept designed with Cedars-Sinai for Latinx adults aged 45–80 in Antelope Valley. It explores how an AI-supported kiosk can extend Cedars-Sinai’s outreach to underserved communities, with community health workers remaining central to personal guidance.</p>
               <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>my contribution</div>
-              <p class="cs-head-text">I owned the kiosk’s end-to-end interaction and visual design, including every screen, per-question feedback, privacy interactions, the proposed AI boundaries, and the physical enclosure. The research and the ten survey questions were developed collaboratively by the team.</p>
+              <p class="cs-head-text">I owned the kiosk’s end-to-end interaction and visual design, from every screen and per-question feedback to privacy interactions, AI boundaries, and the physical enclosure. The research and the ten survey questions were developed collaboratively by the team.</p>
             </div>
           </div>
           <div class="cs-head-right">
@@ -1289,123 +1543,108 @@
     <section class="cs-section" id="context">
       <h2 class="section-label">Context</h2>
       <div class="cs-preview-statement">Access was not the only barrier. Trust mattered too.</div>
-      <p>Cedars-Sinai’s brief asked how AI could help underserved communities connect with cancer-screening resources. We focused on colorectal cancer (CRC) screening for Latinx adults aged 45–80 in Antelope Valley, an area already reached through Cedars-Sinai’s community outreach. Cost concerns, distrust of healthcare systems, and the belief that screening is unnecessary without symptoms can make screening feel distant. Through secondary research and conversations with Cedars-Sinai’s community health workers, known in Spanish-speaking communities as promotoras, we learned how they bridge this gap through shared language, cultural understanding, and trusted relationships.</p>
+      <p>To understand what keeps people from screening, we combined secondary research with conversations with Cedars-Sinai’s <span class="cs-anchor" id="note-chw">community health workers (CHWs)</span>, who help residents access health information and care. Cost, healthcare distrust, and the belief that screening is unnecessary without symptoms can limit screening participation.</p>
+      <aside class="cs-note cs-note--keep" role="note" data-anchor="note-chw"><svg class="cs-note-arrow" width="36" height="20" viewBox="0 0 36 20" aria-hidden="true" focusable="false"><path d="M34 11 C 25 3 13 3 3 10 M3 10 L10 6 M3 10 L11 13" fill="none" stroke="rgba(30,30,28,.55)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cs-note-text">CHWs are known as promotoras in Spanish-speaking communities.</span></aside>
 
-      <div class="cs-insight-row">
-        <div class="cs-insight-card">
-          <div class="cs-decision-title">Screening access is not equal.</div>
-          <div class="cs-insight-text">Research found lower CRC screening participation among immigrant adults than among U.S.-born adults: 52% compared with 73% (Rosowicz &amp; Hewitt, 2025).</div>
-          <div class="cs-card-stats">
-            <div class="cs-data-number">52%</div>
-            <div class="cs-data-number">73%</div>
+      <div class="cs-data-cards">
+        <div class="cs-data-card">
+          <div class="cs-data-title">Screening access is not equal.</div>
+          <div class="cs-data-graphic" role="img" aria-label="Immigrant adults 52 percent, U.S.-born adults 73 percent">
+            <div class="cs-data-line is-imm" aria-hidden="true"></div>
+            <div class="cs-data-line is-us" aria-hidden="true"></div>
+            <div class="cs-data-tile is-back" aria-hidden="true"></div>
+            <div class="cs-data-tile is-front" aria-hidden="true"></div>
+            <div class="cs-data-label is-imm"><span class="k">Immigrant adults</span><span class="n">52%</span></div>
+            <div class="cs-data-label is-us"><span class="k">U.S.-born adults</span><span class="n">73%</span></div>
           </div>
+          <div class="cs-data-desc">Research found lower CRC screening participation among immigrant adults than among U.S.-born adults: 52% compared with 73% (Rosowicz &amp; Hewitt, 2025).</div>
         </div>
-        <div class="cs-insight-card">
-          <div class="cs-decision-title">Cultural relevance supports participation.</div>
-          <div class="cs-insight-text">In one culturally tailored, community-based intervention, CRC screening completion increased from 18% to 55% (Aragones et al., 2010).</div>
-          <div class="cs-card-stats">
-            <div class="cs-data-number">18%</div>
-            <div class="cs-data-number">55%</div>
+        <div class="cs-data-card">
+          <div class="cs-data-title">Cultural relevance supports participation.</div>
+          <div class="cs-data-graphic" role="img" aria-label="Before 18 percent, after 55 percent">
+            <div class="cs-data-blocks">
+              <div class="cs-data-block is-before"><span class="k">Before</span><span class="n">18%</span></div>
+              <div class="cs-data-block is-after"><span class="k">After</span><span class="n">55%</span></div>
+            </div>
           </div>
+          <div class="cs-data-desc">In one culturally tailored, community-based intervention, CRC screening completion increased from 18% to 55% (Aragones et al., 2010).</div>
         </div>
       </div>
+
+      <p>CHWs bridge this gap through shared language, cultural understanding, and trusted relationships. Meaningful engagement depended on human trust, not information alone, so our challenge became how AI could help carry some of that trust into everyday life.</p>
     </section>
 
     <!-- ── PIVOT ── -->
     <section class="cs-section" id="pivot">
       <h2 class="section-label">Pivot</h2>
       <div class="cs-preview-statement">Risk prediction created the wrong relationship.</div>
-      <p>Our early concepts used grocery purchases or self-reported dietary habits to estimate CRC risk. Voluntary input gave users more control over what they shared, but it did not resolve the larger issue. In a public setting, personalized risk scoring could expose sensitive information, create a sense of judgment, and position AI as a medical authority. The problem was not only how the data was collected. It was the assumption that this system should draw cancer-risk conclusions about a person at all.</p>
+      <p>Our early concepts used grocery purchases or self-reported dietary habits to estimate CRC risk.</p>
+      <div class="cs-image cs-image--frame">
+        <picture>
+          <source srcset="images/salud-early-concept-2400.webp" type="image/webp">
+          <img src="images/salud-early-concept.png" alt="Early storyboard of the abandoned concept: a kiosk in a grocery store scans a shopper’s groceries, shows vegetable and meat percentages, and returns an AI summary with a mid risk percentage." loading="lazy" width="5008" height="3793">
+        </picture>
+      </div>
+      <p class="cs-caption">Early storyboard, abandoned concept. The kiosk scans groceries and returns a risk percentage.</p>
+      <p>Voluntary input gave users more control over what they shared. But in a public setting, personalized risk scoring could expose sensitive information, create a sense of judgment, and position AI as a medical authority. The problem was not only how the data was collected. It was the assumption that this system should draw cancer-risk conclusions about a person at all.</p>
       <p>We deliberately limited AI’s role: it would support informed next steps, not evaluate personal cancer risk.</p>
+      <figure class="cs-evidence">
+        <blockquote class="cs-evidence-quote">“I also believe AI should <mark>support—not replace</mark>—human health professionals.”</blockquote>
+        <div class="cs-evidence-rule">
+          <p class="cs-evidence-stat"><b>58%</b> of Cedars-Sinai survey respondents worried AI might replace human interaction in outreach.</p>
+          <p class="cs-evidence-src">Quote: anonymous respondent · Cedars-Sinai community feedback survey, May 2025 · n=20</p>
+        </div>
+      </figure>
     </section>
 
     <!-- ── FINAL SERVICE ── -->
     <section class="cs-section" id="final-service">
       <h2 class="section-label">Final Service</h2>
       <div class="cs-preview-statement">Bringing screening support into everyday life</div>
-      <p>Why Ralphs? We looked for a familiar, nonclinical touchpoint in Antelope Valley, where Cedars-Sinai already conducts outreach. A Ralphs grocery store offered a place residents might already visit regularly, allowing screening information and human support to enter an everyday routine. Its public setting also shaped our boundaries: no personal risk scoring, no risk results on screen, and no data retention without opt-in.</p>
-      <p>Rather than requiring people to enter the healthcare system to seek information, the service offers a low-pressure starting point within a daily routine. The kiosk extends the reach of Cedars-Sinai’s outreach, while an on-site CHW remains available for questions and personal guidance.</p>
+      <p>We looked for a familiar, nonclinical touchpoint within Cedars-Sinai’s existing Antelope Valley outreach area. We proposed a Ralphs grocery store because residents might already visit it regularly, allowing screening information and CHW support to become part of an everyday routine. Its public setting also shaped our boundaries: no personal risk scoring, no exposed health information, and no data retention without opt-in.</p>
 
-      <ol class="cs-steps" style="list-style: none;">
-        <li class="cs-step">
-          <span class="cs-step-label">1. Discover</span>
-          <span class="cs-step-text">A “Free Tote Bag” prompt and nearby signage offer a low-pressure reason to approach the kiosk, with an on-site CHW available to introduce the experience.</span>
-        </li>
-        <li class="cs-step">
-          <span class="cs-step-label">2. Share</span>
-          <span class="cs-step-text">Users complete a 10-question survey about their screening awareness, concerns, and preferences.</span>
-        </li>
-        <li class="cs-step">
-          <span class="cs-step-label">3. Learn</span>
-          <span class="cs-step-text">Each response is followed by short, relevant feedback rather than a score or risk result.</span>
-        </li>
-        <li class="cs-step">
-          <span class="cs-step-label">4. Take away</span>
-          <span class="cs-step-text">After completing the survey, users receive a tote bag and a tailored summary with a suggested next step, screening information, and a Cedars-Sinai resource.</span>
-        </li>
-        <li class="cs-step">
-          <span class="cs-step-label">5. Connect</span>
-          <span class="cs-step-text">The experience ends with an invitation to speak with the on-site CHW and an optional choice to receive future follow-up from Cedars-Sinai.</span>
-        </li>
-      </ol>
-
-      <div class="cs-image" style="margin-top: var(--sp-5);">
-        <picture>
-          <source type="image/webp" srcset="images/salud-solutionpreview-2400.webp">
-          <img src="images/salud-solutionpreview.png" width="2400" height="1350" alt="Salud kiosk in a Ralphs setting" style="width: 100%; height: auto; display: block;" loading="lazy">
-        </picture>
-      </div>
-
-      <div class="cs-figure-grid">
-        <div>
-          <div class="cs-image">
-            <video src="images/salud-question-screen.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block;"></video>
+      <div class="fs-scroll">
+      <div class="fs-pin">
+        <div class="fs-viewer" role="group" aria-roledescription="step viewer" aria-label="Final service steps">
+          <!-- FS images (files kept on disk): images/salud-solutionpreview.png, images/salud-solutionpreview-2400.webp, images/salud-question-screen.mp4, images/salud-summary-ticket.png, images/salud-summary-ticket-2400.webp, images/salud-cta.png, images/salud-cta-2400.webp -->
+          <div class="fs-frame">
+            <div class="fs-shot is-active" data-step="1"><picture><source srcset="images/salud-step1-1536.webp" type="image/webp"><img src="images/salud-step1.png" alt="Concept scene: a Salud kiosk and tote bags on an orange-draped table in a grocery store entrance, with a community health worker standing beside it." width="1536" height="1024"></picture><span class="fs-tag">Concept scene · not a real deployment</span></div>
+            <div class="fs-shot" data-step="2"><video muted loop playsinline preload="metadata" poster="images/salud-step2-poster.jpg" aria-label="Recording of a person approaching the Salud kiosk and starting the screening survey."><source src="images/salud-step2.mp4" type="video/mp4"></video></div>
+            <div class="fs-shot" data-step="3"><video muted loop playsinline preload="metadata" poster="images/salud-step3-poster.jpg" aria-label="Recording of the kiosk survey screen showing a question with three answer choices."><source src="images/salud-step3.mp4" type="video/mp4"></video></div>
+            <div class="fs-shot" data-step="4"><video muted loop playsinline preload="metadata" poster="images/salud-step4-poster.jpg" aria-label="Recording of a person entering contact details on the kiosk to receive an electronic copy."><source src="images/salud-step4.mp4" type="video/mp4"></video></div>
+            <div class="fs-shot" data-step="5"><picture><source srcset="images/salud-step5-1536.webp" type="image/webp"><img src="images/salud-step5.png" alt="Concept scene: a community health worker and an older woman reading a printed summary ticket together beside the Salud kiosk table." width="1536" height="1024" loading="lazy"></picture><span class="fs-tag">Concept scene · not a real deployment</span></div>
           </div>
-        </div>
-        <div>
-          <div class="cs-image cs-image-placeholder" style="aspect-ratio: 4 / 3;">Per-question feedback screen — image to add</div>
-        </div>
-        <div>
-          <div class="cs-image">
-            <picture>
-              <source type="image/webp" srcset="images/salud-summary-ticket-2400.webp">
-              <img src="images/salud-summary-ticket.png" width="1600" height="2400" alt="Printed summary ticket" style="width: 100%; height: auto; display: block;" loading="lazy">
-            </picture>
-          </div>
-        </div>
-        <div>
-          <div class="cs-image">
-            <picture>
-              <source type="image/webp" srcset="images/salud-cta-2400.webp">
-              <img src="images/salud-cta.png" width="2400" height="1738" alt="Promotora call-to-action screen" style="width: 100%; height: auto; display: block;" loading="lazy">
-            </picture>
+          <div class="fs-line"></div>
+          <div class="fs-texts" aria-live="polite">
+            <div class="fs-tp is-active" data-step="1">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">A “Free Tote Bag” prompt and nearby signage offer a low-pressure reason to approach the kiosk, with an on-site CHW available to introduce the experience.</div></div>
+              <div class="fs-right is-empty"></div>
+            </div>
+            <div class="fs-tp" data-step="2" aria-hidden="true">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">Users complete a 10-question survey about their screening awareness, concerns, and preferences.</div></div>
+              <div class="fs-right is-empty"></div>
+            </div>
+            <div class="fs-tp" data-step="3" aria-hidden="true">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">Each response is followed by short, relevant feedback rather than a score or risk result.</div></div>
+              <div class="fs-right"><div class="fs-tlabel">Design decision</div>
+                <div class="fs-decision">Each answer receives relevant information without assigning a score or risk level, keeping the experience responsive without judging the user.</div>
+              </div>
+            </div>
+            <div class="fs-tp" data-step="4" aria-hidden="true">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">After completing the survey, users receive a tote bag and a tailored summary with a suggested next step, screening information, and a Cedars-Sinai resource.</div></div>
+              <div class="fs-right"><div class="fs-tlabel">Design decision</div>
+                <div class="fs-decision">Survey responses shape the information and next steps users receive, but the system does not diagnose or predict cancer risk. The AI’s proposed role is limited to organizing a session’s answers into a tailored summary and suggested next step; we did not select, build, or validate a model.</div>
+              </div>
+            </div>
+            <div class="fs-tp" data-step="5" aria-hidden="true">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">The experience ends with an invitation to speak with the on-site CHW and an optional choice to receive future follow-up from Cedars-Sinai.</div></div>
+              <div class="fs-right"><div class="fs-tlabel">Design decision</div>
+                <div class="fs-decision">The closing screen and summary connect users with an on-site CHW for questions and personal guidance.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- ── DESIGN DECISIONS ── -->
-    <section class="cs-section" id="design-decisions">
-      <h2 class="section-label">Design Decisions</h2>
-      <div class="cs-preview-statement">Designing for support, not assessment</div>
-
-      <div class="cs-decisions cs-decisions-two">
-        <div>
-          <div class="cs-decision-title">Respond without scoring</div>
-          <div class="cs-decision-body">Each answer receives relevant information without assigning a score or risk level, keeping the experience responsive without judging the user.</div>
-        </div>
-        <div>
-          <div class="cs-decision-title">Limit personalization to guidance</div>
-          <div class="cs-decision-body">Survey responses shape the information and next steps users receive, but the system does not diagnose or predict cancer risk. The AI’s proposed role is limited to organizing a session’s answers into a tailored summary and suggested next step; we did not select, build, or validate a model.</div>
-        </div>
-        <div>
-          <div class="cs-decision-title">Lead toward human support</div>
-          <div class="cs-decision-body">The closing screen and summary connect users with an on-site CHW for questions and personal guidance.</div>
-        </div>
-        <div>
-          <div class="cs-decision-title">Data and consent</div>
-          <div class="cs-decision-body">The proposed flow uses responses only to generate feedback and a takeaway, then discards them when the session ends. Contact details and survey answers would be retained only if a user explicitly opted into follow-up from Cedars-Sinai. Retention periods, consent withdrawal, and deletion rules were not defined in the prototype and would need to be resolved before implementation.</div>
-        </div>
       </div>
     </section>
 
@@ -1423,8 +1662,8 @@
     </section>
 
     <div class="footer-line">
-      <span>Lanna Hu — Interaction Design</span>
       <a href="index.html">← Back to index</a>
+      <a href="knownow.html" aria-label="Next project: KnowNow">KnowNow →</a>
     </div>
 
   </main>
@@ -1454,6 +1693,13 @@
 
   sections.forEach(s => spy.observe(s));
 
+  // short last section never reaches the spy band, so highlight it once the page is scrolled to the end
+  window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY < document.documentElement.scrollHeight - 4) return;
+    const last = sections[sections.length - 1];
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + last.id));
+  }, { passive: true });
+
   // ── SMOOTH SCROLL ───────────────────────────────────────────────────────────
   navLinks.forEach(link => {
     link.addEventListener('click', e => {
@@ -1462,6 +1708,333 @@
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  // ── FINAL SERVICE: image on top, JS-built 1:1 step line, text row; scroll drives the step ──
+  (function () {
+    const scrollEl = document.querySelector('.fs-scroll');
+    if (!scrollEl) return;
+    const pin    = scrollEl.querySelector('.fs-pin');
+    const viewer = scrollEl.querySelector('.fs-viewer');
+    const frame  = scrollEl.querySelector('.fs-frame');
+    const shots  = Array.from(scrollEl.querySelectorAll('.fs-shot'));
+    const vids   = shots.map(sh => sh.querySelector('video'));
+    const panels = Array.from(scrollEl.querySelectorAll('.fs-tp'));
+    const lineEl = scrollEl.querySelector('.fs-line');
+    const textsHome = scrollEl.querySelector('.fs-texts');
+    const NAMES = ['Discover', 'Share', 'Learn', 'Take away', 'Connect'];
+    const CY = [28, 20, 36, 20, 28];
+    const NS = 'http://www.w3.org/2000/svg';
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobileMQ = window.matchMedia('(max-width: 1099px), (max-height: 699px)');
+    let current = -1, mlist = null, svg = null, hits = [], groups = [], segs = [], lastW = 0;
+
+    function el(name, attrs, parent) {
+      const e = document.createElementNS(NS, name);
+      Object.keys(attrs).forEach(k => e.setAttribute(k, attrs[k]));
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+
+    // build the step line 1:1 from the real container width (no scaling)
+    function buildLine() {
+      const W = Math.round(lineEl.clientWidth);
+      if (!W || W === lastW) return;
+      lastW = W;
+      lineEl.innerHTML = '';
+      svg = el('svg', { class: 'fs-svg', viewBox: '0 0 ' + W + ' 84', width: W, height: 84, 'aria-hidden': 'true', focusable: 'false' }, lineEl);
+      const CX = [12, W * 0.25, W * 0.5, W * 0.75, W - 12];
+      segs = [];
+      for (let j = 0; j < 4; j++) {
+        const x0 = CX[j], y0 = CY[j], x1 = CX[j + 1], y1 = CY[j + 1], mx = (x0 + x1) / 2;
+        segs.push(el('path', { d: 'M' + x0 + ' ' + y0 + ' C ' + mx + ' ' + y0 + ' ' + mx + ' ' + y1 + ' ' + x1 + ' ' + y1, fill: 'none', 'stroke-linecap': 'round', 'stroke-width': 1.5, stroke: '#1e1e1c' }, svg));
+      }
+      groups = NAMES.map((nm, i) => {
+        const g = el('g', {}, svg);
+        const c = el('circle', { class: 'fs-c', cx: CX[i], cy: CY[i], r: 12, fill: '#FFFFFD', stroke: '#1e1e1c', 'stroke-opacity': .6, 'stroke-width': 1.4 }, g);
+        const n = el('text', { class: 'fs-num', x: CX[i], y: CY[i] + 4, 'text-anchor': 'middle', 'font-size': 11 }, g);
+        n.textContent = i + 1;
+        const lx = i === 0 ? 0 : (i === 4 ? W : CX[i]);
+        const l = el('text', { class: 'fs-lab', x: lx, y: CY[i] + 34, 'text-anchor': i === 0 ? 'start' : (i === 4 ? 'end' : 'middle'), 'font-size': 18, fill: '#7A7A74' }, g);
+        l.textContent = nm;
+        const u = el('path', { class: 'fs-und', fill: 'none', stroke: '#E8833A', 'stroke-width': 2.2, 'stroke-linecap': 'round', style: 'display:none' }, g);
+        return { c, n, l, u };
+      });
+      hits = NAMES.map((nm, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'fs-hit' + (i === 0 ? ' is-first' : (i === 4 ? ' is-last' : ''));
+        b.style.left = (i === 0 ? 0 : (i === 4 ? W : CX[i])) + 'px';
+        b.style.top = (CY[i] - 15) + 'px';
+        b.style.height = (CY[i] + 34 + 8 - (CY[i] - 15)) + 'px';
+        b.setAttribute('aria-label', 'Step ' + (i + 1) + ': ' + nm);
+        b.addEventListener('click', () => goTo(i, false));
+        lineEl.appendChild(b);
+        return b;
+      });
+      if (current >= 0) paintSvg(current);
+    }
+
+    function paintSvg(i) {
+      groups.forEach((o, j) => {
+        const on = j === i;
+        o.c.setAttribute('r', on ? 15 : 12);
+        o.c.setAttribute('fill', on ? '#E8833A' : '#FFFFFD');
+        if (on) o.c.removeAttribute('stroke'); else o.c.setAttribute('stroke', '#1e1e1c');
+        o.n.setAttribute('font-size', on ? 12 : 11);
+        o.l.setAttribute('font-size', on ? 22 : 18);
+        o.l.setAttribute('fill', on ? '#1e1e1c' : '#7A7A74');
+        o.u.style.display = on ? '' : 'none';
+        if (on) {
+          const bb = o.l.getBBox(), cx = bb.x + bb.width / 2, y = Number(o.l.getAttribute('y'));
+          o.u.setAttribute('d', 'M' + (cx - 24) + ' ' + (y + 6) + ' C ' + (cx - 12) + ' ' + (y + 3) + ' ' + (cx + 12) + ' ' + (y + 3) + ' ' + (cx + 24) + ' ' + (y + 5));
+        }
+      });
+      segs.forEach((sg, j) => {
+        if (j < i) { sg.setAttribute('stroke-opacity', .55); sg.removeAttribute('stroke-dasharray'); }
+        else { sg.setAttribute('stroke-opacity', .3); sg.setAttribute('stroke-dasharray', '4 5'); }
+      });
+      hits.forEach((h, j) => { if (j === i) h.setAttribute('aria-current', 'step'); else h.removeAttribute('aria-current'); });
+    }
+
+    function toMobile() {
+      if (mlist) return;
+      mlist = document.createElement('div');
+      mlist.className = 'fs-mlist';
+      shots.forEach((sh, j) => {
+        const ms = document.createElement('div');
+        ms.className = 'fs-mstep';
+        sh.style.aspectRatio = '4 / 3';
+        ms.appendChild(sh);
+        const head = document.createElement('div');
+        head.className = 'fs-mhead';
+        head.innerHTML = '<span class="fs-mnode">' + (j + 1) + '</span><span class="fs-mlabel">' + NAMES[j] + '</span>';
+        ms.appendChild(head);
+        panels[j].removeAttribute('aria-hidden');
+        ms.appendChild(panels[j]);
+        mlist.appendChild(ms);
+      });
+      viewer.appendChild(mlist);
+    }
+    function toDesktop() {
+      if (!mlist) return;
+      shots.forEach(sh => { sh.style.aspectRatio = ''; frame.appendChild(sh); });
+      panels.forEach(pn => textsHome.appendChild(pn));
+      mlist.remove(); mlist = null;
+    }
+
+    function setActive(i) {
+      current = i;
+      paintSvg(i);
+      if (!mobileMQ.matches) {
+        panels.forEach((pn, j) => {
+          pn.classList.toggle('is-active', j === i);
+          if (j === i) pn.removeAttribute('aria-hidden'); else pn.setAttribute('aria-hidden', 'true');
+        });
+        shots.forEach((sh, j) => sh.classList.toggle('is-active', j === i));
+      }
+      syncVideos();
+    }
+
+    // step videos: loop silently; desktop plays only the active step (restarting it), stacked plays what is on screen
+    function playVid(v) { if (!v || rm) return; const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+    function syncVideos() {
+      vids.forEach((v, j) => {
+        if (!v || mobileMQ.matches) return;
+        if (j === current) { if (v.paused) { v.currentTime = 0; playVid(v); } }
+        else v.pause();
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      const vio = new IntersectionObserver(es => es.forEach(e => {
+        if (!mobileMQ.matches) return;
+        if (e.isIntersecting) playVid(e.target); else e.target.pause();
+      }), { threshold: 0.35 });
+      vids.forEach(v => { if (v) vio.observe(v); });
+    }
+    if (mobileMQ.addEventListener) mobileMQ.addEventListener('change', () => setTimeout(syncVideos, 60));
+
+    // pinned content height drives both the centering offset and the scroll length
+    function measurePin() {
+      if (mobileMQ.matches) { scrollEl.style.removeProperty('--fs-pin-h'); return; }
+      scrollEl.style.setProperty('--fs-pin-h', pin.offsetHeight + 'px');
+    }
+
+    // progress through the pinned range of .fs-scroll
+    function range() {
+      const topOffset = Math.max(24, (window.innerHeight - pin.offsetHeight) / 2);
+      const start = scrollEl.getBoundingClientRect().top + window.scrollY - topOffset;
+      return { start, len: Math.max(1, scrollEl.offsetHeight - pin.offsetHeight) };
+    }
+
+    let locked = false, lockTimer = 0;
+    let entryGate = false, entryT = 0, entryEdge = 0, wasPinned = false;
+    function lockScroll() {
+      locked = true;
+      clearTimeout(lockTimer);
+      lockTimer = setTimeout(() => { locked = false; update(); }, 900);
+    }
+    window.addEventListener('scrollend', () => { if (locked) { clearTimeout(lockTimer); locked = false; update(); } });
+
+    function update() {
+      if (mobileMQ.matches) { if (current < 0) setActive(0); return; }
+      if (locked || entryGate) return;
+      const r = range();
+      const p = Math.min(1, Math.max(0, (window.scrollY - r.start) / r.len));
+      const i = Math.min(4, Math.floor(p * 5));
+      if (i !== current) setActive(i);
+    }
+
+    function relayout() {
+      locked = false; clearTimeout(lockTimer); entryGate = false; wasPinned = false; gated = false;
+      if (mobileMQ.matches) toMobile(); else toDesktop();
+      buildLine();
+      measurePin();
+      const i = current < 0 ? 0 : current; current = -1; setActive(i); update();
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } }, { passive: true });
+    window.addEventListener('resize', () => requestAnimationFrame(relayout));
+    if (mobileMQ.addEventListener) mobileMQ.addEventListener('change', relayout);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { lastW = 0; relayout(); });
+    window.addEventListener('load', relayout);
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(() => { if (!mobileMQ.matches) { buildLine(); } }).observe(lineEl);
+      new ResizeObserver(() => { measurePin(); }).observe(pin);
+    }
+
+    function goTo(i, focus) {
+      if (mobileMQ.matches) {
+        setActive(i);
+        if (mlist) mlist.children[i].scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+      } else {
+        const r = range();
+        entryGate = false;
+        if (!rm) { lockScroll(); setActive(i); }
+        window.scrollTo({ top: r.start + ((i + 0.5) / 5) * r.len, behavior: rm ? 'auto' : 'smooth' });
+      }
+      if (focus && hits[i]) hits[i].focus({ preventScroll: true });
+    }
+
+    // ── one step per scroll gesture while pinned (desktop, motion allowed) ──
+    const MOMENTUM_GAP = 120, STEP_COOLDOWN = 700;
+    let lastWheelT = 0, lastAbs = 0, lastChangeT = -1e9, gated = false, lastKeyT = 0;
+
+    function pinnedNow() {
+      if (mobileMQ.matches || rm) return false;
+      const r = range();
+      const topOffset = Math.max(24, (window.innerHeight - pin.offsetHeight) / 2);
+      return window.scrollY >= r.start - 1 && window.scrollY <= r.start + r.len + 1 &&
+             Math.abs(pin.getBoundingClientRect().top - topOffset) <= 2;
+    }
+
+    // step by one; returns true when the event was consumed
+    function stepBy(dir) {
+      const atEnd = (dir > 0 && current === 4) || (dir < 0 && current === 0);
+      if (atEnd) return false;   // let the browser scroll the page normally
+      goTo(current + dir, false);
+      return true;
+    }
+
+    // entering the pinned zone (from above or below): start on the entry step and wait for a NEW gesture
+    function syncPinned() {
+      const now = pinnedNow();
+      if (now && !wasPinned) {
+        wasPinned = true;
+        const r = range();
+        const fromBelow = window.scrollY > r.start + r.len / 2;
+        entryEdge = fromBelow ? r.start + r.len : r.start;
+        entryGate = true; entryT = performance.now(); gated = false;
+        setActive(fromBelow ? 4 : 0);
+      } else if (!now && wasPinned) {
+        wasPinned = false; entryGate = false;
+      }
+    }
+    window.addEventListener('scroll', syncPinned, { passive: true });
+
+    window.addEventListener('wheel', e => {
+      syncPinned();
+      if (!pinnedNow()) return;
+      let dy = e.deltaY, dx = e.deltaX;
+      if (e.deltaMode === 1) { dy *= 16; dx *= 16; } else if (e.deltaMode === 2) { dy *= 100; dx *= 100; }
+      const now = performance.now(), abs = Math.abs(dy), dir = dy > 0 ? 1 : -1;
+      const gap = now - lastWheelT, prevAbs = lastAbs;
+      if (Math.abs(dy) <= Math.abs(dx) || abs < 4) {
+        if ((gated || entryGate) && Math.abs(dy) > Math.abs(dx)) e.preventDefault();   // keep momentum tails from moving the page
+        return;
+      }
+      lastWheelT = now; lastAbs = abs;
+      const atEnd = (dir > 0 && current === 4) || (dir < 0 && current === 0);
+      if (atEnd) { entryGate = false; stepBy(dir); return; }   // let the page scroll normally
+      e.preventDefault();
+      if (entryGate) {
+        const fresh = (gap >= 150 || abs > 1.5 * prevAbs) && now - entryT >= 400;
+        if (!fresh) return;                       // still the gesture that brought us here
+        entryGate = false; gated = false;         // a new gesture: handle it normally
+      }
+      if (gated) {
+        const cooled = now - lastChangeT >= STEP_COOLDOWN;
+        const fresh = gap >= MOMENTUM_GAP || abs > 1.5 * prevAbs;
+        if (!(cooled && fresh)) return;             // still the same gesture / momentum tail
+        gated = false;
+      }
+      if (stepBy(dir)) { gated = true; lastChangeT = now; }
+    }, { passive: false });
+
+    window.addEventListener('keydown', e => {
+      if (!pinnedNow()) return;
+      const t = e.target;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON|A|SUMMARY)$/.test(t.tagName))) return;
+      let dir = 0;
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) dir = 1;
+      else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) dir = -1;
+      if (!dir) return;
+      const atEnd = (dir > 0 && current === 4) || (dir < 0 && current === 0);
+      if (atEnd) { stepBy(dir); return; }
+      e.preventDefault();
+      const now = performance.now();
+      if (now - lastKeyT < 450) return;             // ignore key auto-repeat
+      lastKeyT = now;
+      stepBy(dir);
+    });
+
+    viewer.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      if (!e.target.classList || !e.target.classList.contains('fs-hit')) return;
+      e.preventDefault();
+      const n = Math.max(0, Math.min(4, current + (e.key === 'ArrowRight' ? 1 : -1)));
+      if (n !== current) goTo(n, true);
+    });
+    relayout();
+  })();
+
+  // ── MARGIN NOTES: align each note's first line with its anchor ──
+  (function () {
+    const notes = Array.from(document.querySelectorAll('.cs-note[data-anchor]'));
+    if (!notes.length) return;
+    const wide = window.matchMedia('(min-width: 1101px)');
+    function place() {
+      const lastBottom = new Map();
+      notes.forEach(n => {
+        if (!wide.matches) { n.style.top = ''; return; }
+        const anchor = document.getElementById(n.dataset.anchor);
+        const section = n.offsetParent || n.parentElement;
+        if (!anchor || !section) return;
+        const a = anchor.getBoundingClientRect(), sc = section.getBoundingClientRect();
+        const lh = parseFloat(getComputedStyle(n).lineHeight) || 26;
+        let top = (a.top + a.height / 2) - sc.top - lh / 2;
+        const prev = lastBottom.get(section);
+        if (prev !== undefined) top = Math.max(top, prev + 12);
+        n.style.top = Math.round(top) + 'px';
+        lastBottom.set(section, top + n.offsetHeight);
+      });
+    }
+    window.addEventListener('resize', () => requestAnimationFrame(place));
+    if (wide.addEventListener) wide.addEventListener('change', place);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+    window.addEventListener('load', place);
+    place();
+  })();
 
   // ── REDUCED MOTION: keep the cover video paused, show the poster ──
   (function () {
