@@ -453,55 +453,73 @@
   }
   #peel-stage > * { position: absolute; }
 
-  /* ── PLAY GALLERY ── */
-  .play-gallery {
-    columns: 3;
-    column-gap: 16px;
-  }
-  .play-item {
-    break-inside: avoid;
-    margin-bottom: 16px;
+  /* ── PLAY DESK ──
+     Works lie on the dot paper at their real proportions, slightly turned.
+     Each print and its label rotate together (.desk-item), so the label follows the print's angle.
+     Positions are % of a 1083 × 880 desk (page cols 3–10 at 1440), so the arrangement scales with the column. */
+  .view[data-view="play"] > .m-grid > .m-content { grid-column: 1 / -1; }
+  .view[data-view="play"] > .m-grid > .m-aside { display: none; }
+  .play-desk {
     position: relative;
-    overflow: hidden;
-    border-radius: 2px;
-    background: var(--rule);
-    cursor: pointer;
-    display: block;
+    aspect-ratio: 1083 / 880;
   }
-  .play-item img {
+  .desk-item {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--w);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transform: rotate(var(--r));
+    transform-origin: center top;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .desk-item img {
+    display: block;
     width: 100%;
     height: auto;
+    box-shadow: 0 1px 2px rgba(30,30,28,.10), 0 12px 28px rgba(30,30,28,.14);
+    transition: box-shadow 0.35s ease;
+  }
+  .desk-item:hover { transform: translateY(-6px) rotate(var(--r)); }
+  .desk-item:hover img { box-shadow: 0 2px 4px rgba(30,30,28,.10), 0 20px 40px rgba(30,30,28,.18); }
+  .desk-item:focus-visible { outline: none; }
+  .desk-item:focus-visible img { outline: 2px solid var(--ink); outline-offset: 4px; }
+  .desk-tape {
+    position: absolute;
+    top: -10px;
+    height: 20px;
+    background: rgba(240,230,204,.85);
+    pointer-events: none;
+  }
+  .desk-label {
     display: block;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .play-item:hover img { transform: scale(1.015); }
-  .play-item::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(243, 243, 241, 0.82);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1;
-  }
-  .play-item[data-images]::after {
-    content: 'View →';
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 14px;
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.4;
     color: var(--ink);
-    opacity: 0;
-    transition: opacity 0.3s ease 0.05s;
-    z-index: 2;
   }
-  .play-item[data-images]:hover::before { opacity: 1; }
-  .play-item[data-images]:hover::after  { opacity: 1; }
+  .desk-label span { display: block; color: #7a7a74; }
+  @media (prefers-reduced-motion: reduce) {
+    .desk-item, .desk-item img { transition: none; }
+    .desk-item:hover { transform: rotate(var(--r)); }
+  }
+  /* phones: one column, prints still slightly turned, alternating sides */
+  @media (max-width: 680px) {
+    .play-desk { aspect-ratio: auto; display: flex; flex-direction: column; gap: 48px; }
+    .desk-item { position: relative; left: auto; top: auto; width: var(--mw, 100%); }
+    .desk-item:nth-child(even) { align-self: flex-end; }
+  }
 
   /* ── LIGHTBOX ── */
   .lightbox {
@@ -519,7 +537,7 @@
   .lightbox.open { opacity: 1; pointer-events: auto; }
 
   /* While lightbox is open (or fading out), block all play item clicks */
-  body.lb-open .play-gallery { pointer-events: none; }
+  body.lb-open .play-desk { pointer-events: none; }
 
   /* Single: centered, 32px top, 16px gap to caption, caption 16px from bottom */
   .lightbox.single {
@@ -1030,54 +1048,66 @@
       <section class="view" id="view-play" data-view="play" hidden inert>
         <div class="m-grid">
           <div class="m-content">
-            <!-- PLAY: layout redesign comes later -->
-            <div class="play-gallery">
+            <div class="play-desk">
 
-              <div class="play-item"
-                   data-images="images/type-leefriendlander.jpg,images/type-leefriendlander2.jpg,images/type-leefriendlander3.jpg,images/type-leefriendlander4.jpg,images/type-leefriendlander5.jpg,images/type-leefriendlander6.jpg,images/type-leefriendlander7.jpg,images/type-leefriendlander8.jpg,images/type-leefriendlander9.jpg"
-                   data-caption="Brochure of Lee Friedlander">
+              <button type="button" class="desk-item" style="--x: 0.000%; --y: 3.409%; --w: 51.708%; --r: -1.5deg; --mw: 100%;"
+                      data-images="images/type-leefriendlander.jpg,images/type-leefriendlander2.jpg,images/type-leefriendlander3.jpg,images/type-leefriendlander4.jpg,images/type-leefriendlander5.jpg,images/type-leefriendlander6.jpg,images/type-leefriendlander7.jpg,images/type-leefriendlander8.jpg,images/type-leefriendlander9.jpg"
+                      data-caption="Lee Friedlander · Brochure">
                 <picture>
-                  <source srcset="images/type-leefriendlander-2400.webp" type="image/webp">
-                  <img src="images/type-leefriendlander.jpg" alt="Lee Friedlander Brochure" width="1855" height="2400">
+                  <source srcset="images/type-leefriendlander3-2400.webp" type="image/webp">
+                  <img src="images/type-leefriendlander3.jpg" alt="Lee Friedlander brochure, open to a spread" width="2400" height="1553" loading="lazy" decoding="async">
                 </picture>
-              </div>
-              <div class="play-item"
-                   data-images="images/type-makeplay.jpg"
-                   data-caption="Magazine Cover Design">
-                <picture>
-                  <source srcset="images/type-makeplay-2400.webp" type="image/webp">
-                  <img src="images/type-makeplay.jpg" alt="Makeplay Magazine" width="2400" height="1553">
-                </picture>
-              </div>
-              <div class="play-item"
-                   data-images="images/render.png"
-                   data-caption="From Earth to Sky — 3D modeling and rendering.">
-                <img src="images/render.png" alt="From Earth to Sky" width="2200" height="1375">
-              </div>
-              <div class="play-item"
-                   data-images="images/type-atthethreshold.jpg"
-                   data-caption="a Movie Series Poster">
+                <span class="desk-tape" aria-hidden="true" style="left: 43.2%; width: 13.6%; transform: rotate(-4deg);"></span>
+                <span class="desk-label">Lee Friedlander <span>Brochure</span></span>
+              </button>
+              <button type="button" class="desk-item" style="--x: 56.510%; --y: 0.000%; --w: 19.391%; --r: 2.5deg; --mw: 72%;"
+                      data-images="images/type-atthethreshold.jpg"
+                      data-caption="At the Threshold · Movie Poster">
                 <picture>
                   <source srcset="images/type-atthethreshold-2400.webp" type="image/webp">
-                  <img src="images/type-atthethreshold.jpg" alt="At the Threshold" width="1600" height="2400">
+                  <img src="images/type-atthethreshold.jpg" alt="At the Threshold movie poster" width="1600" height="2400" loading="lazy" decoding="async">
                 </picture>
-              </div>
-              <div class="play-item"
-                   data-images="images/type-helvetica.jpg,images/type-helvetica2.jpg,images/type-helvetica3.jpg,images/type-helvetica4.jpg,images/type-helvetica5.jpg,images/type-helvetica6.jpg,images/type-helvetica7.jpg,images/type-helvetica8.jpg,images/type-helvetica9.jpg,images/type-helvetica10.jpg,images/type-helvetica11.jpg,images/type-helvetica12.jpg,images/type-helvetica13.jpg"
-                   data-caption="Typography Specimen">
-                <picture>
-                  <source srcset="images/type-helvetica-2400.webp" type="image/webp">
-                  <img src="images/type-helvetica.jpg" alt="Helvetica Specimen" width="2400" height="2400">
-                </picture>
-              </div>
-              <div class="play-item"
-                   data-images="images/type-type2poster.jpg"
-                   data-caption="Typography & Composition — ArtCenter Type 2, Spring 2025.">
+                <span class="desk-tape" aria-hidden="true" style="left: 34.3%; width: 30.5%; transform: rotate(2deg);"></span>
+                <span class="desk-label">At the Threshold <span>Movie Poster</span></span>
+              </button>
+              <button type="button" class="desk-item" style="--x: 79.778%; --y: 5.455%; --w: 18.467%; --r: -2deg; --mw: 72%;"
+                      data-images="images/type-type2poster.jpg"
+                      data-caption="Type 2 · Poster">
                 <picture>
                   <source srcset="images/type-type2poster-2400.webp" type="image/webp">
-                  <img src="images/type-type2poster.jpg" alt="Type 2 Poster" width="1607" height="2400">
+                  <img src="images/type-type2poster.jpg" alt="Type 2 poster" width="1607" height="2400" loading="lazy" decoding="async">
                 </picture>
-              </div>
+                <span class="desk-label">Type 2 <span>Poster</span></span>
+              </button>
+              <button type="button" class="desk-item" style="--x: 2.585%; --y: 55.455%; --w: 25.854%; --r: 2deg; --mw: 84%;"
+                      data-images="images/type-helvetica.jpg,images/type-helvetica2.jpg,images/type-helvetica3.jpg,images/type-helvetica4.jpg,images/type-helvetica5.jpg,images/type-helvetica6.jpg,images/type-helvetica7.jpg,images/type-helvetica8.jpg,images/type-helvetica9.jpg,images/type-helvetica10.jpg,images/type-helvetica11.jpg,images/type-helvetica12.jpg,images/type-helvetica13.jpg"
+                      data-caption="Helvetica · Specimen Book">
+                <picture>
+                  <source srcset="images/type-helvetica-2400.webp" type="image/webp">
+                  <img src="images/type-helvetica.jpg" alt="Helvetica specimen book, cover" width="2400" height="2400" loading="lazy" decoding="async">
+                </picture>
+                <span class="desk-tape" aria-hidden="true" style="left: 82.9%; width: 22.9%; transform: rotate(36deg);"></span>
+                <span class="desk-label">Helvetica <span>Specimen Book</span></span>
+              </button>
+              <button type="button" class="desk-item" style="--x: 33.610%; --y: 56.818%; --w: 35.088%; --r: -1deg; --mw: 100%;"
+                      data-images="images/type-makeplay.jpg"
+                      data-caption="Makeplay · Magazine Cover">
+                <picture>
+                  <source srcset="images/type-makeplay-2400.webp" type="image/webp">
+                  <img src="images/type-makeplay.jpg" alt="Makeplay magazine cover" width="2400" height="1553" loading="lazy" decoding="async">
+                </picture>
+                <span class="desk-label">Makeplay <span>Magazine Cover</span></span>
+              </button>
+              <button type="button" class="desk-item" style="--x: 77.193%; --y: 51.364%; --w: 19.760%; --r: 1.5deg; --mw: 72%;"
+                      data-images="images/type-santafe.jpg,images/type-santafe2.jpg,images/type-santafe3.jpg,images/type-santafe4.jpg,images/type-santafe5.jpg,images/type-santafe6.jpg,images/type-santafe7.jpg,images/type-santafe8.jpg,images/type-santafe9.jpg,images/type-santafe10.jpg,images/type-santafe11.jpg,images/type-santafe12.jpg,images/type-santafe13.jpg"
+                      data-caption="From Earth to Sky · Logo Booklet">
+                <picture>
+                  <source srcset="images/type-santafe-2400.webp" type="image/webp">
+                  <img src="images/type-santafe.jpg" alt="From Earth to Sky, cover of the Santa Fe logo booklet" width="1714" height="2400" loading="lazy" decoding="async">
+                </picture>
+                <span class="desk-tape" aria-hidden="true" style="left: 35.5%; width: 29.9%; transform: rotate(-5deg);"></span>
+                <span class="desk-label">From Earth to Sky <span>Logo Booklet</span></span>
+              </button>
 
             </div>
           </div>
@@ -1538,7 +1568,7 @@
   const lightboxImages  = document.getElementById('lightbox-images');
   const lightboxCaption = document.getElementById('lightbox-caption');
 
-  document.querySelectorAll('.play-item[data-images]').forEach(card => {
+  document.querySelectorAll('.desk-item[data-images]').forEach(card => {
     card.addEventListener('click', () => {
       const srcs = card.dataset.images.split(',').map(s => s.trim());
       // Set up DOM first (before any animation)
