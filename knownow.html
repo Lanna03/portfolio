@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KnowNow — Lanna Hu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400&family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   video { border: none; outline: none; display: block; }
@@ -308,6 +308,7 @@
     margin: 0;
   }
   .cs-head-cards .cs-head-text { text-wrap: pretty; }
+  .cs-head-cards .cs-head-text b { font-weight: 600; color: var(--ink); }
   .cs-head-cards .cs-head-text.has-gap { margin-bottom: 32px; }
   .cs-head-info { margin: 0; }
   .cs-head-group + .cs-head-group {
@@ -1431,7 +1432,11 @@
   .kn-objects { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 40px 0 0; }
   .kn-object { background: #FAFAF8; border: 1px solid rgba(30,30,28,.09); border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 4px 12px rgba(30,30,28,.04); }
   .kn-object .kn-label { margin-bottom: 8px; }
-  .kn-object-q { font-family: 'Caveat', cursive; font-size: 24px; line-height: 1.15; color: var(--ink); }
+  .kn-object-q { font-family: var(--sans); font-size: 15px; font-weight: 400; line-height: 1.5; letter-spacing: 0; white-space: nowrap; color: var(--ink); }
+  .kn-object { padding: 16px 18px; }
+  .kn-object .kn-label { margin-bottom: 6px; }
+  .kn-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: #E8833A; color: var(--ink); font-size: 10px; letter-spacing: 0; flex: none; }
+  @media (max-width: 1100px) { .kn-objects { grid-template-columns: 1fr 1fr; } }
   .kn-flow { margin-top: 40px; }
   .kn-flow img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(30,30,28,.08); }
   #structure { position: relative; }
@@ -1524,7 +1529,7 @@
               <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>overview</div>
               <p class="cs-head-text has-gap">A multilingual, map-based emergency response app that helps people understand how a nearby threat affects them, find a safe destination, and take the next step quickly.</p>
               <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>my contribution</div>
-              <p class="cs-head-text">KnowNow began as a 14-week team project that ended as a low-fi prototype. I then independently redesigned it, reframing the problem and rebuilding the product strategy, information architecture, interactions, and prototype.</p>
+              <p class="cs-head-text">KnowNow began as a 14-week team project that ended as a low-fi prototype. <b>I then independently redesigned it, reframing the problem and rebuilding the product strategy, information architecture, interactions, and prototype.</b></p>
             </div>
           </div>
           <div class="cs-head-right">
@@ -1543,10 +1548,10 @@
         <div class="kn-label"><span class="cs-head-dot" aria-hidden="true"></span>At a glance</div>
         <div class="cs-preview-statement">The interface changes as the risk changes, from monitoring to evacuation.</div>
         <div class="kn-phones" style="--n: 4;">
-        <figure class="kn-phone" style="--c: #34C759;"><picture><source srcset="images/kn-state-safe.webp" type="image/webp"><img src="images/kn-state-safe.png" alt="KnowNow home screen in the safe state: a map around the user with the message “You are safe, no active hazards nearby.”" width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">All clear</div><div class="kn-phone-action">Monitor</div></figcaption></figure>
-        <figure class="kn-phone" style="--c: #F6A523;"><picture><source srcset="images/kn-state-alert.webp" type="image/webp"><img src="images/kn-state-alert.png" alt="KnowNow home screen in the stay alert state: an orange hazard zone at the map edge, “You are safe,” and a button to see safe areas." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Stay alert</div><div class="kn-phone-action">Prepare</div></figcaption></figure>
-        <figure class="kn-phone" style="--c: #FF3B30;"><picture><source srcset="images/kn-state-danger.webp" type="image/webp"><img src="images/kn-state-danger.png" alt="KnowNow home screen in the danger nearby state: a red hazard zone close to the user, a route line, and a “Start route to shelter” button." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Danger nearby</div><div class="kn-phone-action">Move to safety</div></figcaption></figure>
-        <figure class="kn-phone" style="--c: #8E1F1A;"><picture><source srcset="images/kn-state-evacuate.webp" type="image/webp"><img src="images/kn-state-evacuate.png" alt="KnowNow home screen in the evacuate state: the user inside a dark red hazard zone and a full-width red “Evacuate now” panel." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Evacuate</div><div class="kn-phone-action">Leave now</div></figcaption></figure>
+        <figure class="kn-phone" style="--c: #34C759;"><picture><source srcset="images/kn-state-safe.webp" type="image/webp"><img src="images/kn-state-safe.png" alt="KnowNow home screen in the safe state: a map around the user with the message “You are safe, no active hazards nearby.”" width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">All clear</div></figcaption></figure>
+        <figure class="kn-phone" style="--c: #F6A523;"><picture><source srcset="images/kn-state-alert.webp" type="image/webp"><img src="images/kn-state-alert.png" alt="KnowNow home screen in the stay alert state: an orange hazard zone at the map edge, “You are safe,” and a button to see safe areas." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Stay alert</div></figcaption></figure>
+        <figure class="kn-phone" style="--c: #FF3B30;"><picture><source srcset="images/kn-state-danger.webp" type="image/webp"><img src="images/kn-state-danger.png" alt="KnowNow home screen in the danger nearby state: a red hazard zone close to the user, a route line, and a “Start route to shelter” button." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Danger nearby</div></figcaption></figure>
+        <figure class="kn-phone" style="--c: #8E1F1A;"><picture><source srcset="images/kn-state-evacuate.webp" type="image/webp"><img src="images/kn-state-evacuate.png" alt="KnowNow home screen in the evacuate state: the user inside a dark red hazard zone and a full-width red “Evacuate now” panel." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Evacuate</div></figcaption></figure>
         </div>
       </div>
     </div>
@@ -1612,10 +1617,10 @@
       <p>The team concept offered five parallel tools: news, training, alerts, shelters, and a packing list. In the redesign, I rebuilt the system around a smaller set of <span class="cs-anchor" id="note-entry">core objects, each answering one question</span> a person asks during an emergency.</p>
       <aside class="cs-note cs-note--keep" role="note" data-anchor="note-entry"><svg class="cs-note-arrow" width="36" height="20" viewBox="0 0 36 20" aria-hidden="true" focusable="false"><path d="M34 11 C 25 3 13 3 3 10 M3 10 L10 6 M3 10 L11 13" fill="none" stroke="rgba(30,30,28,.55)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cs-note-text">Two ways in: opening the app means exploring, a notification means urgency.</span></aside>
       <div class="kn-objects">
-        <div class="kn-object"><div class="kn-label">Alert</div><div class="kn-object-q">Am I in danger?</div></div>
-        <div class="kn-object"><div class="kn-label">Map</div><div class="kn-object-q">Where am I?</div></div>
-        <div class="kn-object"><div class="kn-label">Shelter</div><div class="kn-object-q">Where should I go?</div></div>
-        <div class="kn-object"><div class="kn-label">Route</div><div class="kn-object-q">How do I get there?</div></div>
+        <div class="kn-object"><div class="kn-label"><span class="kn-num">1</span>Alert</div><div class="kn-object-q">Am I in danger?</div></div>
+        <div class="kn-object"><div class="kn-label"><span class="kn-num">2</span>Map</div><div class="kn-object-q">Where am I?</div></div>
+        <div class="kn-object"><div class="kn-label"><span class="kn-num">3</span>Shelter</div><div class="kn-object-q">Where should I go?</div></div>
+        <div class="kn-object"><div class="kn-label"><span class="kn-num">4</span>Route</div><div class="kn-object-q">How do I get there?</div></div>
       </div>
       <p style="margin-top: 40px;">Each object exists to move people toward their next step. The system is no longer about what users can do, but about what they should do next.</p>
       <div class="kn-flow"><picture><source srcset="images/kn-flow.webp" type="image/webp"><img src="images/kn-flow.png" alt="Refined user flow: the user receives an alert, opens the map, the system checks whether they are in danger, then guides them to choose a shelter, start navigation, and follow the route to safety." width="2400" height="960" loading="lazy" decoding="async"></picture></div>
