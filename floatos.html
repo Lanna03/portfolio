@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  video { border: none; outline: none; display: block; }
 
   :root {
     --gutter:       40px;
@@ -28,7 +29,7 @@
 
     --bg:        #FFFFFD;
     --ink:       #1e1e1c;
-    --ink-muted: #3f3f3a;
+    --ink-muted: #1e1e1c;
     --ink-faint: #3f3f3a;
     --rule:      #d6d5ce;
 
@@ -65,7 +66,7 @@
 
   /* ── NAV ── */
   nav {
-    grid-column: 1;
+    grid-column: 1 / span 2;
     position: sticky;
     top: 40px;
     height: calc(100vh - 40px);
@@ -107,6 +108,7 @@
     line-height: 2;
   }
   .nav-links a {
+    white-space: nowrap;
     font-family: var(--mono);
     font-size: 13px;
     font-weight: 400;
@@ -134,7 +136,10 @@
   main {
     grid-column: 3 / span 6;
     min-width: 0;
-    padding: 0 0 64px;
+    padding: 0 0 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     opacity: 0;
     animation: fadeIn 0.7s ease 0.1s forwards;
   }
@@ -143,34 +148,7 @@
   /* ── HERO ── */
   .cs-hero {
     padding-top: 0;
-    padding-bottom: 0;
-    border-bottom: 0.5px solid var(--rule);
     margin-bottom: 0;
-  }
-  .cs-meta {
-    display: flex;
-    gap: var(--sp-2);
-    align-items: center;
-    margin-bottom: var(--sp-3);
-    flex-wrap: wrap;
-  }
-  .cs-tag {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border: 0.5px solid var(--rule);
-    padding: 2px 8px;
-    border-radius: 2px;
-  }
-  .cs-year {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.04em;
   }
   .cs-title {
     font-family: var(--sans);
@@ -181,42 +159,148 @@
     letter-spacing: -0.01em;
     margin-bottom: var(--sp-3);
   }
-  .cs-subtitle {
+  .cs-title.cs-head-title { font-size: 28px; line-height: 1.2; letter-spacing: -0.01em; margin: 0; }
+  .cs-section p.cs-head-subtitle {
     font-family: var(--sans);
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 400;
-    color: var(--ink-muted);
-    line-height: 1.8;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 8px 0 0;
     max-width: 560px;
   }
+  .cs-hero-image {
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: var(--rule);
+    margin: 40px 0 0;
+  }
+  .cs-hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-  /* ── SECTION LABEL ── */
-  .section-label {
+  /* ── HEAD CARDS (overview + project info) ── */
+  .cs-head-cards {
+    container-type: inline-size;
+    margin-top: 56px;
+    padding-bottom: 56px;
+    position: relative;
+  }
+  .cs-head-cards::before {
+    content: "";
+    position: absolute;
+    left: -40px; right: -40px; top: -24px; bottom: -48px;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(30,30,28,.16) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, rgba(0,0,0,.7) 60%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, rgba(0,0,0,.7) 60%, transparent 100%);
+  }
+  .cs-head-grid { display: grid; grid-template-columns: 660fr 318fr; column-gap: 0; align-items: start; }
+  .cs-head-left { position: relative; z-index: 1; }
+  .cs-head-right {
+    position: relative;
+    z-index: 2;
+    margin-left: -32px;
+    width: calc(100% + 32px);
+    align-self: end;
+    margin-bottom: -56px;
+  }
+  .cs-head-card {
+    position: relative;
+    box-sizing: border-box;
+    background: #FAFAF8;
+    border: 1px solid rgba(30,30,28,.09);
+    border-radius: 12px;
+  }
+  .cs-head-left .cs-head-card {
+    padding: 36px 48px 36px 36px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 4px 12px rgba(30,30,28,.04), 0 12px 32px rgba(30,30,28,.05);
+  }
+  .cs-head-right .cs-head-card {
+    padding: 36px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.05), 0 6px 16px rgba(30,30,28,.06), 0 20px 48px rgba(30,30,28,.08);
+  }
+  .cs-head-cards .cs-head-label,
+  .cs-head-info dt {
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 400;
-    color: #7a7a74;
+    line-height: 1.4;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    line-height: 1.4;
-    margin-bottom: var(--sp-3);
+    color: #7A7A74;
+  }
+  .cs-head-cards .cs-head-label { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; }
+  .cs-head-dot { width: 6px; height: 6px; border-radius: 50%; background: #E8833A; flex: none; }
+  .cs-head-bar {
+    position: absolute;
+    top: 0;
+    left: 28px;
+    width: 40px;
+    height: 4px;
+    background: #E8833A;
+    border-radius: 0 0 2px 2px;
+  }
+  .cs-head-info dt { margin: 0 0 4px; }
+  .cs-head-cards .cs-head-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .cs-head-info dd {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #3f3f3a;
+    margin: 0;
+  }
+  .cs-head-info { margin: 0; }
+  .cs-head-group + .cs-head-group { margin-top: 16px; padding-top: 16px; border-top: 1px dashed rgba(30,30,28,.28); }
+  @container (max-width: 859.98px) {
+    .cs-head-grid { grid-template-columns: 640fr 338fr; }
+    .cs-head-left .cs-head-card { padding: 28px 40px 28px 28px; }
+    .cs-head-right .cs-head-card { padding: 28px; }
+  }
+  @container (max-width: 639.98px) {
+    .cs-head-grid { grid-template-columns: 1fr; }
+    .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 28px; }
+    .cs-head-right { margin: 16px 0 0; width: 100%; align-self: auto; }
+    .cs-head-cards { padding-bottom: 0; }
   }
 
   /* ── SECTIONS ── */
-  .cs-section {
-    margin-bottom: 0;
-    scroll-margin-top: 40px;
-  }
-  .cs-section + .cs-section { margin-top: 80px; }
-  .cs-section h2 {
-    font-family: var(--sans);
-    font-size: 24px;
+  .cs-section { margin-bottom: 0; scroll-margin-top: 40px; }
+  .cs-section + .cs-section { margin-top: 100px; }
+  main > .cs-section:last-of-type { margin-bottom: 64px; }
+  .cs-section h2.section-label {
+    font-family: var(--mono);
+    font-size: 12px;
     font-weight: 400;
-    line-height: 1.35;
-    color: var(--ink);
-    margin-bottom: var(--sp-3);
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    color: #7a7a74;
+    text-transform: uppercase;
+    margin: 0 0 var(--sp-3);
+    max-width: none;
+  }
+  .cs-preview-statement {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
     letter-spacing: -0.01em;
-    max-width: 640px;
+    color: var(--ink);
+    max-width: 100%;
+    margin-bottom: var(--sp-3);
   }
   .cs-section p {
     font-family: var(--sans);
@@ -227,19 +311,51 @@
     margin-bottom: var(--sp-3);
     letter-spacing: 0;
   }
-  .cs-section p.cs-subtitle { font-size: 16px; line-height: 1.8; }
   .cs-section p:last-child { margin-bottom: 0; }
+
+  /* ── PALETTE ── */
+  .fo-palette {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin: 40px 0 0;
+  }
+  .fo-swatch {
+    aspect-ratio: 5 / 4;
+    border-radius: 12px;
+    border: 1px solid rgba(30,30,28,.09);
+    background: var(--sw);
+  }
+
+  /* ── PHONE RECORDINGS ── */
+  /* every phone is one third of the column, so a row of three fills the width; pairs keep the same size, centred */
+  .cs-phones {
+    display: grid;
+    grid-template-columns: repeat(var(--n, 3), calc((100% - 32px) / 3));
+    justify-content: center;
+    gap: 16px;
+    margin-top: 40px;
+    align-items: start;
+  }
+  .cs-phones.is-pair { --n: 2; }
+  .cs-phones video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1206 / 2622;
+    border-radius: 12% / 5.52%; /* matches the phone screen's corner curve */
+    box-shadow: 0 0 0 1px rgba(30,30,28,.08);
+    background: var(--rule);
+  }
 
   /* ── FOOTER ── */
   .footer-line {
-    margin-top: 80px;
+    margin-top: auto;
     padding-top: var(--sp-3);
     border-top: 0.5px solid var(--rule);
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .footer-line span,
   .footer-line a {
     font-family: var(--mono);
     font-size: 12px;
@@ -257,34 +373,6 @@
   ::-webkit-scrollbar-thumb:hover { background: #7a7a74; }
 
   html { scrollbar-gutter: stable; }
-
-  @media (max-width: 960px) {
-    :root { --gutter: 24px; --gap: 16px; }
-    main { grid-column: 3 / span 8; }
-    main video { min-width: 0; flex-shrink: 1; }
-    .cs-section > div > div { min-width: 0; }
-  }
-  @media (max-width: 900px) {
-    .page { grid-template-columns: 1fr; padding: 48px 32px 0; }
-    nav {
-      grid-column: 1;
-      position: static;
-      height: auto;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      padding: 0 0 12px;
-      gap: 0 var(--sp-3);
-    }
-    .nav-links { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 0 var(--sp-2); }
-    .nav-section-label { display: none; }
-    .section-links { display: contents; }
-    .section-links a { opacity: 1 !important; transform: none !important; transition: none !important; }
-    main { grid-column: 1; padding: 0 0 64px; }
-    .cs-hero { padding-top: 32px; }
-    .cs-section + .cs-section { margin-top: 56px; }
-    .cs-title { font-size: 24px; }
-  }
 
   /* ── NAV SECTION COLLAPSE ── */
   .nav-links.nav-js .section-links {
@@ -313,36 +401,54 @@
     .nav-links.nav-js .section-links { max-height: none; visibility: visible; }
     .nav-links.nav-js .section-links > * { opacity: 1; transform: none; }
   }
-  @media (max-width: 900px) {
-    .nav-links.nav-js .section-links { max-height: none; overflow: visible; visibility: visible; }
-    .nav-links.nav-js .section-links > * { opacity: 1; transform: none; transition: none; }
-  }
 
-  /* ── SMALL SCREENS: single column at <= 680px, phone type scale ── */
-  @media (max-width: 900px) {
+  /* ── TABLET + PHONE: single column, ≤ 960px ── */
+  @media (max-width: 960px) {
+    .page { grid-template-columns: 1fr; padding: 48px 32px 0; }
+    nav {
+      grid-column: 1;
+      position: static;
+      height: auto;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 0;
+      gap: 0 var(--sp-3);
+    }
     .nav-links { display: none; }
-    nav { padding-bottom: 0; }
-    main { width: 100%; max-width: 680px; margin-inline: auto; overflow-wrap: break-word; }
+    main {
+      grid-column: 1;
+      width: 100%;
+      max-width: 680px;
+      margin-inline: auto;
+      padding: 0 0 40px;
+      overflow-wrap: break-word;
+    }
     main img, main video { max-width: 100%; }
-    main img { height: auto; }
-    main [style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: var(--sp-4) !important; }
-    .cs-ai-rules, .cs-survey-grid, .privacy-grid, .cs-decision-row, .cs-persona, .cs-split, .cs-data-row, .cs-stats, .cs-stat-cards, .cs-insight-row, .cs-insights, .cs-decisions, .cs-decisions.cs-decisions-two, .cs-primary-split, .cs-survey-split, .cs-figure-grid { grid-template-columns: 1fr; }
-    .cs-primary-text, .cs-primary-image, .cs-survey-video, .cs-survey-text { grid-column: 1; }
-    .cs-title { font-size: 24px; line-height: 1.3; }
-    .cs-preview-statement, .cs-insight-stat, .cs-hmw-text { font-size: 18px; line-height: 1.5; }
-    .cs-decision-title, .cs-ai-boundary-title { font-size: 17px; line-height: 1.4; }
-    .cs-quote p { font-size: 17px; }
-    .cs-section p { line-height: 1.7; }
-    .cs-section p.cs-subtitle { line-height: 1.7; }
-    .cs-head-cards .cs-head-label { font-size: 22px; }
-    .cs-head-info dt { font-size: 20px; }
+    .cs-hero { padding-top: 32px; }
+    .cs-section + .cs-section { margin-top: 48px; }
+    .cs-title.cs-head-title { font-size: 24px; }
+    .cs-preview-statement { font-size: 18px; line-height: 1.5; }
+    .cs-section p,
+    .cs-head-cards .cs-head-text,
+    .cs-head-info dd { line-height: 1.7; }
+    .cs-head-grid { grid-template-columns: 1fr; }
+    .cs-head-cards { padding-bottom: 0; }
+    .cs-head-cards::before { left: -16px; right: -16px; }
+    .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 28px; }
+    .cs-head-right { margin: 16px 0 0; width: 100%; align-self: auto; }
+  }
+  @media (max-width: 560px) {
+    .cs-phones { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 8px; }
+    .cs-phones.is-pair { gap: 12px; }
+    .fo-palette { gap: 8px; }
   }
   @media (max-width: 480px) {
     .page { padding: 48px 20px 0; }
     .cs-head-left .cs-head-card, .cs-head-right .cs-head-card { padding: 20px; }
   }
   @media (max-width: 359px) {
-    .cs-title { font-size: 22px; }
+    .cs-title.cs-head-title { font-size: 22px; }
   }
 </style>
 </head>
@@ -367,90 +473,98 @@
 
   <main>
 
-    <!-- ── SECTION 1: HERO / CONCEPT ── -->
-    <div class="cs-hero cs-section" id="concept" style="border-bottom: none;">
-      <p style="font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: var(--sp-2);">Advanced Interface Design — Spring 2025</p>
-      <h1 class="cs-title">Float OS</h1>
-      <div class="cs-meta">
-        <span class="cs-tag">UI Design</span>
-        <span class="cs-tag">OS Design</span>
-        <span class="cs-year">2025</span>
+    <!-- ── HERO / CONCEPT ── -->
+    <div class="cs-hero cs-section" id="concept">
+      <h1 class="cs-title cs-head-title">Float OS</h1>
+      <p class="cs-head-subtitle">An exploration of calmness, depth, and warmth as core design values.</p>
+      <div class="cs-hero-image">
+        <picture>
+          <source srcset="images/floatos-cover-2400.webp" type="image/webp">
+          <img src="images/floatos-cover.png" width="2400" height="1350" fetchpriority="high" decoding="async" alt="Float OS">
+        </picture>
       </div>
-      <p class="cs-subtitle">Most operating systems optimize for efficiency. Float OS asks a different question: what if your phone felt like a space you actually wanted to be in? An exploration of calmness, depth, and warmth as core design values.</p>
+      <div class="cs-head-cards">
+        <div class="cs-head-grid">
+          <div class="cs-head-left">
+            <div class="cs-head-card" role="group" aria-label="Overview">
+              <div class="cs-head-bar" aria-hidden="true"></div>
+              <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>overview</div>
+              <p class="cs-head-text">Most operating systems optimize for efficiency. Float OS asks a different question: what if your phone felt like a space you actually wanted to be in?</p>
+            </div>
+          </div>
+          <div class="cs-head-right">
+            <div class="cs-head-card" role="group" aria-label="Project info">
+              <div class="cs-head-bar" aria-hidden="true"></div>
+              <dl class="cs-head-info">
+                <div class="cs-head-group"><dt>Focus</dt><dd>UI Design<br>OS Design</dd></div>
+                <div class="cs-head-group"><dt>Term</dt><dd>Spring 2025</dd></div>
+                <div class="cs-head-group"><dt>Course</dt><dd>Advanced Interface Design</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- ── SECTION 2: DESIGN LANGUAGE ── -->
+    <!-- ── DESIGN LANGUAGE ── -->
     <section class="cs-section" id="design-language">
-      <div class="section-label">Design Language</div>
-      <h2>Soft, breathable, warm</h2>
-      <p style="max-width: 640px;">The visual language draws from Scandinavian interior design and frosted glass materiality — organic shapes, grainy texture, and a palette of muted terracotta, dusty blue, and warm cream. Nothing is sharp. Nothing is cold.</p>
-      <div style="display:flex; gap:12px; margin-top:32px;">
-        <div style="width:56px;height:56px;border-radius:8px;background:#A8B8C4;"></div>
-        <div style="width:56px;height:56px;border-radius:8px;background:#F0E6CC;"></div>
-        <div style="width:56px;height:56px;border-radius:8px;background:#D4845A;"></div>
-        <div style="width:56px;height:56px;border-radius:8px;background:#C8936E;"></div>
-        <div style="width:56px;height:56px;border-radius:8px;background:#3D1A1A;"></div>
+      <h2 class="section-label">Design Language</h2>
+      <div class="cs-preview-statement">Soft, breathable, warm</div>
+      <p>The visual language draws from Scandinavian interior design and frosted glass materiality — organic shapes, grainy texture, and a palette of muted terracotta, dusty blue, and warm cream. Nothing is sharp. Nothing is cold.</p>
+      <div class="fo-palette" role="img" aria-label="Palette: dusty blue, warm cream, terracotta, clay, deep brown">
+        <div class="fo-swatch" style="--sw: #A8B8C4;"></div>
+        <div class="fo-swatch" style="--sw: #F0E6CC;"></div>
+        <div class="fo-swatch" style="--sw: #D4845A;"></div>
+        <div class="fo-swatch" style="--sw: #C8936E;"></div>
+        <div class="fo-swatch" style="--sw: #3D1A1A;"></div>
       </div>
     </section>
 
-    <!-- ── SECTION 3: WEATHER ── -->
+    <!-- ── WEATHER ── -->
     <section class="cs-section" id="weather">
-      <div class="section-label">Weather</div>
-      <div style="display:grid; grid-template-columns:3fr 5fr; gap:40px; align-items:start; margin-top:24px;">
-        <div>
-          <h2>A sky that shifts with the forecast</h2>
-          <p>The weather app replaces icon-based condition indicators with abstract, painterly backgrounds that shift in color and form — warm terracotta for sun, cool blue-grey for rain. The interface recedes so the atmosphere takes over.</p>
-        </div>
-        <div style="display:flex; gap:16px; justify-content:flex-end;">
-          <video src="images/weather1.mp4" autoplay loop muted playsinline style="flex:1; max-width:203px; aspect-ratio:9/19.5; border-radius:16px; object-fit:cover; display:block;"></video>
-          <video src="images/weather2.mp4" autoplay loop muted playsinline style="flex:1; max-width:203px; aspect-ratio:9/19.5; border-radius:16px; object-fit:cover; display:block;"></video>
-          <video src="images/weather3.mp4" autoplay loop muted playsinline style="flex:1; max-width:203px; aspect-ratio:9/19.5; border-radius:16px; object-fit:cover; display:block;"></video>
-        </div>
+      <h2 class="section-label">Weather</h2>
+      <div class="cs-preview-statement">A sky that shifts with the forecast</div>
+      <p>The weather app replaces icon-based condition indicators with abstract, painterly backgrounds that shift in color and form — warm terracotta for sun, cool blue-grey for rain. The interface recedes so the atmosphere takes over.</p>
+      <div class="cs-phones">
+        <video src="images/weather1.mp4" width="1206" height="2622" autoplay loop muted playsinline preload="metadata"></video>
+        <video src="images/weather2.mp4" width="1206" height="2622" autoplay loop muted playsinline preload="metadata"></video>
+        <video src="images/weather3.mp4" width="1206" height="2622" autoplay loop muted playsinline preload="metadata"></video>
       </div>
     </section>
 
-    <!-- ── SECTION 4: TIMER ── -->
+    <!-- ── TIMER ── -->
     <section class="cs-section" id="timer">
-      <div class="section-label">Timer</div>
-      <div style="display:grid; grid-template-columns:3fr 5fr; gap:40px; align-items:start; margin-top:24px;">
-        <div>
-          <h2>Time made visible</h2>
-          <p>The timer replaces the conventional progress ring with a field of hand-drawn tick marks that fade as time elapses — a quieter, more poetic way to feel time passing. The blurred shape background shifts subtly as the countdown moves.</p>
-        </div>
-        <div style="display:flex; gap:16px; justify-content:flex-end;">
-          <video src="images/timer1.mp4" autoplay loop muted playsinline style="flex:1; max-width:203px; aspect-ratio:9/19.5; border-radius:16px; object-fit:cover; display:block;"></video>
-          <video src="images/timer2.mp4" autoplay loop muted playsinline style="flex:1; max-width:203px; aspect-ratio:9/19.5; border-radius:16px; object-fit:cover; display:block;"></video>
-        </div>
+      <h2 class="section-label">Timer</h2>
+      <div class="cs-preview-statement">Time made visible</div>
+      <p>The timer replaces the conventional progress ring with a field of hand-drawn tick marks that fade as time elapses — a quieter, more poetic way to feel time passing. The blurred shape background shifts subtly as the countdown moves.</p>
+      <div class="cs-phones is-pair">
+        <video src="images/timer1.mp4" width="1206" height="2622" autoplay loop muted playsinline preload="metadata"></video>
+        <video src="images/timer2.mp4" width="1206" height="2622" autoplay loop muted playsinline preload="metadata"></video>
       </div>
     </section>
 
-    <!-- ── SECTION 5: WALLET ── -->
+    <!-- ── WALLET ── -->
     <section class="cs-section" id="wallet">
-      <div class="section-label">Wallet</div>
-      <div style="display:grid; grid-template-columns:3fr 5fr; gap:40px; align-items:start; margin-top:24px;">
-        <div>
-          <h2>Cards that float, not stack</h2>
-          <p>The digital wallet reimagines card management as a soft, layered experience. Cards surface gently, selection is toggled rather than tapped aggressively, and the grainy gradient background gives the interface a tactile, almost physical quality.</p>
-        </div>
-        <div style="display:flex; gap:16px; justify-content:flex-end;">
-          <video src="images/wallet1.mp4" autoplay loop muted playsinline style="flex:1; max-width:203px; aspect-ratio:9/19.5; border-radius:16px; object-fit:cover; display:block;"></video>
-          <video src="images/wallet2.mp4" autoplay loop muted playsinline style="flex:1; max-width:203px; aspect-ratio:9/19.5; border-radius:16px; object-fit:cover; display:block;"></video>
-        </div>
+      <h2 class="section-label">Wallet</h2>
+      <div class="cs-preview-statement">Cards that float, not stack</div>
+      <p>The digital wallet reimagines card management as a soft, layered experience. Cards surface gently, selection is toggled rather than tapped aggressively, and the grainy gradient background gives the interface a tactile, almost physical quality.</p>
+      <div class="cs-phones is-pair">
+        <video src="images/wallet1.mp4" width="1206" height="2622" autoplay loop muted playsinline preload="metadata"></video>
+        <video src="images/wallet2.mp4" width="1206" height="2622" autoplay loop muted playsinline preload="metadata"></video>
       </div>
     </section>
 
-
-    <!-- ── SECTION 7: NEXT STEPS ── -->
+    <!-- ── NEXT STEPS ── -->
     <section class="cs-section" id="next-steps">
-      <div class="section-label">Next Steps</div>
-      <h2>What I'd push further</h2>
-      <p style="max-width: 640px;">Given more time, I'd explore animation more deeply — the shapes should breathe and shift slowly in real time, not just sit still. I'm also curious about a sound layer that matches the visual softness: subtle, ambient, barely-there. And a dark mode that uses shadow depth rather than color inversion to define space.</p>
-
-      <div class="footer-line">
-        <a href="knownow.html" aria-label="Previous project: KnowNow">← KnowNow</a>
-        <a href="index.html">Back to index ↑</a>
-      </div>
+      <h2 class="section-label">Next Steps</h2>
+      <div class="cs-preview-statement">What I'd push further</div>
+      <p>Given more time, I'd explore animation more deeply — the shapes should breathe and shift slowly in real time, not just sit still. I'm also curious about a sound layer that matches the visual softness: subtle, ambient, barely-there. And a dark mode that uses shadow depth rather than color inversion to define space.</p>
     </section>
+
+    <div class="footer-line">
+      <a href="knownow.html" aria-label="Previous project: KnowNow">← KnowNow</a>
+      <a href="index.html">Back to index ↑</a>
+    </div>
 
   </main>
 
