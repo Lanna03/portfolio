@@ -1427,8 +1427,18 @@
   .kn-phone-action { margin-top: 2px; font-family: 'Caveat', cursive; font-size: 24px; line-height: 1.2; color: var(--ink); }
   .kn-phone-text { margin-top: 6px; font-family: var(--sans); font-size: 14px; line-height: 1.6; color: #3f3f3a; }
   .kn-insights { margin-top: 56px; }
-  .kn-insights .cs-data-card { gap: 8px; }
-  .kn-insights .cs-data-desc { margin-top: 0; }
+  .kn-insights .cs-data-card { gap: 0; }
+  .kn-insights .cs-data-desc { margin-top: 8px; }
+  .kn-insights .cs-data-card:nth-child(1) { background: #FCF1E8; --blob: #F3C7A6; }
+  .kn-insights .cs-data-card:nth-child(2) { background: #FBF4DF; --blob: #EED58C; }
+  .kn-insights .cs-data-card:nth-child(3) { background: #EEF5EC; --blob: #B9D8B3; }
+  .kn-insights .cs-data-card:nth-child(4) { background: #EDF2F8; --blob: #B8CCE6; }
+  .kn-ill { display: block; width: 64px; height: 64px; margin-bottom: 16px; }
+  .kn-ill .blob { fill: var(--blob); }
+  .kn-ill .ln { fill: none; stroke: #1e1e1c; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .kn-ill .acc { fill: none; stroke: #E8833A; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .kn-ill .dot { fill: #1e1e1c; }
+  .kn-ill .txt { font-family: var(--sans); font-size: 11px; fill: #1e1e1c; }
   .kn-objects { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 40px 0 0; }
   .kn-object { background: #FAFAF8; border: 1px solid rgba(30,30,28,.09); border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 4px 12px rgba(30,30,28,.04); }
   .kn-object .kn-label { margin-bottom: 8px; }
@@ -1581,10 +1591,10 @@
         <blockquote class="cs-evidence-quote">A system can appear effective while excluding the people who <mark>never make it through its first point of entry.</mark></blockquote>
       </figure>
       <div class="cs-data-cards kn-insights">
-        <div class="cs-data-card"><div class="cs-data-title">People scan, they don’t read.</div><div class="cs-data-desc">Under pressure, long text and detailed explanations get skipped.</div></div>
-        <div class="cs-data-card"><div class="cs-data-title">Understanding matters more than translation.</div><div class="cs-data-desc">A translated alert can still be misread. Maps, icons, and color carry meaning faster than words.</div></div>
-        <div class="cs-data-card"><div class="cs-data-title">“Am I safe?” comes first.</div><div class="cs-data-desc">People need to see where they are relative to the risk before they can decide what to do.</div></div>
-        <div class="cs-data-card"><div class="cs-data-title">Decisions happen in seconds.</div><div class="cs-data-desc">The interface has to support immediate recognition, not exploration.</div></div>
+        <div class="cs-data-card"><svg class="kn-ill" viewBox="0 0 64 64" role="img" aria-label="A page of text where only the start of each line is read, with an arrow skimming down the side"><ellipse class="blob" cx="36" cy="34" rx="26" ry="22"/><rect class="ln" x="20" y="10" width="32" height="44" rx="4"/><path class="ln" d="M26 19h6M26 27h6M26 35h6M26 43h6"/><path class="ln" d="M35 19h11M35 27h8M35 35h11M35 43h6" stroke-opacity=".3" stroke-dasharray="2 3"/><path class="acc" d="M12 14v34"/><path class="acc" d="M8 43l4 6 4-6"/></svg><div class="cs-data-title">People scan, they don’t read.</div><div class="cs-data-desc">Under pressure, long text and detailed explanations get skipped.</div></div>
+        <div class="cs-data-card"><svg class="kn-ill" viewBox="0 0 64 64" role="img" aria-label="A translated speech bubble pointing to a map pin"><ellipse class="blob" cx="32" cy="34" rx="27" ry="22"/><path class="ln" d="M8 16h24a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H18l-6 5v-5h-4a4 4 0 0 1-4-4V20a4 4 0 0 1 4-4z"/><text class="txt" x="11" y="29">A/文</text><path class="acc" d="M38 30c4-1 7 0 9 3"/><path class="acc" d="M45 30l2.3 3.3-3.9.9"/><path class="ln" d="M50 54s9-9 9-15a9 9 0 0 0-18 0c0 6 9 15 9 15z"/><circle class="dot" cx="50" cy="39" r="2.8"/></svg><div class="cs-data-title">Understanding matters more than translation.</div><div class="cs-data-desc">A translated alert can still be misread. Maps, icons, and color carry meaning faster than words.</div></div>
+        <div class="cs-data-card"><svg class="kn-ill" viewBox="0 0 64 64" role="img" aria-label="A face with a question mark"><ellipse class="blob" cx="30" cy="36" rx="25" ry="23"/><circle class="ln" cx="26" cy="38" r="15"/><circle class="dot" cx="21" cy="36" r="1.8"/><circle class="dot" cx="31" cy="36" r="1.8"/><path class="ln" d="M22 45c2.5-1.5 5.5-1.5 8 0"/><path class="acc" d="M44 10c0-4 3-6 6-6s6 2 6 5.5c0 4-5 4.5-5 9"/><circle cx="51" cy="23.5" r="1.9" fill="#E8833A"/></svg><div class="cs-data-title">“Am I safe?” comes first.</div><div class="cs-data-desc">People need to see where they are relative to the risk before they can decide what to do.</div></div>
+        <div class="cs-data-card"><svg class="kn-ill" viewBox="0 0 64 64" role="img" aria-label="A stopwatch"><ellipse class="blob" cx="33" cy="36" rx="25" ry="22"/><circle class="ln" cx="30" cy="38" r="17"/><path class="ln" d="M26 14h8M30 14v7M44 22l3-3"/><path class="acc" d="M30 38V27"/><path class="acc" d="M30 38l7 4"/><circle class="dot" cx="30" cy="38" r="2"/><path class="acc" d="M52 30h7M53 37h6M52 44h7"/></svg><div class="cs-data-title">Decisions happen in seconds.</div><div class="cs-data-desc">The interface has to support immediate recognition, not exploration.</div></div>
       </div>
     </section>
 
