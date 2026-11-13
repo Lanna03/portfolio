@@ -140,7 +140,7 @@
   /* ── MAIN CONTENT ── */
   main {
     grid-column: 3 / span 8;
-    padding: 40px 0 40px 0;
+    padding: 40px 0 80px 0;
     opacity: 0;
     animation: fadeIn 0.7s ease 0.15s forwards;
   }
@@ -243,7 +243,7 @@
   }
 
   /* ── WORK HEAD ── */
-  .work { margin-top: 20px; margin-bottom: 200px; }
+  .work { margin-top: 20px; margin-bottom: 0; }
 
   /* ── WORK CARDS ── */
   .work-list {
@@ -521,6 +521,97 @@
     .desk-item:nth-child(even) { align-self: flex-end; }
   }
 
+  /* ── ABOUT ──
+     Opening line, then bio (cols 3–6) beside a taped photo with a paper tag tied to it (cols 7–10).
+     Photo and tag sit side by side, the tag lower and overlapping, so both stay above the fold.
+     Positions are % of a 530 × 380 desk so the pair scales with the column. */
+  .view[data-view="about"] > .m-grid > .m-content { grid-column: 1 / -1; }
+  .view[data-view="about"] > .m-grid > .m-aside { display: none; }
+  .about-lede {
+    margin: 0 0 56px;
+    max-width: 806px;
+    font-size: 22px;
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+  }
+  .about-grid {
+    display: grid;
+    /* bio held at 610px so the lines break the same way on a 16" MacBook window; the photo side takes the rest */
+    grid-template-columns: minmax(0, 610px) minmax(420px, 1fr);
+    column-gap: var(--gap);
+    align-items: start;
+  }
+  .about-bio { display: flex; flex-direction: column; gap: 24px; font-size: 16px; line-height: 1.8; }
+  .about-bio p { margin: 0; }
+
+  .about-desk { position: relative; width: 100%; max-width: 530px; justify-self: center; aspect-ratio: 530 / 350; margin-bottom: 24px; container-type: inline-size; }
+  .about-photo {
+    position: absolute; z-index: 2;
+    left: 10%; top: 1.5%; width: 42%;
+    margin: 0;
+    transform: rotate(-2deg); transform-origin: center top;
+  }
+  .about-photo img {
+    display: block; width: 100%; height: auto; aspect-ratio: 4 / 5;
+    object-fit: cover; object-position: 50% 45%;
+    box-shadow: 0 1px 2px rgba(30,30,28,.10), 0 12px 28px rgba(30,30,28,.14);
+  }
+  .about-photo .desk-tape {
+    position: absolute; left: 35%; top: -9px; width: 30%; height: 20px;
+    background: rgba(240,230,204,.85); transform: rotate(3deg);
+  }
+  /* the tag keeps its original proportions (300 × ~245) at 3/4 size on a 530 column; --u is one design px, scaled to the column */
+  .about-tag {
+    --u: calc(100cqw / 530 * .75);
+    position: absolute; z-index: 1;
+    right: 0; top: 42%; width: calc(300 * var(--u));
+    transform: rotate(3deg);
+    will-change: transform;   /* render the turned text as one layer so the baseline stays straight */
+    backface-visibility: hidden;
+  }
+  /* string threads through the hole and tucks behind the photo */
+  .about-tag-string {
+    position: absolute; z-index: 1; overflow: visible;
+    left: calc(50% - 260 * var(--u)); top: calc(21 * var(--u) - 80 * var(--u));
+    width: calc(260 * var(--u)); height: calc(80 * var(--u));
+  }
+  .about-tag-card {
+    position: relative; margin: 0; box-sizing: border-box;
+    padding: calc(40 * var(--u)) calc(32 * var(--u)) calc(32 * var(--u));
+    display: flex; flex-direction: column; gap: calc(22 * var(--u));
+    background: radial-gradient(#FFFAD0E6, #FFE1E1);
+    clip-path: polygon(14% 0, 86% 0, 100% 12%, 100% 100%, 0 100%, 0 12%);
+  }
+  .about-tag-hole {
+    position: absolute; left: 50%; top: calc(14 * var(--u));
+    width: calc(14 * var(--u)); height: calc(14 * var(--u)); margin-left: calc(-7 * var(--u));
+    border-radius: 50%; background: var(--bg); box-shadow: inset 0 0 0 calc(3 * var(--u)) #F2C9CB;
+  }
+  .about-tag-card > div:first-of-type { margin-top: calc(12 * var(--u)); }
+  .about-tag-card > div + div { border-top: 1px dashed rgba(154,90,96,.35); padding-top: calc(18 * var(--u)); }
+  .about-tag-card dt {
+    margin-bottom: calc(6 * var(--u));
+    font-family: var(--mono); font-size: max(9px, calc(11 * var(--u))); letter-spacing: .08em; text-transform: uppercase; color: #9A5A60;
+  }
+  .about-tag-card dd { margin: 0; font-size: calc(15 * var(--u)); line-height: 1.6; color: var(--ink); }
+
+  /* tablet: bio first, photo + tag below */
+  @media (max-width: 1100px) {
+    .about-grid { grid-template-columns: minmax(0, 1fr); row-gap: 64px; }
+    .about-desk { justify-self: start; }
+  }
+  /* phones */
+  @media (max-width: 680px) {
+    .about-lede { font-size: 20px; margin-bottom: 40px; }
+    .about-grid { row-gap: 56px; }
+    .about-desk { aspect-ratio: 343 / 440; margin-bottom: 24px; }
+    .about-lede-br { display: none; }
+    .about-photo { left: 0; top: 2%; width: 62%; }
+    .about-tag { --u: calc(100cqw / 460); top: 62%; }
+    .view[data-view="play"] > .m-grid > .m-content,
+    .view[data-view="about"] > .m-grid > .m-content { padding-top: 32px; }
+  }
+
   /* ── LIGHTBOX ── */
   .lightbox {
     position: fixed;
@@ -649,7 +740,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 900px;
+    height: min(900px, 100%);
     background-image: radial-gradient(circle, rgba(30,30,28,.20) 1px, transparent 1.2px);
     background-size: 24px 24px;
     mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.6) 45%, transparent 100%);
@@ -752,24 +843,6 @@
     transform: rotate(-6deg);
     filter: drop-shadow(0 2px 6px rgba(0,0,0,.07));
     display: block;
-  }
-
-  /* ── FOOTER ── */
-  .footer-line {
-    margin-top: 40px;
-    padding-top: var(--sp-3);
-    border-top: 0.5px solid var(--rule);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-line span {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.04em;
   }
 
   ::-webkit-scrollbar { width: 2px; }
@@ -926,6 +999,7 @@
     </div>
     <div class="nav-bottom">
       <div class="nav-bottom-label">Contact</div>
+      <a href="mailto:lannaaa03@gmail.com">Email ↗</a>
       <a href="https://www.linkedin.com/in/lanna-hu-549358304/" target="_blank">LinkedIn</a>
       <a href="https://drive.google.com/file/d/1F630ZVa24H38iNu2AWhgIFsz4CfO6Vna/view?usp=sharing" target="_blank">Resume ↗</a>
     </div>
@@ -1119,21 +1193,40 @@
       <section class="view" id="view-about" data-view="about" hidden inert>
         <div class="m-grid">
           <div class="m-content">
-            <div class="annotation-strip">
-              <div class="annotation-item">
-                <div class="annotation-label">Currently reading</div>
-                <div class="annotation-text"><em>"The Design of Everyday Things"</em></div>
+            <p class="about-lede">If we walked down the same street, what would you<br class="about-lede-br"> point out to me?</p>
+
+            <div class="about-grid">
+              <div class="about-bio">
+                <p>Hi, I’m Lanna, an interaction designer based in Los Angeles. If I took you around Guangzhou, where I grew up, I wonder how far we’d get before one of us stopped to point something out. I might have a whole story about a corner you’d just walked past. You might ask me about a sign I’d seen a thousand times and never really read.</p>
+                <p>I like that about walking with someone. We can stand in exactly the same spot and each have something to show the other. It makes me curious about the things I’ve stopped questioning simply because I know my way around.</p>
+                <p>That curiosity follows me into design. When something feels obvious to me, I try to remember what I had to learn for it to feel that way. Sometimes the most interesting moment is when someone pauses somewhere I would have sailed right through. I want to hear what they expected to happen there.</p>
               </div>
-              <div class="annotation-item">
-                <div class="annotation-label">Based in</div>
-                <div class="annotation-text">Los Angeles</div>
-              </div>
-              <div class="annotation-item">
-                <div class="annotation-label">Education</div>
-                <div class="annotation-text">ArtCenter College of Design, IxD '27</div>
+
+              <div class="about-desk">
+                <figure class="about-photo">
+                  <picture>
+                    <source type="image/webp" srcset="images/about-lanna-800.webp 800w, images/about-lanna-1200.webp 1200w" sizes="(max-width: 680px) 70vw, 320px">
+                    <img src="images/about-lanna.jpg" width="900" height="1200" alt="Lanna laughing among orange poppies on a sunny day" loading="lazy" decoding="async">
+                  </picture>
+                  <span class="desk-tape" aria-hidden="true"></span>
+                </figure>
+
+                <div class="about-tag">
+                  <svg class="about-tag-string" aria-hidden="true" viewBox="-260 -80 260 80" preserveAspectRatio="none"><path d="M0 0 C -10 -40, -100 -82, -260 -70" fill="none" stroke="#E2A3A6" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+                  <dl class="about-tag-card">
+                    <span class="about-tag-hole" aria-hidden="true"></span>
+                    <div>
+                      <dt>Education</dt>
+                      <dd>Interaction Design B.S.<br>ArtCenter College of Design ’27</dd>
+                    </div>
+                    <div>
+                      <dt>Languages</dt>
+                      <dd>English, Mandarin</dd>
+                    </div>
+                  </dl>
+                </div>
               </div>
             </div>
-            <div data-slot="about-body"><!-- ABOUT: bio, photo and details go here --></div>
           </div>
           <div class="m-aside" data-slot="about-aside"></div>
         </div>
@@ -1146,10 +1239,6 @@
       <p id="lightbox-caption"></p>
     </div>
 
-    <div class="footer-line">
-      <span>Lanna Hu — Interaction Design</span>
-      <span id="clock"></span>
-    </div>
 
   </main>
 
@@ -1169,17 +1258,6 @@
 </div>
 
 <script>
-  // ── CLOCK (LA time) ────────────────────────────────────────────────────────
-  const clockFmt = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/Los_Angeles',
-    hour: '2-digit', minute: '2-digit', hour12: false
-  });
-  function updateClock() {
-    document.getElementById('clock').textContent = clockFmt.format(new Date()) + ' PT';
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
-
   // ── DESK DATE ──────────────────────────────────────────────────────────────
   (function() {
     const dd = document.getElementById('desk-date');
