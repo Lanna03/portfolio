@@ -1314,6 +1314,149 @@
     .cs-title { font-size: 22px; }
   }
 
+  /* ── FINAL SERVICE: IMAGE ON TOP + STEP LINE + TEXT ROW (pinned) ── */
+  .fs-scroll {
+    --fs-col-start: 4;
+    --fs-col-end: 7;
+    --fs-main-start: 3;
+    --fs-main-end: 8;
+    --fs-p: calc(min(100cqw, 1728px) - 2 * var(--gutter));          /* page content width */
+    --fs-col: calc((var(--fs-p) - 9 * var(--gap)) / 10);            /* one page column */
+    height: calc(var(--fs-pin-h, 100vh) + 5 * 70vh); margin-top: 96px;
+  }
+  .fs-pin { position: sticky; top: max(24px, calc((100vh - var(--fs-pin-h, 0px)) / 2)); padding-top: 0; }
+  .fs-viewer {
+    min-width: 0;
+    margin-left: calc((var(--fs-col-start) - 3) * (var(--fs-col) + var(--gap)));      /* main starts at column 3 */
+    width: calc((var(--fs-col-end) - var(--fs-col-start) + 1) * var(--fs-col) + (var(--fs-col-end) - var(--fs-col-start)) * var(--gap));
+  }
+  .fs-frame {
+    position: relative; z-index: 1; width: 100%; aspect-ratio: 1600 / 1112; box-sizing: border-box; overflow: hidden;
+    background: #F3F2EC; border: 1px solid rgba(30,30,28,.08); border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 6px 20px rgba(30,30,28,.05);
+  }
+  .fs-shot { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s ease; }
+  .fs-shot.is-active { opacity: 1; }
+  .fs-shot picture { display: block; width: 100%; height: 100%; }
+  .fs-shot img, .fs-shot video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .fs-tag { position: absolute; left: 12px; bottom: 12px; z-index: 2; font-family: var(--mono); font-size: 11px; letter-spacing: .04em; line-height: 1; color: #1e1e1c; background: rgba(255,255,253,.45); -webkit-backdrop-filter: blur(8px) saturate(1.1); backdrop-filter: blur(8px) saturate(1.1); padding: 6px 8px; border-radius: 6px; pointer-events: none; }
+  .fs-ph {
+    box-sizing: border-box; width: 220px; height: 153px; border: 1.5px dashed rgba(30,30,28,.3); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; padding: 12px; text-align: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74;
+  }
+  .fs-line {
+    position: relative; margin-top: 48px;
+    margin-left: calc(-1 * (var(--fs-col-start) - var(--fs-main-start)) * (var(--fs-col) + var(--gap)));
+    margin-right: calc(-1 * (var(--fs-main-end) - var(--fs-col-end)) * (var(--fs-col) + var(--gap)));
+  }
+  .fs-svg { display: block; overflow: visible; }
+  .fs-num { font-family: var(--mono); font-weight: 400; fill: #1e1e1c; }
+  .fs-lab { font-family: 'Caveat', cursive; font-weight: 400; }
+  .fs-hit { position: absolute; transform: translateX(-50%); width: 72px; min-width: 44px; min-height: 44px; height: 48px; padding: 0; margin: 0; border: 0; background: transparent; cursor: pointer; border-radius: 8px; }
+  .fs-hit.is-first { transform: none; }
+  .fs-hit.is-last { transform: translateX(-100%); }
+  .fs-hit:focus-visible { outline: 2px solid #E8833A; outline-offset: 2px; }
+  .fs-texts {
+    display: grid; margin-top: 20px; align-items: start;
+    margin-left: calc(-1 * (var(--fs-col-start) - var(--fs-main-start)) * (var(--fs-col) + var(--gap)));
+    margin-right: calc(-1 * (var(--fs-main-end) - var(--fs-col-end)) * (var(--fs-col) + var(--gap)));
+  }
+  .fs-tp { grid-area: 1 / 1; align-self: start; display: grid; grid-template-columns: 1fr 1fr; column-gap: 56px; align-items: start; opacity: 0; visibility: hidden; transform: translateX(24px); transition: opacity .35s ease, transform .35s ease, visibility 0s linear .35s; }
+  .fs-tp.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity .35s ease, transform .35s ease; }
+  .fs-viewer .fs-tlabel { font-family: var(--mono); font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74; margin: 0; }
+  .fs-viewer .fs-copy { font-family: var(--sans); font-size: 15px; font-weight: 400; line-height: 1.75; letter-spacing: 0; color: #3f3f3a; margin: 10px 0 0; }
+  .fs-right { align-self: start; padding-left: 28px; border-left: 1px dashed rgba(30,30,28,.28); }
+  .fs-right.is-empty { border-left: 0; padding-left: 0; }
+  .fs-viewer .fs-decision { font-family: var(--sans); font-size: 14px; font-weight: 400; line-height: 1.65; letter-spacing: 0; color: #3f3f3a; margin: 10px 0 0; }
+  .fs-viewer .fs-decision + .fs-decision { margin-top: 16px; }
+  @media (prefers-reduced-motion: reduce) { .fs-shot, .fs-tp, .fs-tp.is-active { transition: none; } }
+  @media (max-width: 1099px), (max-height: 699px) {
+    .fs-scroll { height: auto; margin-top: 56px; }
+    .fs-viewer { width: 100%; margin-left: 0; }
+    .fs-texts, .fs-line { margin-left: 0; margin-right: 0; }
+    .fs-pin { position: static; height: auto; padding: 0; display: block; }
+    .fs-frame, .fs-line, .fs-texts { display: none; }
+    .fs-mstep { margin-bottom: 80px; display: flex; flex-direction: column; }
+    .fs-mstep:last-child { margin-bottom: 0; }
+    .fs-mstep .fs-ph { width: 220px; height: 165px; }
+    .fs-mstep > .fs-shot { position: relative; inset: auto; opacity: 1; width: 100%; height: auto; box-sizing: border-box; overflow: hidden; background: #F3F2EC; border: 1px solid rgba(30,30,28,.08); border-radius: 12px; box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 6px 20px rgba(30,30,28,.05); order: 3; margin-top: 24px; }
+    .fs-mstep > .fs-shot picture, .fs-mstep > .fs-shot img, .fs-mstep > .fs-shot video { height: 100%; }
+    .fs-mhead { display: flex; align-items: center; gap: 12px; margin: 0; order: 1; }
+    .fs-mnode { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #E8833A; color: #1e1e1c; font-family: var(--mono); font-size: 12px; line-height: 28px; text-align: center; }
+    .fs-mlabel { font-family: 'Caveat', cursive; font-size: 26px; line-height: 1; color: #1e1e1c; }
+    .fs-mstep .fs-tp, .fs-mstep .fs-tp.is-active { display: contents; opacity: 1; visibility: visible; transform: none; transition: none; }
+    .fs-mstep .fs-left { order: 2; margin-top: 16px; }
+    .fs-mstep .fs-right, .fs-mstep .fs-right.is-empty { display: block; order: 4; margin-top: 24px; padding: 24px 0 0; border-left: 0; border-top: 1px dashed rgba(30,30,28,.28); }
+    .fs-mstep .fs-right.is-empty { display: none; }
+  }
+
+
+  /* ── MARGIN NOTES (handwritten, reusable) ── */
+  #context { position: relative; }
+  .cs-note {
+    --fs-note-col: calc((min(100cqw, 1728px) - 2 * var(--gutter) - 9 * var(--gap)) / 10);
+    position: absolute; top: 0;
+    left: calc(100% + var(--gap));
+    width: calc(2 * var(--fs-note-col) + var(--gap)); max-width: calc(2 * var(--fs-note-col) + var(--gap));
+    display: flex; align-items: flex-start; gap: 6px;
+    font-family: 'Caveat', cursive; font-size: 21px; font-weight: 400; line-height: 1.25; color: #5b5b55;
+    transform: rotate(-1.5deg); transform-origin: left top; box-sizing: border-box; margin: 0;
+  }
+  .cs-note-arrow { flex: none; width: 36px; height: 20px; margin-top: 3px; }
+  .cs-note-text { min-width: 0; overflow-wrap: break-word; }
+  @media (max-width: 1100px) {
+    .cs-section p:has(+ .cs-note) { margin-bottom: 0; }
+    #context > p:has(+ .cs-note) { margin-bottom: 0; }
+    .cs-note { position: static; width: auto; max-width: none; transform: none; margin: 8px 0 40px; font-size: 20px; }
+    .cs-note-arrow { transform: rotate(90deg); }
+    .cs-note:not(.cs-note--keep) { display: none; }
+  }
+  @media print { .cs-note { display: none !important; } }
+
+  /* ── KNOWNOW: phone rows, state strip, objects, iteration ── */
+  .kn-glance { margin-top: 96px; }
+  .kn-glance .cs-preview-statement { margin-bottom: 0; }
+  .kn-phones { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 16px; margin-top: 32px; align-items: start; }
+  .kn-phone img { display: block; width: 100%; height: auto; }
+  .kn-phone figcaption { margin-top: 4px; padding: 0 8%; }
+  .kn-phone-name { font-family: var(--mono); font-size: 12px; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74; }
+  .kn-phone-name::before { content: ''; display: block; width: 32px; height: 4px; border-radius: 2px; margin-bottom: 12px; background: var(--c, #d6d5ce); }
+  .kn-phone:not([style]) .kn-phone-name::before { display: none; }
+  .kn-phone-action { margin-top: 2px; font-family: 'Caveat', cursive; font-size: 24px; line-height: 1.2; color: var(--ink); }
+  .kn-phone-text { margin-top: 6px; font-family: var(--sans); font-size: 14px; line-height: 1.6; color: #3f3f3a; }
+  .kn-insights { margin-top: 56px; }
+  .kn-insights .cs-data-card { gap: 8px; }
+  .kn-insights .cs-data-desc { margin-top: 0; }
+  .kn-objects { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 40px 0 0; }
+  .kn-object { background: #FAFAF8; border: 1px solid rgba(30,30,28,.09); border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 4px 12px rgba(30,30,28,.04); }
+  .kn-object .kn-label { margin-bottom: 8px; }
+  .kn-object-q { font-family: 'Caveat', cursive; font-size: 24px; line-height: 1.15; color: var(--ink); }
+  .kn-flow { margin-top: 40px; }
+  .kn-flow img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(30,30,28,.08); }
+  #structure { position: relative; }
+  .kn-iter { --n: 2; max-width: 75%; margin-inline: auto; }
+  .kn-revisions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 48px; }
+  .kn-rev { padding-top: 16px; border-top: 1px dashed rgba(30,30,28,.28); }
+  .cs-section .kn-rev p { font-size: 15px; line-height: 1.7; color: #3f3f3a; margin: 8px 0 0; }
+  .kn-rev .cs-decision-title { font-size: 16px; margin: 0; }
+  .kn-supporting { margin-top: 96px; }
+  @media (max-width: 960px) {
+    .fs-mstep { margin-bottom: 64px; }
+    .fs-mstep:last-child { margin-bottom: 0; }
+    .kn-glance { margin-top: 64px; }
+    .kn-objects { grid-template-columns: 1fr 1fr; }
+    .kn-revisions { grid-template-columns: 1fr; gap: 24px; }
+    .kn-iter { max-width: none; }
+    .kn-supporting { margin-top: 64px; }
+  }
+  @media (max-width: 560px) {
+    .kn-phones { grid-template-columns: 1fr 1fr; gap: 24px 12px; }
+    .kn-phones.kn-supporting-row { grid-template-columns: 1fr 1fr; }
+    .kn-phone figcaption { padding: 0 4%; }
+    .kn-phone:not([style]) .kn-phone-name::before { display: none; }
+  .kn-phone-action { font-size: 21px; }
+  }
   /* ── KNOWNOW ADDITIONS ── */
   #context > p:last-child { margin-bottom: 0; }
   .cs-hero-image.kn-hero { aspect-ratio: 2400 / 1905; margin: 40px 0 0; border-radius: 8px; }
@@ -1333,31 +1476,9 @@
   .kn-beats { display: grid; gap: 80px; margin-top: 64px; }
   .cs-section .kn-beat .cs-decision-title { margin-bottom: 8px; }
   .cs-section .kn-beat p { margin-bottom: 0; }
-  .kn-frame {
-    display: flex; align-items: center; justify-content: center;
-    box-sizing: border-box; width: 100%; aspect-ratio: 1600 / 1112; margin-top: 32px; overflow: hidden;
-    background: #F3F2EC; border: 1px solid rgba(30,30,28,.08); border-radius: 12px;
-    box-shadow: 0 1px 2px rgba(30,30,28,.04), 0 6px 20px rgba(30,30,28,.05);
-  }
-  .kn-ph {
-    box-sizing: border-box; width: min(72%, 320px); padding: 24px 16px; text-align: center;
-    border: 1.5px dashed rgba(30,30,28,.3); border-radius: 12px;
-    font-family: var(--mono); font-size: 12px; font-weight: 400; line-height: 1.4;
-    letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74;
-  }
-  .kn-states { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
-  .kn-state .kn-frame { aspect-ratio: 390 / 844; margin-top: 0; }
-  .kn-state-name { margin-top: 16px; font-family: var(--mono); font-size: 12px; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7A74; }
-  .kn-state-action { margin-top: 4px; font-family: 'Caveat', cursive; font-size: 24px; line-height: 1.2; color: var(--ink); }
   @media (max-width: 960px) {
     .kn-beats { gap: 64px; margin-top: 48px; }
     .cs-section .kn-beat p { line-height: 1.7; }
-  }
-  @media (max-width: 560px) {
-    .kn-states { gap: 12px; }
-    .kn-state-name { font-size: 11px; letter-spacing: 0.04em; }
-    .kn-state-action { font-size: 20px; }
-    .kn-state .kn-ph { width: 84%; padding: 12px 4px; font-size: 11px; letter-spacing: 0.02em; }
   }
 </style>
 </head>
@@ -1375,6 +1496,8 @@
         <a href="#context">Context</a>
         <a href="#research">Research</a>
         <a href="#reframing">Reframing</a>
+        <a href="#structure">Structure</a>
+        <a href="#iteration">Iteration</a>
         <a href="#final-design">Final Design</a>
         <a href="#reflection">Reflection</a>
       </div>
@@ -1396,24 +1519,34 @@
       <div class="cs-head-cards">
         <div class="cs-head-grid">
           <div class="cs-head-left">
-            <div class="cs-head-card" role="group" aria-label="Overview and role">
+            <div class="cs-head-card" role="group" aria-label="Overview and contribution">
               <div class="cs-head-bar" aria-hidden="true"></div>
               <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>overview</div>
               <p class="cs-head-text has-gap">A multilingual, map-based emergency response app that helps people understand how a nearby threat affects them, find a safe destination, and take the next step quickly.</p>
-              <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>my role</div>
-              <p class="cs-head-text">Primary Research, Product Strategy, Information Architecture, Interaction Design, Prototyping</p>
+              <div class="cs-head-label"><span class="cs-head-dot" aria-hidden="true"></span>my contribution</div>
+              <p class="cs-head-text">KnowNow began as a 14-week team project that ended as a low-fi prototype. I then independently redesigned it, reframing the problem and rebuilding the product strategy, information architecture, interactions, and prototype.</p>
             </div>
           </div>
           <div class="cs-head-right">
             <div class="cs-head-card" role="group" aria-label="Project info">
               <div class="cs-head-bar" aria-hidden="true"></div>
               <dl class="cs-head-info">
+                <div class="cs-head-group"><dt>Role</dt><dd>Primary Research<br>Product Strategy<br>Information Architecture<br>Interaction Design<br>Prototyping</dd></div>
                 <div class="cs-head-group"><dt>Duration</dt><dd>14 weeks + independent redesign</dd></div>
-                <div class="cs-head-group"><dt>Team</dt><dd>Silvia<br>Schteffen</dd></div>
                 <div class="cs-head-group"><dt>Course</dt><dd>Interaction Design 3</dd></div>
               </dl>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="kn-glance" role="group" aria-label="At a glance">
+        <div class="kn-label"><span class="cs-head-dot" aria-hidden="true"></span>At a glance</div>
+        <div class="cs-preview-statement">The interface changes as the risk changes, from monitoring to evacuation.</div>
+        <div class="kn-phones" style="--n: 4;">
+        <figure class="kn-phone" style="--c: #34C759;"><picture><source srcset="images/kn-state-safe.webp" type="image/webp"><img src="images/kn-state-safe.png" alt="KnowNow home screen in the safe state: a map around the user with the message “You are safe, no active hazards nearby.”" width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">All clear</div><div class="kn-phone-action">Monitor</div></figcaption></figure>
+        <figure class="kn-phone" style="--c: #F6A523;"><picture><source srcset="images/kn-state-alert.webp" type="image/webp"><img src="images/kn-state-alert.png" alt="KnowNow home screen in the stay alert state: an orange hazard zone at the map edge, “You are safe,” and a button to see safe areas." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Stay alert</div><div class="kn-phone-action">Prepare</div></figcaption></figure>
+        <figure class="kn-phone" style="--c: #FF3B30;"><picture><source srcset="images/kn-state-danger.webp" type="image/webp"><img src="images/kn-state-danger.png" alt="KnowNow home screen in the danger nearby state: a red hazard zone close to the user, a route line, and a “Start route to shelter” button." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Danger nearby</div><div class="kn-phone-action">Move to safety</div></figcaption></figure>
+        <figure class="kn-phone" style="--c: #8E1F1A;"><picture><source srcset="images/kn-state-evacuate.webp" type="image/webp"><img src="images/kn-state-evacuate.png" alt="KnowNow home screen in the evacuate state: the user inside a dark red hazard zone and a full-width red “Evacuate now” panel." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Evacuate</div><div class="kn-phone-action">Leave now</div></figcaption></figure>
         </div>
       </div>
     </div>
@@ -1442,6 +1575,12 @@
         <div class="kn-label"><span class="cs-head-dot" aria-hidden="true"></span>Key insight</div>
         <blockquote class="cs-evidence-quote">A system can appear effective while excluding the people who <mark>never make it through its first point of entry.</mark></blockquote>
       </figure>
+      <div class="cs-data-cards kn-insights">
+        <div class="cs-data-card"><div class="cs-data-title">People scan, they don’t read.</div><div class="cs-data-desc">Under pressure, long text and detailed explanations get skipped.</div></div>
+        <div class="cs-data-card"><div class="cs-data-title">Understanding matters more than translation.</div><div class="cs-data-desc">A translated alert can still be misread. Maps, icons, and color carry meaning faster than words.</div></div>
+        <div class="cs-data-card"><div class="cs-data-title">“Am I safe?” comes first.</div><div class="cs-data-desc">People need to see where they are relative to the risk before they can decide what to do.</div></div>
+        <div class="cs-data-card"><div class="cs-data-title">Decisions happen in seconds.</div><div class="cs-data-desc">The interface has to support immediate recognition, not exploration.</div></div>
+      </div>
     </section>
 
     <!-- ── REFRAMING THE PROBLEM ── -->
@@ -1466,46 +1605,94 @@
       </figure>
     </section>
 
+    <!-- ── STRUCTURE ── -->
+    <section class="cs-section" id="structure">
+      <h2 class="section-label">Structure</h2>
+      <div class="cs-preview-statement">From parallel features to one sequence</div>
+      <p>The team concept offered five parallel tools: news, training, alerts, shelters, and a packing list. In the redesign, I rebuilt the system around a smaller set of <span class="cs-anchor" id="note-entry">core objects, each answering one question</span> a person asks during an emergency.</p>
+      <aside class="cs-note cs-note--keep" role="note" data-anchor="note-entry"><svg class="cs-note-arrow" width="36" height="20" viewBox="0 0 36 20" aria-hidden="true" focusable="false"><path d="M34 11 C 25 3 13 3 3 10 M3 10 L10 6 M3 10 L11 13" fill="none" stroke="rgba(30,30,28,.55)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cs-note-text">Two ways in: opening the app means exploring, a notification means urgency.</span></aside>
+      <div class="kn-objects">
+        <div class="kn-object"><div class="kn-label">Alert</div><div class="kn-object-q">Am I in danger?</div></div>
+        <div class="kn-object"><div class="kn-label">Map</div><div class="kn-object-q">Where am I?</div></div>
+        <div class="kn-object"><div class="kn-label">Shelter</div><div class="kn-object-q">Where should I go?</div></div>
+        <div class="kn-object"><div class="kn-label">Route</div><div class="kn-object-q">How do I get there?</div></div>
+      </div>
+      <p style="margin-top: 40px;">Each object exists to move people toward their next step. The system is no longer about what users can do, but about what they should do next.</p>
+      <div class="kn-flow"><picture><source srcset="images/kn-flow.webp" type="image/webp"><img src="images/kn-flow.png" alt="Refined user flow: the user receives an alert, opens the map, the system checks whether they are in danger, then guides them to choose a shelter, start navigation, and follow the route to safety." width="2400" height="960" loading="lazy" decoding="async"></picture></div>
+      <p class="cs-caption">Refined user flow, from alert to a safe route</p>
+    </section>
+
+    <!-- ── ITERATION ── -->
+    <section class="cs-section" id="iteration">
+      <h2 class="section-label">Iteration</h2>
+      <div class="cs-preview-statement">Testing the first screen</div>
+      <p>A notification is often the first contact with the app, so I tested the landing screen in two rounds of walkthroughs with an AI-simulated persona. These were not sessions with real users, but they showed where the screen failed to explain itself.</p>
+      <div class="kn-phones kn-iter">
+        <figure class="kn-phone"><picture><source srcset="images/kn-iter-before.webp" type="image/webp"><img src="images/kn-iter-before.png" alt="Round 1 landing screen: a map with a large red fire zone and a single button at the bottom." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Round 1</div><div class="kn-phone-text">The red zone signaled danger, but not whether the user was inside it.</div></figcaption></figure>
+        <figure class="kn-phone"><picture><source srcset="images/kn-iter-after.webp" type="image/webp"><img src="images/kn-iter-after.png" alt="Round 2 landing screen: a “Danger nearby” label, the user’s position next to the red zone, a dotted route to a shelter, and a “Move to safety” panel with one primary button." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Round 2</div><div class="kn-phone-text">Status, route, and one primary action on the first screen.</div></figcaption></figure>
+      </div>
+      <figure class="cs-evidence">
+        <blockquote class="cs-evidence-quote">“I don’t know if I am in danger now. <mark>I don’t know if I should leave or stay.</mark>”</blockquote>
+        <div class="cs-evidence-rule">
+          <p class="cs-evidence-src">AI-simulated persona · Round 1 walkthrough</p>
+        </div>
+      </figure>
+      <div class="kn-revisions">
+        <div class="kn-rev"><h3 class="cs-decision-title">Say where the user stands</h3><p>A status line such as “You are near the danger zone” or “You are inside the hazard zone” answers the first question before anything else.</p></div>
+        <div class="kn-rev"><h3 class="cs-decision-title">Lead with one action</h3><p>The bottom panel names the next step and offers a single primary button, instead of a generic “View details.”</p></div>
+        <div class="kn-rev"><h3 class="cs-decision-title">Recommend one shelter</h3><p>The nearest open shelter is highlighted rather than shown as one equal option among many.</p></div>
+      </div>
+    </section>
+
     <!-- ── FINAL DESIGN ── -->
     <section class="cs-section" id="final-design">
       <h2 class="section-label">Final Design</h2>
-      <div class="cs-preview-statement">From universal access to personal action</div>
+      <div class="cs-preview-statement">One path from alert to action</div>
       <p>I redesigned KnowNow as a map-based experience that connects each alert to the user’s location, current emergency state, available destinations, and next action.</p>
 
-      <!-- Dashed .kn-ph frames are placeholders: swap each for the redesign screens -->
-      <div class="kn-beats">
-        <div class="kn-beat">
-          <h3 class="cs-decision-title">A map-centered system</h3>
-          <p>The map brings location, risk areas, and nearby shelters into one decision surface.</p>
-          <div class="kn-frame"><div class="kn-ph">New structure, map home, location relationship</div></div>
-        </div>
-
-        <div class="kn-beat">
-          <h3 class="cs-decision-title">Adapting to changing conditions</h3>
-          <p>As risk changes, the interface adjusts its message hierarchy and primary action, moving from awareness to preparation and evacuation.</p>
-          <div class="kn-states">
-            <div class="kn-state">
-              <div class="kn-frame"><div class="kn-ph">Screen</div></div>
-              <div class="kn-state-name">Outside affected area</div>
-              <div class="kn-state-action">Stay informed</div>
+      <div class="fs-scroll">
+      <div class="fs-pin">
+        <div class="fs-viewer" role="group" aria-roledescription="step viewer" aria-label="Notification flow steps">
+          <div class="fs-frame">
+            <div class="fs-shot is-active" data-step="1"><picture><source srcset="images/kn-step1.webp" type="image/webp"><img src="images/kn-step1.png" alt="KnowNow lock screen with three notifications, the newest reading “Danger! Fire 0.8 mi in NW. Evacuate now.”" width="2400" height="1668" decoding="async"></picture></div>
+            <div class="fs-shot" data-step="2"><picture><source srcset="images/kn-step2.webp" type="image/webp"><img src="images/kn-step2.png" alt="KnowNow danger nearby screen: the user’s position beside a red hazard zone, a dotted route, and a “Move to safety” panel." width="2400" height="1668" loading="lazy" decoding="async"></picture></div>
+            <div class="fs-shot" data-step="3"><picture><source srcset="images/kn-step3.webp" type="image/webp"><img src="images/kn-step3.png" alt="KnowNow safe shelters list sorted by distance, with the nearest shelter highlighted in green and capacity bars for each." width="2400" height="1668" loading="lazy" decoding="async"></picture></div>
+            <div class="fs-shot" data-step="4"><picture><source srcset="images/kn-step4.webp" type="image/webp"><img src="images/kn-step4.png" alt="KnowNow shelter detail for Union Station Adult Center, showing capacity, available services, address, and a blue Navigate button." width="2400" height="1668" loading="lazy" decoding="async"></picture></div>
+            <div class="fs-shot" data-step="5"><picture><source srcset="images/kn-step5.webp" type="image/webp"><img src="images/kn-step5.png" alt="KnowNow profile screen with live location sharing on, emergency contacts, medical and accessibility details, and language settings." width="2400" height="1668" loading="lazy" decoding="async"></picture></div>
+          </div>
+          <div class="fs-line"></div>
+          <div class="fs-texts" aria-live="polite">
+            <div class="fs-tp is-active" data-step="1">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">A lock-screen alert names the hazard, its distance, and the action to take.</div></div>
+              <div class="fs-right"><div class="fs-tlabel">Design decision</div><div class="fs-decision">The alert leads with the action, so someone who only glances at the lock screen still knows what to do.</div></div>
             </div>
-            <div class="kn-state">
-              <div class="kn-frame"><div class="kn-ph">Screen</div></div>
-              <div class="kn-state-name">Risk approaching</div>
-              <div class="kn-state-action">Prepare</div>
+            <div class="fs-tp" data-step="2" aria-hidden="true">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">Tapping the alert opens the map centered on the user, with the hazard zone, their status, and one primary action: start a route to a shelter.</div></div>
+              <div class="fs-right"><div class="fs-tlabel">Design decision</div><div class="fs-decision">Status comes before detail. The screen answers “Am I safe?” before offering anything else.</div></div>
             </div>
-            <div class="kn-state">
-              <div class="kn-frame"><div class="kn-ph">Screen</div></div>
-              <div class="kn-state-name">Inside evacuation zone</div>
-              <div class="kn-state-action">Find shelter</div>
+            <div class="fs-tp" data-step="3" aria-hidden="true">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">Shelters are listed by distance, with capacity and services such as pets, ADA access, food, and medical care.</div></div>
+              <div class="fs-right"><div class="fs-tlabel">Design decision</div><div class="fs-decision">The nearest open shelter is highlighted, so choosing a destination does not become one more decision under stress.</div></div>
+            </div>
+            <div class="fs-tp" data-step="4" aria-hidden="true">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">The shelter detail confirms availability and address, and Navigate opens the route in the user’s default map app.</div></div>
+              <div class="fs-right"><div class="fs-tlabel">Design decision</div><div class="fs-decision">Navigation is handed to a map app people already know, rather than rebuilding turn-by-turn directions.</div></div>
+            </div>
+            <div class="fs-tp" data-step="5" aria-hidden="true">
+              <div class="fs-left"><div class="fs-tlabel">What happens</div><div class="fs-copy">From the profile, users share their live location with emergency contacts and set their language, alert translation, and medical and accessibility needs.</div></div>
+              <div class="fs-right"><div class="fs-tlabel">Design decision</div><div class="fs-decision">Medical and accessibility details are shared with responders only when the user requests help.</div></div>
             </div>
           </div>
         </div>
+      </div>
+      </div>
 
-        <div class="kn-beat">
-          <h3 class="cs-decision-title">From alert to action</h3>
-          <p>One connected flow helps users understand the alert, assess their situation, choose a destination, and begin a safe route.</p>
-          <div class="kn-frame"><div class="kn-ph">Screen flow, notification to navigation</div></div>
+      <div class="kn-supporting">
+        <div class="kn-label"><span class="cs-head-dot" aria-hidden="true"></span>Supporting details</div>
+        <div class="kn-phones kn-supporting-row" style="--n: 3;">
+        <figure class="kn-phone"><picture><source srcset="images/kn-legend.webp" type="image/webp"><img src="images/kn-legend.png" alt="KnowNow map legend sheet listing disaster symbols: wildfire, flood, earthquake, and severe storm." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Map legend</div><div class="kn-phone-text">Every zone, symbol, and shelter state is explained in one place.</div></figcaption></figure>
+        <figure class="kn-phone"><picture><source srcset="images/kn-medical.webp" type="image/webp"><img src="images/kn-medical.png" alt="KnowNow medical and accessibility screen listing conditions, allergies, and needs." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Medical &amp; accessibility</div><div class="kn-phone-text">Stored once, shared only when the user asks for help.</div></figcaption></figure>
+        <figure class="kn-phone"><picture><source srcset="images/kn-dark.webp" type="image/webp"><img src="images/kn-dark.png" alt="KnowNow home screen in dark mode, with an orange hazard zone and a “See safe areas” button." width="720" height="1384" loading="lazy" decoding="async"></picture><figcaption><div class="kn-phone-name">Dark mode</div><div class="kn-phone-text">The same states and colors, readable at night.</div></figcaption></figure>
         </div>
       </div>
     </section>
@@ -1513,7 +1700,7 @@
     <!-- ── REFLECTION ── -->
     <section class="cs-section" id="reflection">
       <h2 class="section-label">Reflection</h2>
-      <p>The redesign transformed KnowNow from a collection of emergency tools into a connected path from alert to action. The next step would be to validate its language, emergency states, and action guidance with multilingual residents and emergency-response professionals.</p>
+      <p>The redesign transformed KnowNow from a collection of emergency tools into a connected path from alert to action. Because the landing screen was refined through AI-simulated walkthroughs rather than sessions with real users, the next step would be to validate its language, emergency states, and action guidance with multilingual residents and emergency-response professionals.</p>
     </section>
 
     <div class="footer-line">
@@ -1563,6 +1750,333 @@
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  // ── FINAL DESIGN (same step viewer as Salud): image on top, JS-built 1:1 step line, text row; scroll drives the step ──
+  (function () {
+    const scrollEl = document.querySelector('.fs-scroll');
+    if (!scrollEl) return;
+    const pin    = scrollEl.querySelector('.fs-pin');
+    const viewer = scrollEl.querySelector('.fs-viewer');
+    const frame  = scrollEl.querySelector('.fs-frame');
+    const shots  = Array.from(scrollEl.querySelectorAll('.fs-shot'));
+    const vids   = shots.map(sh => sh.querySelector('video'));
+    const panels = Array.from(scrollEl.querySelectorAll('.fs-tp'));
+    const lineEl = scrollEl.querySelector('.fs-line');
+    const textsHome = scrollEl.querySelector('.fs-texts');
+    const NAMES = ['Notified', 'Understand', 'Choose', 'Go', 'Stay reachable'];
+    const CY = [28, 20, 36, 20, 28];
+    const NS = 'http://www.w3.org/2000/svg';
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobileMQ = window.matchMedia('(max-width: 1099px), (max-height: 699px)');
+    let current = -1, mlist = null, svg = null, hits = [], groups = [], segs = [], lastW = 0;
+
+    function el(name, attrs, parent) {
+      const e = document.createElementNS(NS, name);
+      Object.keys(attrs).forEach(k => e.setAttribute(k, attrs[k]));
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+
+    // build the step line 1:1 from the real container width (no scaling)
+    function buildLine() {
+      const W = Math.round(lineEl.clientWidth);
+      if (!W || W === lastW) return;
+      lastW = W;
+      lineEl.innerHTML = '';
+      svg = el('svg', { class: 'fs-svg', viewBox: '0 0 ' + W + ' 84', width: W, height: 84, 'aria-hidden': 'true', focusable: 'false' }, lineEl);
+      const CX = [12, W * 0.25, W * 0.5, W * 0.75, W - 12];
+      segs = [];
+      for (let j = 0; j < 4; j++) {
+        const x0 = CX[j], y0 = CY[j], x1 = CX[j + 1], y1 = CY[j + 1], mx = (x0 + x1) / 2;
+        segs.push(el('path', { d: 'M' + x0 + ' ' + y0 + ' C ' + mx + ' ' + y0 + ' ' + mx + ' ' + y1 + ' ' + x1 + ' ' + y1, fill: 'none', 'stroke-linecap': 'round', 'stroke-width': 1.5, stroke: '#1e1e1c' }, svg));
+      }
+      groups = NAMES.map((nm, i) => {
+        const g = el('g', {}, svg);
+        const c = el('circle', { class: 'fs-c', cx: CX[i], cy: CY[i], r: 12, fill: '#FFFFFD', stroke: '#1e1e1c', 'stroke-opacity': .6, 'stroke-width': 1.4 }, g);
+        const n = el('text', { class: 'fs-num', x: CX[i], y: CY[i] + 4, 'text-anchor': 'middle', 'font-size': 11 }, g);
+        n.textContent = i + 1;
+        const lx = i === 0 ? 0 : (i === 4 ? W : CX[i]);
+        const l = el('text', { class: 'fs-lab', x: lx, y: CY[i] + 34, 'text-anchor': i === 0 ? 'start' : (i === 4 ? 'end' : 'middle'), 'font-size': 18, fill: '#7A7A74' }, g);
+        l.textContent = nm;
+        const u = el('path', { class: 'fs-und', fill: 'none', stroke: '#E8833A', 'stroke-width': 2.2, 'stroke-linecap': 'round', style: 'display:none' }, g);
+        return { c, n, l, u };
+      });
+      hits = NAMES.map((nm, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'fs-hit' + (i === 0 ? ' is-first' : (i === 4 ? ' is-last' : ''));
+        b.style.left = (i === 0 ? 0 : (i === 4 ? W : CX[i])) + 'px';
+        b.style.top = (CY[i] - 15) + 'px';
+        b.style.height = (CY[i] + 34 + 8 - (CY[i] - 15)) + 'px';
+        b.setAttribute('aria-label', 'Step ' + (i + 1) + ': ' + nm);
+        b.addEventListener('click', () => goTo(i, false));
+        lineEl.appendChild(b);
+        return b;
+      });
+      if (current >= 0) paintSvg(current);
+    }
+
+    function paintSvg(i) {
+      groups.forEach((o, j) => {
+        const on = j === i;
+        o.c.setAttribute('r', on ? 15 : 12);
+        o.c.setAttribute('fill', on ? '#E8833A' : '#FFFFFD');
+        if (on) o.c.removeAttribute('stroke'); else o.c.setAttribute('stroke', '#1e1e1c');
+        o.n.setAttribute('font-size', on ? 12 : 11);
+        o.l.setAttribute('font-size', on ? 22 : 18);
+        o.l.setAttribute('fill', on ? '#1e1e1c' : '#7A7A74');
+        o.u.style.display = on ? '' : 'none';
+        if (on) {
+          const bb = o.l.getBBox(), cx = bb.x + bb.width / 2, y = Number(o.l.getAttribute('y'));
+          o.u.setAttribute('d', 'M' + (cx - 24) + ' ' + (y + 6) + ' C ' + (cx - 12) + ' ' + (y + 3) + ' ' + (cx + 12) + ' ' + (y + 3) + ' ' + (cx + 24) + ' ' + (y + 5));
+        }
+      });
+      segs.forEach((sg, j) => {
+        if (j < i) { sg.setAttribute('stroke-opacity', .55); sg.removeAttribute('stroke-dasharray'); }
+        else { sg.setAttribute('stroke-opacity', .3); sg.setAttribute('stroke-dasharray', '4 5'); }
+      });
+      hits.forEach((h, j) => { if (j === i) h.setAttribute('aria-current', 'step'); else h.removeAttribute('aria-current'); });
+    }
+
+    function toMobile() {
+      if (mlist) return;
+      mlist = document.createElement('div');
+      mlist.className = 'fs-mlist';
+      shots.forEach((sh, j) => {
+        const ms = document.createElement('div');
+        ms.className = 'fs-mstep';
+        sh.style.aspectRatio = '4 / 3';
+        ms.appendChild(sh);
+        const head = document.createElement('div');
+        head.className = 'fs-mhead';
+        head.innerHTML = '<span class="fs-mnode">' + (j + 1) + '</span><span class="fs-mlabel">' + NAMES[j] + '</span>';
+        ms.appendChild(head);
+        panels[j].removeAttribute('aria-hidden');
+        ms.appendChild(panels[j]);
+        mlist.appendChild(ms);
+      });
+      viewer.appendChild(mlist);
+    }
+    function toDesktop() {
+      if (!mlist) return;
+      shots.forEach(sh => { sh.style.aspectRatio = ''; frame.appendChild(sh); });
+      panels.forEach(pn => textsHome.appendChild(pn));
+      mlist.remove(); mlist = null;
+    }
+
+    function setActive(i) {
+      current = i;
+      paintSvg(i);
+      if (!mobileMQ.matches) {
+        panels.forEach((pn, j) => {
+          pn.classList.toggle('is-active', j === i);
+          if (j === i) pn.removeAttribute('aria-hidden'); else pn.setAttribute('aria-hidden', 'true');
+        });
+        shots.forEach((sh, j) => sh.classList.toggle('is-active', j === i));
+      }
+      syncVideos();
+    }
+
+    // step videos: loop silently; desktop plays only the active step (restarting it), stacked plays what is on screen
+    function playVid(v) { if (!v || rm) return; const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+    function syncVideos() {
+      vids.forEach((v, j) => {
+        if (!v || mobileMQ.matches) return;
+        if (j === current) { if (v.paused) { v.currentTime = 0; playVid(v); } }
+        else v.pause();
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      const vio = new IntersectionObserver(es => es.forEach(e => {
+        if (!mobileMQ.matches) return;
+        if (e.isIntersecting) playVid(e.target); else e.target.pause();
+      }), { threshold: 0.35 });
+      vids.forEach(v => { if (v) vio.observe(v); });
+    }
+    if (mobileMQ.addEventListener) mobileMQ.addEventListener('change', () => setTimeout(syncVideos, 60));
+
+    // pinned content height drives both the centering offset and the scroll length
+    function measurePin() {
+      if (mobileMQ.matches) { scrollEl.style.removeProperty('--fs-pin-h'); return; }
+      scrollEl.style.setProperty('--fs-pin-h', pin.offsetHeight + 'px');
+    }
+
+    // progress through the pinned range of .fs-scroll
+    function range() {
+      const topOffset = Math.max(24, (window.innerHeight - pin.offsetHeight) / 2);
+      const start = scrollEl.getBoundingClientRect().top + window.scrollY - topOffset;
+      return { start, len: Math.max(1, scrollEl.offsetHeight - pin.offsetHeight) };
+    }
+
+    let locked = false, lockTimer = 0;
+    let entryGate = false, entryT = 0, entryEdge = 0, wasPinned = false;
+    function lockScroll() {
+      locked = true;
+      clearTimeout(lockTimer);
+      lockTimer = setTimeout(() => { locked = false; update(); }, 900);
+    }
+    window.addEventListener('scrollend', () => { if (locked) { clearTimeout(lockTimer); locked = false; update(); } });
+
+    function update() {
+      if (mobileMQ.matches) { if (current < 0) setActive(0); return; }
+      if (locked || entryGate) return;
+      const r = range();
+      const p = Math.min(1, Math.max(0, (window.scrollY - r.start) / r.len));
+      const i = Math.min(4, Math.floor(p * 5));
+      if (i !== current) setActive(i);
+    }
+
+    function relayout() {
+      locked = false; clearTimeout(lockTimer); entryGate = false; wasPinned = false; gated = false;
+      if (mobileMQ.matches) toMobile(); else toDesktop();
+      buildLine();
+      measurePin();
+      const i = current < 0 ? 0 : current; current = -1; setActive(i); update();
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } }, { passive: true });
+    window.addEventListener('resize', () => requestAnimationFrame(relayout));
+    if (mobileMQ.addEventListener) mobileMQ.addEventListener('change', relayout);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { lastW = 0; relayout(); });
+    window.addEventListener('load', relayout);
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(() => { if (!mobileMQ.matches) { buildLine(); } }).observe(lineEl);
+      new ResizeObserver(() => { measurePin(); }).observe(pin);
+    }
+
+    function goTo(i, focus) {
+      if (mobileMQ.matches) {
+        setActive(i);
+        if (mlist) mlist.children[i].scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+      } else {
+        const r = range();
+        entryGate = false;
+        if (!rm) { lockScroll(); setActive(i); }
+        window.scrollTo({ top: r.start + ((i + 0.5) / 5) * r.len, behavior: rm ? 'auto' : 'smooth' });
+      }
+      if (focus && hits[i]) hits[i].focus({ preventScroll: true });
+    }
+
+    // ── one step per scroll gesture while pinned (desktop, motion allowed) ──
+    const MOMENTUM_GAP = 120, STEP_COOLDOWN = 700;
+    let lastWheelT = 0, lastAbs = 0, lastChangeT = -1e9, gated = false, lastKeyT = 0;
+
+    function pinnedNow() {
+      if (mobileMQ.matches || rm) return false;
+      const r = range();
+      const topOffset = Math.max(24, (window.innerHeight - pin.offsetHeight) / 2);
+      return window.scrollY >= r.start - 1 && window.scrollY <= r.start + r.len + 1 &&
+             Math.abs(pin.getBoundingClientRect().top - topOffset) <= 2;
+    }
+
+    // step by one; returns true when the event was consumed
+    function stepBy(dir) {
+      const atEnd = (dir > 0 && current === 4) || (dir < 0 && current === 0);
+      if (atEnd) return false;   // let the browser scroll the page normally
+      goTo(current + dir, false);
+      return true;
+    }
+
+    // entering the pinned zone (from above or below): start on the entry step and wait for a NEW gesture
+    function syncPinned() {
+      const now = pinnedNow();
+      if (now && !wasPinned) {
+        wasPinned = true;
+        const r = range();
+        const fromBelow = window.scrollY > r.start + r.len / 2;
+        entryEdge = fromBelow ? r.start + r.len : r.start;
+        entryGate = true; entryT = performance.now(); gated = false;
+        setActive(fromBelow ? 4 : 0);
+      } else if (!now && wasPinned) {
+        wasPinned = false; entryGate = false;
+      }
+    }
+    window.addEventListener('scroll', syncPinned, { passive: true });
+
+    window.addEventListener('wheel', e => {
+      syncPinned();
+      if (!pinnedNow()) return;
+      let dy = e.deltaY, dx = e.deltaX;
+      if (e.deltaMode === 1) { dy *= 16; dx *= 16; } else if (e.deltaMode === 2) { dy *= 100; dx *= 100; }
+      const now = performance.now(), abs = Math.abs(dy), dir = dy > 0 ? 1 : -1;
+      const gap = now - lastWheelT, prevAbs = lastAbs;
+      if (Math.abs(dy) <= Math.abs(dx) || abs < 4) {
+        if ((gated || entryGate) && Math.abs(dy) > Math.abs(dx)) e.preventDefault();   // keep momentum tails from moving the page
+        return;
+      }
+      lastWheelT = now; lastAbs = abs;
+      const atEnd = (dir > 0 && current === 4) || (dir < 0 && current === 0);
+      if (atEnd) { entryGate = false; stepBy(dir); return; }   // let the page scroll normally
+      e.preventDefault();
+      if (entryGate) {
+        const fresh = (gap >= 150 || abs > 1.5 * prevAbs) && now - entryT >= 400;
+        if (!fresh) return;                       // still the gesture that brought us here
+        entryGate = false; gated = false;         // a new gesture: handle it normally
+      }
+      if (gated) {
+        const cooled = now - lastChangeT >= STEP_COOLDOWN;
+        const fresh = gap >= MOMENTUM_GAP || abs > 1.5 * prevAbs;
+        if (!(cooled && fresh)) return;             // still the same gesture / momentum tail
+        gated = false;
+      }
+      if (stepBy(dir)) { gated = true; lastChangeT = now; }
+    }, { passive: false });
+
+    window.addEventListener('keydown', e => {
+      if (!pinnedNow()) return;
+      const t = e.target;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON|A|SUMMARY)$/.test(t.tagName))) return;
+      let dir = 0;
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) dir = 1;
+      else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) dir = -1;
+      if (!dir) return;
+      const atEnd = (dir > 0 && current === 4) || (dir < 0 && current === 0);
+      if (atEnd) { stepBy(dir); return; }
+      e.preventDefault();
+      const now = performance.now();
+      if (now - lastKeyT < 450) return;             // ignore key auto-repeat
+      lastKeyT = now;
+      stepBy(dir);
+    });
+
+    viewer.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      if (!e.target.classList || !e.target.classList.contains('fs-hit')) return;
+      e.preventDefault();
+      const n = Math.max(0, Math.min(4, current + (e.key === 'ArrowRight' ? 1 : -1)));
+      if (n !== current) goTo(n, true);
+    });
+    relayout();
+  })();
+
+  // ── MARGIN NOTES: align each note's first line with its anchor ──
+  (function () {
+    const notes = Array.from(document.querySelectorAll('.cs-note[data-anchor]'));
+    if (!notes.length) return;
+    const wide = window.matchMedia('(min-width: 1101px)');
+    function place() {
+      const lastBottom = new Map();
+      notes.forEach(n => {
+        if (!wide.matches) { n.style.top = ''; return; }
+        const anchor = document.getElementById(n.dataset.anchor);
+        const section = n.offsetParent || n.parentElement;
+        if (!anchor || !section) return;
+        const a = anchor.getBoundingClientRect(), sc = section.getBoundingClientRect();
+        const lh = parseFloat(getComputedStyle(n).lineHeight) || 26;
+        let top = (a.top + a.height / 2) - sc.top - lh / 2;
+        const prev = lastBottom.get(section);
+        if (prev !== undefined) top = Math.max(top, prev + 12);
+        n.style.top = Math.round(top) + 'px';
+        lastBottom.set(section, top + n.offsetHeight);
+      });
+    }
+    window.addEventListener('resize', () => requestAnimationFrame(place));
+    if (wide.addEventListener) wide.addEventListener('change', place);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+    window.addEventListener('load', place);
+    place();
+  })();
 
   // ── NAV SECTION COLLAPSE ─────────────────────────────────────────────────────
   (function initNavCollapse() {
